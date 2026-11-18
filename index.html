@@ -383,10 +383,10 @@ input::placeholder{
             </button>
         </div>
 
-        <!-- INSCRIPTION -->
         <div class="form-section active" id="registerForm">
 
             <h2 class="form-title">Créer un compte</h2>
+
             <p class="form-subtitle">
                 Remplissez les informations ci-dessous pour rejoindre MaTontine.
             </p>
@@ -398,11 +398,15 @@ input::placeholder{
                         <i class="fa-solid fa-user"></i>
                         Nom et prénom
                     </label>
+
                     <div class="input-box">
                         <span class="input-icon">
                             <i class="fa-regular fa-user"></i>
                         </span>
-                        <input type="text" id="fullName" placeholder="Ex : Kouamé Jean" autocomplete="name" required>
+
+                        <input type="text" id="fullName"
+                        placeholder="Ex : Kouamé Jean"
+                        autocomplete="name" required>
                     </div>
                 </div>
 
@@ -411,6 +415,7 @@ input::placeholder{
                         <i class="fa-solid fa-mobile-screen"></i>
                         Numéro de téléphone
                     </label>
+
                     <div class="phone-box">
                         <select id="countryCode">
                             <option value="+225">🇨🇮 +225</option>
@@ -420,16 +425,20 @@ input::placeholder{
                             <option value="+226">🇧🇫 +226</option>
                             <option value="+221">🇸🇳 +221</option>
                         </select>
-                        <input type="tel" id="phone" placeholder="Votre numéro" autocomplete="tel-national" required>
+
+                        <input type="tel" id="phone"
+                        placeholder="Votre numéro"
+                        autocomplete="tel-national" required>
                     </div>
                 </div>
 
-                <!-- RÉCEPTION DES FONDS -->
                 <div class="reception-card">
+
                     <div class="reception-heading">
                         <div class="reception-icon">
                             <i class="fa-solid fa-wallet"></i>
                         </div>
+
                         <div>
                             <h3>Réception des fonds</h3>
                             <p>Coordonnées pour recevoir vos paiements</p>
@@ -437,11 +446,14 @@ input::placeholder{
                     </div>
 
                     <div class="form-group" style="margin-bottom:0">
+
                         <label>
                             <i class="fa-solid fa-money-bill-transfer"></i>
                             Numéro de réception des fonds
                         </label>
+
                         <div class="phone-box">
+
                             <select id="receiveCode">
                                 <option value="+225">🇨🇮 +225</option>
                                 <option value="+229">🇧🇯 +229</option>
@@ -450,40 +462,63 @@ input::placeholder{
                                 <option value="+226">🇧🇫 +226</option>
                                 <option value="+221">🇸🇳 +221</option>
                             </select>
-                            <input type="tel" id="receivePhone" placeholder="Numéro Mobile Money" required>
+
+                            <input type="tel" id="receivePhone"
+                            placeholder="Numéro Mobile Money" required>
+
                         </div>
+
                         <p class="help-text">
                             <i class="fa-solid fa-circle-info"></i>
                             Indiquez le numéro Mobile Money sur lequel vous souhaitez recevoir vos fonds.
                         </p>
+
                     </div>
                 </div>
 
                 <div class="form-group">
+
                     <label>
                         <i class="fa-solid fa-lock"></i>
                         Mot de passe
                     </label>
+
                     <div class="input-box">
+
                         <span class="input-icon">
                             <i class="fa-solid fa-key"></i>
                         </span>
-                        <input type="password" id="password" placeholder="Créer un mot de passe" autocomplete="new-password" required>
-                        <i class="fa-solid fa-eye password-eye" data-password="password"></i>
+
+                        <input type="password" id="password"
+                        placeholder="Créer un mot de passe"
+                        autocomplete="new-password" required>
+
+                        <i class="fa-solid fa-eye password-eye"
+                        data-password="password"></i>
+
                     </div>
                 </div>
 
                 <div class="form-group">
+
                     <label>
                         <i class="fa-solid fa-shield-halved"></i>
                         Confirmer le mot de passe
                     </label>
+
                     <div class="input-box">
+
                         <span class="input-icon">
                             <i class="fa-solid fa-lock"></i>
                         </span>
-                        <input type="password" id="confirmPassword" placeholder="Répétez votre mot de passe" autocomplete="new-password" required>
-                        <i class="fa-solid fa-eye password-eye" data-password="confirmPassword"></i>
+
+                        <input type="password" id="confirmPassword"
+                        placeholder="Répétez votre mot de passe"
+                        autocomplete="new-password" required>
+
+                        <i class="fa-solid fa-eye password-eye"
+                        data-password="confirmPassword"></i>
+
                     </div>
                 </div>
 
@@ -495,10 +530,10 @@ input::placeholder{
             </form>
         </div>
 
-        <!-- CONNEXION -->
         <div class="form-section" id="loginForm">
 
             <h2 class="form-title">Bon retour !</h2>
+
             <p class="form-subtitle">
                 Connectez-vous pour accéder à votre espace personnel.
             </p>
@@ -506,11 +541,14 @@ input::placeholder{
             <form id="signinForm">
 
                 <div class="form-group">
+
                     <label>
                         <i class="fa-solid fa-mobile-screen"></i>
                         Numéro de téléphone
                     </label>
+
                     <div class="phone-box">
+
                         <select id="loginCode">
                             <option value="+225">🇨🇮 +225</option>
                             <option value="+229">🇧🇯 +229</option>
@@ -519,21 +557,33 @@ input::placeholder{
                             <option value="+226">🇧🇫 +226</option>
                             <option value="+221">🇸🇳 +221</option>
                         </select>
-                        <input type="tel" id="loginPhone" placeholder="Votre numéro" required>
+
+                        <input type="tel" id="loginPhone"
+                        placeholder="Votre numéro" required>
+
                     </div>
                 </div>
 
                 <div class="form-group">
+
                     <label>
                         <i class="fa-solid fa-lock"></i>
                         Mot de passe
                     </label>
+
                     <div class="input-box">
+
                         <span class="input-icon">
                             <i class="fa-solid fa-key"></i>
                         </span>
-                        <input type="password" id="loginPassword" placeholder="Votre mot de passe" autocomplete="current-password" required>
-                        <i class="fa-solid fa-eye password-eye" data-password="loginPassword"></i>
+
+                        <input type="password" id="loginPassword"
+                        placeholder="Votre mot de passe"
+                        autocomplete="current-password" required>
+
+                        <i class="fa-solid fa-eye password-eye"
+                        data-password="loginPassword"></i>
+
                     </div>
                 </div>
 
@@ -561,7 +611,9 @@ input::placeholder{
 </div>
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -571,14 +623,17 @@ import {
     setPersistence,
     browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+
 import {
     getDatabase,
     ref,
     set,
-    get
+    get,
+    runTransaction,
+    update
 } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
 
-// CONFIGURATION FIREBASE
+// FIREBASE
 const firebaseConfig = {
     apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
     authDomain: "matontine-beefb.firebaseapp.com",
@@ -593,13 +648,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Application sécurisée de la persistance de session
-setPersistence(auth, browserLocalPersistence).catch((error) => {
-    console.error("Erreur de persistance :", error);
-});
+setPersistence(auth, browserLocalPersistence).catch(console.error);
 
-// PAYS AUTORISÉS
-const paysAutorises = ["+225", "+229", "+228", "+223", "+226", "+221"];
+const paysAutorises = ["+225","+229","+228","+223","+226","+221"];
+
+// RÉCUPÉRATION DU CODE PARRAIN DE L'URL
+const parametresURL = new URLSearchParams(location.search);
+const codeParrainURL = (parametresURL.get("ref") || "")
+    .trim()
+    .toUpperCase();
 
 // OUTILS
 function nettoyerNumero(numero){
@@ -622,15 +679,122 @@ function chargerBouton(bouton,actif,texte){
     bouton.innerHTML = actif ? "Veuillez patienter..." : texte;
 }
 
-// CHANGER DE FORMULAIRE
+function genererCodeParrainage(){
+    const caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "MT";
+
+    for(let i=0;i<7;i++){
+        code += caracteres.charAt(
+            Math.floor(Math.random()*caracteres.length)
+        );
+    }
+
+    return code;
+}
+
+// CRÉATION D'UN CODE UNIQUE
+async function creerCodeUnique(uid){
+
+    for(let i=0;i<15;i++){
+
+        const code = genererCodeParrainage();
+
+        const resultat = await runTransaction(
+            ref(db,"referralCodes/"+code),
+            valeur => valeur === null ? uid : undefined
+        );
+
+        if(resultat.committed){
+            return code;
+        }
+    }
+
+    throw new Error("Impossible de créer votre code de parrainage.");
+}
+
+// ASSURER UN CODE POUR UN MEMBRE EXISTANT
+async function assurerCodeParrainage(uid){
+
+    const profilRef = ref(db,"users/"+uid);
+    const snapshot = await get(profilRef);
+
+    if(!snapshot.exists()){
+        throw new Error("Profil introuvable.");
+    }
+
+    const profil = snapshot.val();
+
+    if(profil.codeParrainage){
+
+        const code = profil.codeParrainage;
+
+        await runTransaction(
+            ref(db,"referralCodes/"+code),
+            valeur => valeur === null || valeur === uid
+                ? uid
+                : undefined
+        );
+
+        return code;
+    }
+
+    const code = await creerCodeUnique(uid);
+
+    await update(profilRef,{
+        codeParrainage:code
+    });
+
+    return code;
+}
+
+// RECHERCHER LE PARRAIN
+async function trouverParrain(code){
+
+    if(!code){
+        return null;
+    }
+
+    const snapshot = await get(
+        ref(db,"referralCodes/"+code)
+    );
+
+    if(!snapshot.exists()){
+        throw new Error("Le lien de parrainage est invalide.");
+    }
+
+    const uid = snapshot.val();
+
+    const profilSnapshot = await get(
+        ref(db,"users/"+uid)
+    );
+
+    if(!profilSnapshot.exists()){
+        throw new Error("Le compte du parrain est introuvable.");
+    }
+
+    const profil = profilSnapshot.val();
+
+    if(profil.statut !== "actif"){
+        throw new Error("Le compte du parrain est inactif.");
+    }
+
+    return {
+        uid:uid,
+        code:code,
+        nom:profil.nom || ""
+    };
+}
+
+// CHANGEMENT DE FORMULAIRE
 function showForm(form){
+
     document.getElementById("registerForm").classList.remove("active");
     document.getElementById("loginForm").classList.remove("active");
     document.getElementById("registerTab").classList.remove("active");
     document.getElementById("loginTab").classList.remove("active");
-    document.getElementById("message").style.display = "none";
+    document.getElementById("message").style.display="none";
 
-    if(form === "register"){
+    if(form==="register"){
         document.getElementById("registerForm").classList.add("active");
         document.getElementById("registerTab").classList.add("active");
     }else{
@@ -639,214 +803,365 @@ function showForm(form){
     }
 }
 
-document.getElementById("registerTab").addEventListener("click", () => showForm("register"));
-document.getElementById("loginTab").addEventListener("click", () => showForm("login"));
+document.getElementById("registerTab").onclick=()=>showForm("register");
+document.getElementById("loginTab").onclick=()=>showForm("login");
 
-// AFFICHER / MASQUER MOT DE PASSE
-document.querySelectorAll(".password-eye").forEach(icon => {
-    icon.addEventListener("click", function(){
-        const id = this.dataset.password;
-        const input = document.getElementById(id);
-        if(input.type === "password"){
-            input.type = "text";
+// MOT DE PASSE
+document.querySelectorAll(".password-eye").forEach(icon=>{
+
+    icon.addEventListener("click",function(){
+
+        const input=document.getElementById(this.dataset.password);
+
+        if(input.type==="password"){
+            input.type="text";
             this.classList.replace("fa-eye","fa-eye-slash");
         }else{
-            input.type = "password";
+            input.type="password";
             this.classList.replace("fa-eye-slash","fa-eye");
         }
     });
 });
 
 // INSCRIPTION
-document.getElementById("signupForm").addEventListener("submit", async function(e){
-    e.preventDefault();
-    const bouton = this.querySelector(".submit-btn");
-    const texteOriginal = bouton.innerHTML;
+document.getElementById("signupForm").addEventListener("submit",async function(e){
 
-    const nom = document.getElementById("fullName").value.trim();
-    const indicatif = document.getElementById("countryCode").value;
-    const telephone = nettoyerNumero(document.getElementById("phone").value);
-    const codeReception = document.getElementById("receiveCode").value;
-    const telephoneReception = nettoyerNumero(document.getElementById("receivePhone").value);
-    const password = document.getElementById("password").value;
-    const confirmation = document.getElementById("confirmPassword").value;
+    e.preventDefault();
+
+    const bouton=this.querySelector(".submit-btn");
+    const texteOriginal=bouton.innerHTML;
+
+    const nom=document.getElementById("fullName").value.trim();
+    const indicatif=document.getElementById("countryCode").value;
+    const telephone=nettoyerNumero(document.getElementById("phone").value);
+    const codeReception=document.getElementById("receiveCode").value;
+    const telephoneReception=nettoyerNumero(document.getElementById("receivePhone").value);
+    const password=document.getElementById("password").value;
+    const confirmation=document.getElementById("confirmPassword").value;
 
     if(!paysAutorises.includes(indicatif) || !paysAutorises.includes(codeReception)){
-        afficherMessage("Pays non autorisé.", "error");
+        afficherMessage("Pays non autorisé.","error");
         return;
     }
 
-    if(!nom || telephone.length < 7 || telephoneReception.length < 7){
-        afficherMessage("Veuillez vérifier vos informations.", "error");
+    if(!nom || telephone.length<7 || telephoneReception.length<7){
+        afficherMessage("Veuillez vérifier vos informations.","error");
         return;
     }
 
-    if(password.length < 6){
-        afficherMessage("Le mot de passe doit contenir au moins 6 caractères.", "error");
+    if(password.length<6){
+        afficherMessage("Le mot de passe doit contenir au moins 6 caractères.","error");
         return;
     }
 
-    if(password !== confirmation){
-        afficherMessage("Les mots de passe ne correspondent pas.", "error");
+    if(password!==confirmation){
+        afficherMessage("Les mots de passe ne correspondent pas.","error");
         return;
     }
 
-    const numeroComplet = indicatif + telephone;
-    const numeroReception = codeReception + telephoneReception;
-    const emailTechnique = creerIdentifiant(numeroComplet);
+    const numeroComplet=indicatif+telephone;
+    const numeroReception=codeReception+telephoneReception;
+    const emailTechnique=creerIdentifiant(numeroComplet);
 
-    chargerBouton(bouton, true, texteOriginal);
+    chargerBouton(bouton,true,texteOriginal);
+
+    let utilisateur=null;
+    let codeCree=null;
+    let profilEnregistre=false;
 
     try{
-        const resultat = await createUserWithEmailAndPassword(auth, emailTechnique, password);
-        const utilisateur = resultat.user;
 
-        const donneesUtilisateur = {
-            uid: utilisateur.uid,
-            nom: nom,
-            telephone: numeroComplet,
-            numeroReception: numeroReception,
-            pays: indicatif,
-            dateInscription: new Date().toISOString(),
-            statut: "actif",
-            solde: 0
+        // VÉRIFIER LE PARRAIN AVANT L'INSCRIPTION
+        const parrain=codeParrainURL
+            ? await trouverParrain(codeParrainURL)
+            : null;
+
+        // EMPÊCHER L'AUTO-PARRAINAGE
+        const resultat=await createUserWithEmailAndPassword(
+            auth,
+            emailTechnique,
+            password
+        );
+
+        utilisateur=resultat.user;
+
+        // CRÉER LE CODE PERSONNEL DU NOUVEAU MEMBRE
+        codeCree=await creerCodeUnique(utilisateur.uid);
+
+        // PROFIL DU NOUVEAU MEMBRE
+        const donneesUtilisateur={
+
+            uid:utilisateur.uid,
+            nom:nom,
+            telephone:numeroComplet,
+            numeroReception:numeroReception,
+            pays:indicatif,
+            dateInscription:new Date().toISOString(),
+            statut:"actif",
+            solde:0,
+
+            codeParrainage:codeCree,
+
+            parrainUid:parrain ? parrain.uid : null,
+            codeParrainUtilise:parrain ? parrain.code : null,
+            nomParrain:parrain ? parrain.nom : null
+
         };
 
-        await set(ref(db, "users/" + utilisateur.uid), donneesUtilisateur);
+        await set(
+            ref(db,"users/"+utilisateur.uid),
+            donneesUtilisateur
+        );
 
-        window.currentMember = donneesUtilisateur;
-        afficherMessage("Félicitations " + nom + " ! Redirection en cours...", "success");
+        profilEnregistre=true;
 
-        // Redirection automatique vers accueil.html
-        setTimeout(() => {
-            window.location.href = "accueil.html";
-        }, 1200);
+        // ENREGISTRER LE FILLEUL CHEZ SON PARRAIN
+        if(parrain){
+
+            await set(
+                ref(db,"parrainages/"+parrain.uid+"/"+utilisateur.uid),
+                {
+                    uid:utilisateur.uid,
+                    nom:nom,
+                    codeUtilise:parrain.code,
+                    dateInscription:new Date().toISOString()
+                }
+            );
+
+        }
+
+        window.currentMember=donneesUtilisateur;
+
+        afficherMessage(
+            "Félicitations "+nom+" ! Votre compte a été créé.",
+            "success"
+        );
+
+        setTimeout(()=>{
+            location.href="accueil.html";
+        },1200);
 
     }catch(error){
+
         console.error(error);
-        let erreur = "Une erreur est survenue.";
-        if(error.code === "auth/email-already-in-use"){
-            erreur = "Ce numéro possède déjà un compte.";
-        }else if(error.code === "auth/weak-password"){
-            erreur = "Mot de passe trop faible.";
-        }else if(error.code === "auth/network-request-failed"){
-            erreur = "Vérifiez votre connexion Internet.";
+
+        let erreur="Une erreur est survenue.";
+
+        if(error.code==="auth/email-already-in-use"){
+            erreur="Ce numéro possède déjà un compte.";
+        }else if(error.code==="auth/weak-password"){
+            erreur="Mot de passe trop faible.";
+        }else if(error.code==="auth/network-request-failed"){
+            erreur="Vérifiez votre connexion Internet.";
+        }else if(error.message){
+            erreur=error.message;
         }
-        afficherMessage(erreur, "error");
+
+        if(utilisateur && !profilEnregistre){
+
+            // Nettoyer le code réservé si la création du profil échoue.
+            if(codeCree){
+                await set(
+                    ref(db,"referralCodes/"+codeCree),
+                    null
+                ).catch(console.error);
+            }
+
+            await signOut(auth).catch(console.error);
+        }
+
+        afficherMessage(erreur,"error");
+
     }finally{
-        chargerBouton(bouton, false, texteOriginal);
+
+        chargerBouton(bouton,false,texteOriginal);
+
     }
+
 });
 
 // CONNEXION
-document.getElementById("signinForm").addEventListener("submit", async function(e){
-    e.preventDefault();
-    const bouton = this.querySelector(".submit-btn");
-    const texteOriginal = bouton.innerHTML;
+document.getElementById("signinForm").addEventListener("submit",async function(e){
 
-    const indicatif = document.getElementById("loginCode").value;
-    const telephone = nettoyerNumero(document.getElementById("loginPhone").value);
-    const password = document.getElementById("loginPassword").value;
+    e.preventDefault();
+
+    const bouton=this.querySelector(".submit-btn");
+    const texteOriginal=bouton.innerHTML;
+
+    const indicatif=document.getElementById("loginCode").value;
+    const telephone=nettoyerNumero(document.getElementById("loginPhone").value);
+    const password=document.getElementById("loginPassword").value;
 
     if(!paysAutorises.includes(indicatif)){
-        afficherMessage("Pays non autorisé.", "error");
+        afficherMessage("Pays non autorisé.","error");
         return;
     }
 
     if(!telephone || !password){
-        afficherMessage("Veuillez remplir tous les champs.", "error");
+        afficherMessage("Veuillez remplir tous les champs.","error");
         return;
     }
 
-    const numeroComplet = indicatif + telephone;
-    const emailTechnique = creerIdentifiant(numeroComplet);
+    const numeroComplet=indicatif+telephone;
+    const emailTechnique=creerIdentifiant(numeroComplet);
 
-    chargerBouton(bouton, true, texteOriginal);
+    chargerBouton(bouton,true,texteOriginal);
 
     try{
-        const resultat = await signInWithEmailAndPassword(auth, emailTechnique, password);
-        const utilisateur = resultat.user;
 
-        const profil = await get(ref(db, "users/" + utilisateur.uid));
+        const resultat=await signInWithEmailAndPassword(
+            auth,
+            emailTechnique,
+            password
+        );
+
+        const utilisateur=resultat.user;
+
+        const profil=await get(
+            ref(db,"users/"+utilisateur.uid)
+        );
 
         if(!profil.exists()){
+
             await signOut(auth);
-            afficherMessage("Profil introuvable. Contactez l'administration.", "error");
+
+            afficherMessage(
+                "Profil introuvable. Contactez l'administration.",
+                "error"
+            );
+
             return;
         }
 
-        const membre = profil.val();
+        const membre=profil.val();
 
-        if(membre.statut !== "actif"){
+        if(membre.statut!=="actif"){
+
             await signOut(auth);
-            afficherMessage("Votre compte est suspendu ou inactif.", "error");
+
+            afficherMessage(
+                "Votre compte est suspendu ou inactif.",
+                "error"
+            );
+
             return;
         }
 
-        window.currentMember = {
-            uid: utilisateur.uid,
+        // ATTRIBUER UN CODE AUX ANCIENS MEMBRES
+        const codeParrainage=await assurerCodeParrainage(utilisateur.uid);
+
+        membre.codeParrainage=codeParrainage;
+
+        window.currentMember={
+            uid:utilisateur.uid,
             ...membre
         };
 
-        afficherMessage("Bienvenue " + membre.nom + " ! Connexion réussie.", "success");
+        afficherMessage(
+            "Bienvenue "+membre.nom+" ! Connexion réussie.",
+            "success"
+        );
 
-        // Redirection automatique vers accueil.html
-        setTimeout(() => {
-            window.location.href = "accueil.html";
-        }, 1000);
+        setTimeout(()=>{
+            location.href="accueil.html";
+        },1000);
 
     }catch(error){
+
         console.error(error);
-        let erreur = "Numéro ou mot de passe incorrect.";
-        if(error.code === "auth/network-request-failed"){
-            erreur = "Problème de connexion Internet.";
+
+        let erreur="Numéro ou mot de passe incorrect.";
+
+        if(error.code==="auth/network-request-failed"){
+            erreur="Problème de connexion Internet.";
+        }else if(error.message && error.message.includes("Impossible")){
+            erreur=error.message;
         }
-        afficherMessage(erreur, "error");
+
+        afficherMessage(erreur,"error");
+
     }finally{
-        chargerBouton(bouton, false, texteOriginal);
+
+        chargerBouton(bouton,false,texteOriginal);
+
     }
+
 });
 
-// ÉCOUTEUR D'ÉTAT D'AUTHENTIFICATION
-onAuthStateChanged(auth, async function(utilisateur){
+// ÉTAT AUTHENTIFICATION
+onAuthStateChanged(auth,async function(utilisateur){
+
     if(!utilisateur){
-        window.currentMember = null;
+        window.currentMember=null;
         return;
     }
 
     try{
-        const resultat = await get(ref(db, "users/" + utilisateur.uid));
+
+        const resultat=await get(
+            ref(db,"users/"+utilisateur.uid)
+        );
+
         if(!resultat.exists()){
-            window.currentMember = null;
+            window.currentMember=null;
             return;
         }
 
-        const membre = resultat.val();
-        window.currentMember = {
-            uid: utilisateur.uid,
-            ...membre
+        window.currentMember={
+            uid:utilisateur.uid,
+            ...resultat.val()
         };
+
     }catch(error){
-        console.error("Erreur de récupération :", error);
+
+        console.error("Erreur de récupération :",error);
+
     }
+
 });
 
-window.recupererMembre = function(){
+// RÉCUPÉRER LE MEMBRE
+window.recupererMembre=function(){
     return window.currentMember || null;
 };
 
-window.deconnecterMembre = async function(){
-    try{
-        await signOut(auth);
-        window.currentMember = null;
-        window.location.reload();
-    }catch(error){
-        console.error(error);
-        alert("Erreur pendant la déconnexion.");
+// OBTENIR LE LIEN PERSONNEL DE PARRAINAGE
+window.recupererLienParrainage=async function(){
+
+    const utilisateur=auth.currentUser;
+
+    if(!utilisateur){
+        throw new Error("Vous devez être connecté.");
     }
+
+    const code=await assurerCodeParrainage(utilisateur.uid);
+
+    // Remplacer ce chemin par l'adresse réelle de ta page d'inscription
+    return new URL("inscription.html",location.href).origin+
+        new URL("inscription.html",location.href).pathname+
+        "?ref="+encodeURIComponent(code);
 };
 
-console.log("MaTontine Firebase initialisé.");
+// DÉCONNEXION
+window.deconnecterMembre=async function(){
+
+    try{
+
+        await signOut(auth);
+        window.currentMember=null;
+        location.reload();
+
+    }catch(error){
+
+        console.error(error);
+        alert("Erreur pendant la déconnexion.");
+
+    }
+
+};
+
+console.log("MaTontine avec système de parrainage initialisé.");
+
 </script>
 
 </body>
