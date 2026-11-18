@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaTontine - Parrainage</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+:root{
+ --bg:#0b0b0c;
+ --card:#151515;
+ --card2:#1c1c1c;
+ --gold:#e4b95d;
+ --gold2:#f5d98c;
+ --text:#ffffff;
+ --muted:#99958b;
+ --green:#25c58a;
+ --red:#ff6262;
+ --border:#2a2418;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+ font-family:Poppins,sans-serif;
+ background:var(--bg);
+ color:var(--text);
+ padding-bottom:110px;
+}
+
+.app{max-width:520px;margin:auto;min-height:100vh}
+
+header{
+ padding:25px 18px 22px;
+ background:#0b0b0c;
+ border-bottom:1px solid var(--border);
+}
+
+.topline{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:21px;font-weight:800;color:var(--gold)}
+
+.badge{
+ background:#242016;
+ color:var(--gold2);
+ padding:6px 11px;
+ border-radius:20px;
+ font-size:11px;
+ border:1px solid #59451d;
+}
+
+h1{font-size:23px;margin-top:25px}
+.subtitle{font-size:12px;color:var(--muted);margin-top:5px}
+main{padding:18px}
+
+.card{
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:17px;
+ padding:18px;
+ margin-bottom:15px;
+}
+
+.card-title{font-size:14px;font-weight:700;margin-bottom:13px}
+.card-title i{color:var(--gold);margin-right:5px}
+
+.balance-card{
+ background:linear-gradient(135deg,#b58b3e,#e4b95d);
+ color:#17120a;
+ border:none;
+}
+
+.balance-label{font-size:12px;font-weight:600;opacity:.8}
+.balance-value{font-size:30px;font-weight:800;margin:7px 0}
+.balance-note{font-size:11px;opacity:.8}
+
+.stats{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
+
+.stat{
+ background:#1c1c1c;
+ border:1px solid var(--border);
+ padding:14px;
+ border-radius:13px;
+}
+
+.stat i{color:var(--gold);font-size:17px}
+.stat strong{display:block;font-size:19px;margin-top:8px}
+.stat span{font-size:10px;color:var(--muted)}
+
+.referral-box{display:flex;gap:8px;margin-top:12px}
+
+.referral-box input{
+ min-width:0;
+ flex:1;
+ background:#101010;
+ border:1px solid var(--border);
+ border-radius:10px;
+ padding:12px;
+ color:white;
+ font-family:inherit;
+ font-size:11px;
+}
+
+button{border:0;cursor:pointer;font-family:inherit}
+
+.gold-btn{
+ background:var(--gold);
+ color:#17120a;
+ padding:11px 14px;
+ border-radius:10px;
+ font-weight:700;
+ font-size:11px;
+}
+
+.share-btn{
+ width:100%;
+ margin-top:10px;
+ padding:12px;
+ border-radius:10px;
+ background:#242016;
+ color:var(--gold);
+ border:1px solid #59451d;
+ font-weight:600;
+ font-size:12px;
+}
+
+.info{
+ font-size:11px;
+ color:var(--muted);
+ line-height:1.7;
+ margin-top:10px;
+}
+
+.commission-row{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:11px 0;
+ border-bottom:1px solid var(--border);
+ font-size:12px;
+}
+
+.commission-row:last-child{border:0}
+.percent{color:var(--gold);font-weight:800}
+.green{color:var(--green)}
+.red{color:var(--red)}
+
+.field{margin-top:13px}
+
+.field label{
+ display:block;
+ font-size:11px;
+ color:var(--muted);
+ margin-bottom:7px;
+}
+
+.field input{
+ width:100%;
+ padding:13px;
+ background:#101010;
+ border:1px solid var(--border);
+ border-radius:10px;
+ color:white;
+ font-family:inherit;
+ font-size:13px;
+ outline:none;
+}
+
+.field input:focus,
+.referral-box input:focus{border-color:var(--gold)}
+
+.full-btn{
+ width:100%;
+ margin-top:13px;
+ padding:14px;
+ border-radius:11px;
+ background:var(--gold);
+ color:#17120a;
+ font-weight:800;
+ font-size:12px;
+}
+
+.full-btn:disabled{opacity:.6;cursor:not-allowed}
+
+.list-item{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ padding:13px 0;
+ border-bottom:1px solid var(--border);
+}
+
+.list-item:last-child{border:0}
+
+.avatar{
+ width:36px;
+ height:36px;
+ border-radius:50%;
+ display:grid;
+ place-items:center;
+ background:#242016;
+ color:var(--gold);
+ border:1px solid #59451d;
+ flex-shrink:0;
+}
+
+.person{display:flex;align-items:center;gap:10px;min-width:0}
+.person-info{min-width:0}
+
+.person-info strong{
+ display:block;
+ font-size:11px;
+ overflow-wrap:anywhere;
+}
+
+.person-info small{font-size:9px;color:var(--muted)}
+
+.status{
+ font-size:9px;
+ padding:5px 8px;
+ border-radius:20px;
+ background:#203d35;
+ color:#66e4b4;
+ white-space:nowrap;
+}
+
+.empty{
+ text-align:center;
+ color:var(--muted);
+ font-size:11px;
+ padding:20px 5px;
+}
+
+.history-item{
+ padding:12px 0;
+ border-bottom:1px solid var(--border);
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ font-size:11px;
+}
+
+.history-item small{
+ display:block;
+ color:var(--muted);
+ margin-top:4px;
+}
+
+.history-item strong{color:var(--gold);white-space:nowrap}
+
+.notice{
+ background:#242016;
+ border:1px solid #59451d;
+ color:#e9cf8b;
+ padding:12px;
+ border-radius:10px;
+ font-size:10px;
+ line-height:1.6;
+ margin-top:12px;
+}
+
+/* NAVIGATION IDENTIQUE À L'ACCUEIL */
+nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ width:100%;
+ background:rgba(17,17,18,.96);
+ backdrop-filter:blur(14px);
+ border-top:1px solid var(--border);
+ display:flex;
+ padding-bottom:env(safe-area-inset-bottom);
+ z-index:100;
+}
+
+nav a{
+ flex:1;
+ text-decoration:none;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:500;
+ text-align:center;
+ padding:10px 2px;
+}
+
+nav a i{
+ display:block;
+ font-size:16px;
+ margin-bottom:5px;
+}
+
+nav a.active{
+ color:var(--gold);
+ background:rgba(228,185,93,.08);
+ box-shadow:inset 0 2px 0 var(--gold);
+}
+
+nav a span{
+ display:block;
+ overflow:hidden;
+ text-overflow:ellipsis;
+ white-space:nowrap;
+}
+
+.toast{
+ position:fixed;
+ bottom:90px;
+ left:50%;
+ transform:translateX(-50%);
+ background:#242016;
+ border:1px solid #59451d;
+ color:white;
+ padding:12px 18px;
+ border-radius:10px;
+ font-size:11px;
+ z-index:300;
+ display:none;
+ width:max-content;
+ max-width:90%;
+}
+
+.loading{text-align:center;color:var(--muted);font-size:11px;padding:15px}
+
+@media(max-width:360px){
+ nav a{font-size:9px}
+ .balance-value{font-size:25px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+ <div class="topline">
+  <div class="logo"><i class="fas fa-coins"></i> MaTontine</div>
+  <div class="badge">ESPACE PARRAINAGE</div>
+ </div>
+ <h1>Mon parrainage</h1>
+ <p class="subtitle">Suivez vos filleuls et vos commissions.</p>
+</header>
+
+<main>
+<section class="card balance-card">
+ <div class="balance-label">SOLDE DISPONIBLE</div>
+ <div class="balance-value"><span id="soldeDisponible">0</span> FCFA</div>
+ <div class="balance-note">Vos commissions de parrainage disponibles</div>
+</section>
+
+<section class="stats">
+ <div class="stat">
+  <i class="fas fa-users"></i>
+  <strong id="nombreFilleuls">0</strong>
+  <span>Filleuls inscrits</span>
+ </div>
+
+ <div class="stat">
+  <i class="fas fa-wallet"></i>
+  <strong id="totalCommissions">0</strong>
+  <span>FCFA de commissions</span>
+ </div>
+
+ <div class="stat">
+  <i class="fas fa-hourglass-half"></i>
+  <strong id="soldeReserve">0</strong>
+  <span>FCFA en retrait réservé</span>
+ </div>
+
+ <div class="stat">
+  <i class="fas fa-check-circle"></i>
+  <strong id="retraitsTermines">0</strong>
+  <span>Retraits terminés</span>
+ </div>
+</section>
+
+<section class="card">
+ <div class="card-title"><i class="fas fa-link"></i> Mon lien de parrainage</div>
+ <p class="info">
+  Partagez votre lien. Lorsqu'une personne s'inscrit avec votre code,
+  elle devient votre filleul.
+ </p>
+
+ <div class="referral-box">
+  <input id="lienParrainage" readonly value="Chargement...">
+  <button class="gold-btn" onclick="copierLien()">Copier</button>
+ </div>
+
+ <button class="share-btn" onclick="partagerLien()">
+  <i class="fas fa-share-alt"></i> Partager mon lien
+ </button>
+</section>
+
+<section class="card">
+ <div class="card-title"><i class="fas fa-percent"></i> Barème des commissions</div>
+
+ <div class="commission-row">
+  <span>1er cycle</span>
+  <span class="percent">10 %</span>
+ </div>
+
+ <div class="commission-row">
+  <span>5e cycle</span>
+  <span class="percent">7 %</span>
+ </div>
+
+ <p class="info">
+  Les commissions sont calculées sur le montant initial de la contribution
+  du filleul. Elles sont créditées après la validation définitive de sa contribution.
+ </p>
+</section>
+
+<section class="card">
+ <div class="card-title"><i class="fas fa-money-bill-transfer"></i> Demander un retrait</div>
+
+ <div class="field">
+  <label>Montant à retirer (FCFA)</label>
+  <input type="number" id="montantRetrait" min="8000" placeholder="Minimum 8 000 FCFA">
+ </div>
+
+ <button class="full-btn" id="btnRetrait" onclick="demanderRetrait()">
+  DEMANDER MON RETRAIT
+ </button>
+
+ <div class="notice">
+  <i class="fas fa-info-circle"></i>
+  Minimum de retrait : 8 000 FCFA.
+  Après la demande, le montant est réservé et reste en attente de réception
+  des fonds d'un nouveau contributeur. Le débit définitif intervient uniquement
+  après confirmation de réception.
+ </div>
+</section>
+
+<section class="card">
+ <div class="card-title"><i class="fas fa-users"></i> Mes filleuls</div>
+ <div id="listeFilleuls" class="loading">Chargement des filleuls...</div>
+</section>
+
+<section class="card">
+ <div class="card-title"><i class="fas fa-clock-rotate-left"></i> Historique des retraits</div>
+ <div id="historiqueRetraits" class="loading">Chargement...</div>
+</section>
+</main>
+
+<nav>
+    <a href="accueil.html">
+        <i class="fa-solid fa-house"></i><span>Accueil</span>
+    </a>
+
+    <a href="contributions.html">
+        <i class="fa-solid fa-wallet"></i><span>Contribuer</span>
+    </a>
+
+    <a href="jumelages.html">
+        <i class="fa-solid fa-people-arrows"></i><span>Jumelages</span>
+    </a>
+
+    <a href="parrainage.html" class="active">
+        <i class="fa-solid fa-users"></i><span>Parrainage</span>
+    </a>
+
+    <a href="profil.html">
+        <i class="fa-solid fa-user"></i><span>Profil</span>
+    </a>
+
+    <a href="historique.html">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>Historique</span>
+    </a>
+</nav>
+
+<div class="toast" id="toast"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+ apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
+ authDomain: "matontine-beefb.firebaseapp.com",
+ databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",
+ projectId: "matontine-beefb",
+ storageBucket: "matontine-beefb.firebasestorage.app",
+ messagingSenderId: "642250537489",
+ appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"
+};
+
+if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.database();
+
+let utilisateur = null;
+let lienActuel = "";
+let filleuls = {};
+let retraits = {};
+
+function toast(message){
+ const el=document.getElementById("toast");
+ el.textContent=message;
+ el.style.display="block";
+ clearTimeout(window.toastTimer);
+ window.toastTimer=setTimeout(()=>{el.style.display="none"},3000);
+}
+
+function formatNombre(n){
+ return Number(n||0).toLocaleString("fr-FR");
+}
+
+function dateTexte(date){
+ if(!date)return "Date inconnue";
+ return new Date(date).toLocaleString("fr-FR");
+}
+
+function echapper(texte){
+ return String(texte??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+ })[c]);
+}
+
+async function copierLien(){
+ if(!lienActuel)return toast("Lien indisponible.");
+ try{
+  await navigator.clipboard.writeText(lienActuel);
+  toast("Lien copié avec succès.");
+ }catch(e){
+  const input=document.getElementById("lienParrainage");
+  input.select();
+  document.execCommand("copy");
+  toast("Lien copié.");
+ }
+}
+
+async function partagerLien(){
+ if(!lienActuel)return toast("Lien indisponible.");
+ if(navigator.share){
+  try{
+   await navigator.share({
+    title:"Rejoins MaTontine",
+    text:"Inscris-toi avec mon lien de parrainage :",
+    url:lienActuel
+   });
+  }catch(e){}
+ }else{
+  copierLien();
+ }
+}
+
+async function chargerProfil(uid){
+ const snap=await db.ref("users/"+uid).once("value");
+ const user=snap.val()||{};
+ const code=user.codeParrainage||uid.slice(0,8).toUpperCase();
+
+ if(code){
+  lienActuel=location.origin+
+  location.pathname.replace(/[^/]*$/,"")+
+  "index.html?ref="+encodeURIComponent(code);
+  document.getElementById("lienParrainage").value=lienActuel;
+ }else{
+  document.getElementById("lienParrainage").value="Code de parrainage indisponible";
+ }
+ return user;
+}
+
+async function chargerFilleuls(uid){
+ const snap=await db.ref("parrainages/"+uid).once("value");
+ filleuls=snap.val()||{};
+ const ids=Object.keys(filleuls);
+
+ document.getElementById("nombreFilleuls").textContent=ids.length;
+ const container=document.getElementById("listeFilleuls");
+
+ if(!ids.length){
+  container.innerHTML='<div class="empty">Vous n’avez pas encore de filleul.</div>';
+  return;
+ }
+
+ const profils=await Promise.all(ids.map(async id=>{
+  const s=await db.ref("users/"+id).once("value");
+  return {id,data:s.val()||{},relation:filleuls[id]||{}};
+ }));
+
+ container.innerHTML=profils.map(item=>{
+  const nom=item.data.nom||item.relation.nom||"Membre";
+  const date=item.data.dateInscription||item.relation.dateInscription;
+
+  return `
+   <div class="list-item">
+    <div class="person">
+     <div class="avatar"><i class="fas fa-user"></i></div>
+     <div class="person-info">
+      <strong>${echapper(nom)}</strong>
+      <small>Inscrit : ${echapper(dateTexte(date))}</small>
+     </div>
+    </div>
+    <span class="status">Filleul</span>
+   </div>
+  `;
+ }).join("");
+}
+
+async function chargerCommissions(uid){
+ const snap=await db.ref("commissionsParrainage/"+uid).once("value");
+ const data=snap.val()||{};
+ let total=0;
+
+ Object.values(data).forEach(item=>{
+  if(item && item.statut!=="annulee"){
+   total+=Number(item.montantCommission||0);
+  }
+ });
+
+ document.getElementById("totalCommissions").textContent=formatNombre(total);
+}
+
+async function chargerRetraits(uid){
+ const snap=await db.ref("demandesRetraitParrainage/"+uid).once("value");
+ retraits=snap.val()||{};
+
+ let reserves=0;
+ let termines=0;
+
+ Object.values(retraits).forEach(r=>{
+  if(!r)return;
+
+  if([
+   "en_attente",
+   "en_attente_jumelage",
+   "jumelage_partiel",
+   "paiement_declare",
+   "en_attente_reception"
+  ].includes(r.statut)){
+   reserves+=Number(r.montant||0);
+  }
+
+  if(r.statut==="termine"||r.statut==="confirme")termines++;
+ });
+
+ document.getElementById("soldeReserve").textContent=formatNombre(reserves);
+ document.getElementById("retraitsTermines").textContent=termines;
+
+ const container=document.getElementById("historiqueRetraits");
+ const entries=Object.entries(retraits).sort((a,b)=>
+  (b[1]?.dateCreation||0)-(a[1]?.dateCreation||0)
+ );
+
+ if(!entries.length){
+  container.innerHTML='<div class="empty">Aucune demande de retrait.</div>';
+  return;
+ }
+
+ container.innerHTML=entries.map(([id,r])=>{
+  const statut=r.statut||"en_attente";
+  let label="En attente de jumelage";
+
+  if(statut==="termine"||statut==="confirme")label="Retrait terminé";
+  else if(statut==="paiement_declare")label="Paiement déclaré";
+  else if(statut==="en_attente_reception")label="En attente de confirmation";
+  else if(statut==="annule"||statut==="rejete")label="Annulé / rejeté";
+
+  return `
+   <div class="history-item">
+    <div>
+     <b>${echapper(label)}</b>
+     <small>${echapper(dateTexte(r.dateCreation))}</small>
+     <small>${echapper(r.message||"")}</small>
+    </div>
+    <strong>${formatNombre(r.montant)} F</strong>
+   </div>
+  `;
+ }).join("");
+}
+
+async function chargerSolde(uid){
+ const snap=await db.ref("users/"+uid).once("value");
+ const user=snap.val()||{};
+ const solde=Number(user.soldeParrainageDisponible||0);
+ document.getElementById("soldeDisponible").textContent=formatNombre(solde);
+}
+
+async function demanderRetrait(){
+ if(!utilisateur)return toast("Connectez-vous d'abord.");
+
+ const bouton=document.getElementById("btnRetrait");
+ const montant=Number(document.getElementById("montantRetrait").value);
+
+ if(!Number.isFinite(montant)||montant<8000){
+  return toast("Le retrait minimum est de 8 000 FCFA.");
+ }
+
+ bouton.disabled=true;
+ bouton.textContent="Traitement...";
+
+ const userRef=db.ref("users/"+utilisateur.uid);
+ const requestRef=db.ref("demandesRetraitParrainage/"+utilisateur.uid).push();
+
+ try{
+  let resultat=await userRef.transaction(user=>{
+   if(!user)return;
+
+   const disponible=Number(user.soldeParrainageDisponible||0);
+   const reserve=Number(user.soldeParrainageReserve||0);
+
+   if(disponible<montant)return;
+
+   user.soldeParrainageDisponible=disponible-montant;
+   user.soldeParrainageReserve=reserve+montant;
+   return user;
+  });
+
+  if(!resultat.committed){
+   throw new Error("Solde insuffisant ou compte indisponible.");
+  }
+
+  const demande={
+   id:requestRef.key,
+   uid:utilisateur.uid,
+   montant:montant,
+   statut:"en_attente_jumelage",
+   message:"En attente de réception des fonds d'un nouveau contributeur.",
+   dateCreation:Date.now(),
+   type:"retrait_parrainage"
+  };
+
+  try{
+   await requestRef.set(demande);
+  }catch(erreurEnregistrement){
+   await userRef.transaction(user=>{
+    if(!user)return;
+    user.soldeParrainageDisponible=
+    Number(user.soldeParrainageDisponible||0)+montant;
+    user.soldeParrainageReserve=Math.max(
+     0,Number(user.soldeParrainageReserve||0)-montant
+    );
+    return user;
+   });
+   throw erreurEnregistrement;
+  }
+
+  document.getElementById("montantRetrait").value="";
+  toast("Demande enregistrée. En attente d'un nouveau contributeur.");
+  await actualiserPage();
+
+ }catch(e){
+  console.error(e);
+  toast(e.message||"Impossible d'effectuer la demande.");
+ }finally{
+  bouton.disabled=false;
+  bouton.textContent="DEMANDER MON RETRAIT";
+ }
+}
+
+async function actualiserPage(){
+ if(!utilisateur)return;
+
+ await Promise.all([
+  chargerSolde(utilisateur.uid),
+  chargerFilleuls(utilisateur.uid),
+  chargerCommissions(utilisateur.uid),
+  chargerRetraits(utilisateur.uid)
+ ]);
+}
+
+auth.onAuthStateChanged(async user=>{
+ if(!user){
+  toast("Veuillez vous connecter.");
+  setTimeout(()=>{location.href="index.html"},1500);
+  return;
+ }
+
+ utilisateur=user;
+
+ try{
+  await chargerProfil(user.uid);
+  await actualiserPage();
+ }catch(e){
+  console.error(e);
+  toast("Erreur de chargement des données.");
+ }
+});
+
+setInterval(()=>{
+ if(utilisateur)actualiserPage().catch(console.error);
+},30000);
+</script>
+</body>
+</html>

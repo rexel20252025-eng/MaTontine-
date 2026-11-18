@@ -1,0 +1,403 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaTontine - Contribuer</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"><style>
+:root {
+    --bg: #0a0a0b;
+    --surface: #131314;
+    --surface-2: #1a1a1c;
+    --border: #2a2418;
+    --border-soft: #1f1b13;
+    --gold: #e4b95d;
+    --gold-light: #f5d98a;
+    --gold-deep: #9c7428;
+    --text: #f4f1ea;
+    --muted: #8f8a7e;
+    --radius: 18px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body {
+    background: radial-gradient(900px 500px at 50% -180px, rgba(228, 185, 93, 0.14), transparent 70%), var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 120px;
+}
+
+header {
+    position: sticky; top: 0; z-index: 50; padding: 16px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(10, 10, 11, 0.75); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700;
+    background: linear-gradient(120deg, var(--gold-light), var(--gold) 50%, var(--gold-deep));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.container { padding: 24px 18px; max-width: 560px; margin: 0 auto; }
+
+.page-title { font-family: 'Playfair Display', serif; font-size: 25px; font-weight: 700; margin-bottom: 6px; }
+.page-sub { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+
+.section-label { font-size: 14px; font-weight: 700; margin: 22px 0 12px; color: var(--gold-light); display: flex; align-items: center; gap: 8px; }
+
+.cycles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cycle-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; cursor: pointer; transition: all .2s ease;
+}
+.cycle-card.active {
+    background: linear-gradient(145deg, #2b2110, #17130b); border-color: var(--gold);
+    box-shadow: 0 8px 25px -10px rgba(228, 185, 93, 0.4);
+}
+.cycle-card h4 { font-size: 15px; color: var(--text); margin-bottom: 4px; }
+.cycle-card .rate { font-size: 22px; font-weight: 800; color: var(--gold); }
+.cycle-card p { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+.amounts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.amount-btn {
+    background: var(--surface); border: 1px solid var(--border-soft); border-radius: 12px;
+    padding: 14px 6px; color: var(--text); font-size: 13px; font-weight: 700; cursor: pointer; text-align: center;
+}
+.amount-btn.active {
+    background: linear-gradient(90deg, #b58a35, #f0d083); color: #17120a; border-color: var(--gold-light);
+    box-shadow: 0 6px 16px -6px rgba(228, 185, 93, 0.5);
+}
+
+.summary-box {
+    background: linear-gradient(135deg, #261d0e 0%, #14120c 100%);
+    border: 1px solid var(--gold-deep); border-radius: 18px; padding: 20px; margin-top: 24px;
+}
+.summary-row { display: flex; justify-content: space-between; font-size: 13.5px; margin-bottom: 10px; color: var(--muted); }
+.summary-row strong { color: var(--text); }
+.summary-total { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+.summary-total span { font-size: 13px; color: var(--gold-light); }
+.summary-total h2 { font-size: 24px; font-weight: 800; color: var(--gold); }
+
+.btn-submit {
+    width: 100%; margin-top: 20px; padding: 15px; border: none; border-radius: 14px;
+    background: linear-gradient(90deg, #b58a35, #f0d083); color: #17120a; font-size: 14px; font-weight: 800; cursor: pointer;
+}
+
+/* Modal Annulation 1 minute */
+#cancelModal {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 20px;
+}
+.modal-content {
+    background: var(--surface); border: 1px solid var(--gold); border-radius: 20px; padding: 24px; max-width: 400px; width: 100%; text-align: center;
+}
+.countdown-timer { font-size: 42px; font-weight: 800; color: var(--gold); margin: 15px 0; letter-spacing: 2px; }
+.btn-cancel-action {
+    background: #d9534f; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px;
+}
+
+.match-result-box { margin-top: 24px; display: none; }
+.match-item { background: var(--surface); border: 1px solid var(--gold-deep); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+.match-item h4 { color: var(--gold-light); font-size: 18px; margin-bottom: 8px; }
+.match-item p { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+nav {
+    position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(17, 17, 18, 0.96);
+    backdrop-filter: blur(14px); border-top: 1px solid var(--border); display: flex; padding-bottom: env(safe-area-inset-bottom); z-index: 100;
+}
+nav a { flex: 1; text-decoration: none; color: var(--muted); font-size: 10px; font-weight: 500; text-align: center; padding: 10px 2px; }
+nav a i { display: block; font-size: 16px; margin-bottom: 5px; }
+nav a.active { color: var(--gold); background: rgba(228, 185, 93, 0.08); box-shadow: inset 0 2px 0 var(--gold); }
+nav a span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+</style></head><body><header>
+    <div class="logo">MaTontine</div>
+    <a href="accueil.html" style="color:var(--gold); text-decoration:none; font-size:13px; font-weight:600;">
+        <i class="fa-solid fa-arrow-left"></i> Retour
+    </a>
+</header><div class="container">
+    <h2 class="page-title">Nouvelle Contribution</h2>
+    <p class="page-sub">Choisissez votre cycle et le montant à investir.</p><div class="section-label"><i class="fa-solid fa-clock"></i> 1. Sélectionnez votre cycle</div>
+<div class="cycles-grid">
+    <div class="cycle-card active" data-days="15" data-rate="65">
+        <h4>Cycle 15 Jours</h4>
+        <div class="rate">+65 %</div>
+        <p>Gain rapide en 2 semaines</p>
+    </div>
+    <div class="cycle-card" data-days="25" data-rate="110">
+        <h4>Cycle 25 Jours</h4>
+        <div class="rate">+110 %</div>
+        <p>Rendement maximum</p>
+    </div>
+</div>
+
+<div class="section-label"><i class="fa-solid fa-coins"></i> 2. Choisissez votre montant</div>
+<div class="amounts-grid" id="amountsGrid"></div>
+
+<div class="summary-box">
+    <div class="summary-row"><span>Montant investi :</span><strong id="displayInvest">5 000 F CFA</strong></div>
+    <div class="summary-row"><span>Cycle choisi :</span><strong id="displayCycle">15 jours (+65%)</strong></div>
+    <div class="summary-row"><span>Bénéfice net :</span><strong id="displayProfit" style="color:#70e085;">+ 3 250 F CFA</strong></div>
+    <div class="summary-total"><span>Total à recevoir :</span><h2 id="displayTotal">8 250 F CFA</h2></div>
+    <button class="btn-submit" id="btnLancerContribution">Lancer la contribution</button>
+</div>
+
+<div class="match-result-box" id="matchResultBox">
+    <div class="section-label"><i class="fa-solid fa-people-arrows"></i> Statut & Jumelages</div>
+    <div id="assignedList"></div>
+</div>
+
+</div><div id="cancelModal">
+    <div class="modal-content">
+        <h3>Confirmation en cours</h3>
+        <p style="font-size:12.5px; color:var(--muted); margin-top:8px;">Vous avez <strong>1 minute</strong> pour annuler votre contribution si vous le souhaitez. Passé ce délai, elle sera enregistrée automatiquement.</p>
+        <div class="countdown-timer" id="timerDisplay">01:00</div>
+        <button class="btn-cancel-action" id="btnAnnulerContribution">Annuler la contribution</button>
+    </div>
+</div><nav>
+    <a href="accueil.html"><i class="fa-solid fa-house"></i><span>Accueil</span></a>
+    <a href="contributions.html" class="active"><i class="fa-solid fa-wallet"></i><span>Contribuer</span></a>
+    <a href="jumelages.html"><i class="fa-solid fa-people-arrows"></i><span>Jumelages</span></a>
+    <a href="parrainage.html"><i class="fa-solid fa-users"></i><span>Parrainage</span></a>
+    <a href="profil.html"><i class="fa-solid fa-user"></i><span>Profil</span></a>
+    <a href="historique.html"><i class="fa-solid fa-clock-rotate-left"></i><span>Historique</span></a>
+</nav><script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+import { getDatabase, ref, get, push, set, update, remove } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
+    authDomain: "matontine-beefb.firebaseapp.com",
+    databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",
+    projectId: "matontine-beefb",
+    storageBucket: "matontine-beefb.firebasestorage.app",
+    messagingSenderId: "642250537489",
+    appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+const montantsDisponibles = [5000, 10000, 20000, 30000, 50000, 70000, 100000, 150000, 200000, 300000, 350000, 400000, 500000, 600000];
+let selectedAmount = 5000;
+let selectedDays = 15;
+let selectedRate = 65;
+let currentUser = null;
+let currentUserProfile = { nom: "Membre", telephone: "+225 0000000000" };
+let currentDemandeId = null;
+let countdownInterval = null;
+
+const amountsGrid = document.getElementById("amountsGrid");
+const displayInvest = document.getElementById("displayInvest");
+const displayCycle = document.getElementById("displayCycle");
+const displayProfit = document.getElementById("displayProfit");
+const displayTotal = document.getElementById("displayTotal");
+const btnLancer = document.getElementById("btnLancerContribution");
+const cancelModal = document.getElementById("cancelModal");
+const timerDisplay = document.getElementById("timerDisplay");
+const btnAnnuler = document.getElementById("btnAnnulerContribution");
+
+function formatF(num) { return Number(num).toLocaleString("fr-FR") + " F CFA"; }
+
+function updateCalculator() {
+    const profit = Math.round(selectedAmount * (selectedRate / 100));
+    displayInvest.textContent = formatF(selectedAmount);
+    displayCycle.textContent = `${selectedDays} jours (+${selectedRate}%)`;
+    displayProfit.textContent = `+ ${formatF(profit)}`;
+    displayTotal.textContent = formatF(selectedAmount + profit);
+}
+
+montantsDisponibles.forEach((amount, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "amount-btn" + (idx === 0 ? " active" : "");
+    btn.textContent = Number(amount).toLocaleString("fr-FR") + " F";
+    btn.onclick = () => {
+        document.querySelectorAll(".amount-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedAmount = amount;
+        updateCalculator();
+    };
+    amountsGrid.appendChild(btn);
+});
+
+document.querySelectorAll(".cycle-card").forEach(card => {
+    card.onclick = () => {
+        document.querySelectorAll(".cycle-card").forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+        selectedDays = Number(card.dataset.days);
+        selectedRate = Number(card.dataset.rate);
+        updateCalculator();
+    };
+});
+
+onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.replace("index.html"); return; }
+    currentUser = user;
+    const userSnap = await get(ref(db, "users/" + user.uid));
+    if (userSnap.exists()) {
+        const u = userSnap.val();
+        currentUserProfile.nom = u.nom || u.fullName || user.displayName || "Membre";
+        currentUserProfile.telephone = u.telephone || u.phone || "+225 0000000000";
+    }
+});
+
+btnLancer.addEventListener("click", async () => {
+    if (!currentUser) return;
+    btnLancer.disabled = true;
+
+    try {
+        const profit = Math.round(selectedAmount * (selectedRate / 100));
+        const newRef = push(ref(db, "contributionRequests/" + currentUser.uid));
+        currentDemandeId = newRef.key;
+
+        await set(newRef, {
+            id: currentDemandeId,
+            montant: selectedAmount,
+            cycle: selectedDays,
+            taux: selectedRate,
+            gainPrevu: selectedAmount + profit,
+            statut: "en_attente_validation",
+            dateCreation: Date.now(),
+            limiteAnnulation: Date.now() + 60 * 1000
+        });
+
+        cancelModal.style.display = "flex";
+        startCountdown(60);
+
+    } catch (e) {
+        console.error(e);
+        alert("Erreur lors de la création.");
+        btnLancer.disabled = false;
+    }
+});
+
+function startCountdown(durationInSeconds) {
+    let timer = durationInSeconds;
+    if (countdownInterval) clearInterval(countdownInterval);
+
+    countdownInterval = setInterval(async () => {
+        let minutes = parseInt(timer / 60, 10);
+        let seconds = parseInt(timer % 60, 10);
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        timerDisplay.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            clearInterval(countdownInterval);
+            cancelModal.style.display = "none";
+            await finaliserEtJumelerContribution();
+        }
+    }, 1000);
+}
+
+btnAnnuler.onclick = async () => {
+    if (confirm("Voulez-vous vraiment annuler cette contribution ?")) {
+        clearInterval(countdownInterval);
+        await remove(ref(db, `contributionRequests/${currentUser.uid}/${currentDemandeId}`));
+        cancelModal.style.display = "none";
+        btnLancer.disabled = false;
+        alert("Contribution annulée avec succès.");
+    }
+};
+
+async function finaliserEtJumelerContribution() {
+    try {
+        const usersSnap = await get(ref(db, "users"));
+        const allUsers = usersSnap.val() || {};
+
+        const requestsSnap = await get(ref(db, "contributionRequests"));
+        const allRequests = requestsSnap.val() || {};
+
+        let beneficiaireTrouve = null;
+
+        for (let autreUid of Object.keys(allRequests)) {
+            if (autreUid === currentUser.uid) continue;
+
+            const userReqs = allRequests[autreUid];
+            for (let reqId of Object.keys(userReqs)) {
+                const req = userReqs[reqId];
+                if (req.statut === "en_attente_reception" || req.statut === "attente_beneficiaire") {
+                    beneficiaireTrouve = {
+                        uid: autreUid,
+                        demandeId: reqId,
+                        ...allUsers[autreUid]
+                    };
+                    break;
+                }
+            }
+            if (beneficiaireTrouve) break;
+        }
+
+        const updates = {};
+        const jumelagesCrees = [];
+
+        if (beneficiaireTrouve) {
+            const matchId = push(ref(db, "jumelages")).key;
+            const limite24h = Date.now() + (24 * 60 * 60 * 1000);
+
+            const infosJumelage = {
+                id: matchId,
+                montant: selectedAmount,
+                payeurUid: currentUser.uid,
+                payeurNom: currentUserProfile.nom,
+                payeurTelephone: currentUserProfile.telephone,
+                beneficiaireUid: beneficiaireTrouve.uid,
+                beneficiaireNom: beneficiaireTrouve.nom || beneficiaireTrouve.fullName || "Membre",
+                beneficiaireTelephone: beneficiaireTrouve.telephone || beneficiaireTrouve.phone || "N/A",
+                demandePayeurId: currentDemandeId,
+                demandeBenefId: beneficiaireTrouve.demandeId,
+                statut: "en_cours_paiement",
+                dateJumelage: Date.now(),
+                limitePaiement: limite24h
+            };
+
+            updates[`jumelages/${currentUser.uid}/${matchId}`] = { ...infosJumelage, role: "payeur" };
+            updates[`jumelages/${beneficiaireTrouve.uid}/${matchId}`] = { ...infosJumelage, role: "receveur" };
+
+            updates[`contributionRequests/${currentUser.uid}/${currentDemandeId}/statut`] = "jumele";
+            updates[`contributionRequests/${beneficiaireTrouve.uid}/${beneficiaireTrouve.demandeId}/statut`] = "en_cours_paiement";
+
+            jumelagesCrees.push(infosJumelage);
+        } else {
+            updates[`contributionRequests/${currentUser.uid}/${currentDemandeId}/statut`] = "en_attente_jumelage";
+        }
+
+        await update(ref(db), updates);
+        afficherResultatJumelages(jumelagesCrees);
+
+    } catch (e) {
+        console.error(e);
+        alert("Erreur lors du jumelage automatique.");
+    } finally {
+        btnLancer.disabled = false;
+    }
+}
+
+function afficherResultatJumelages(liste) {
+    const box = document.getElementById("matchResultBox");
+    const container = document.getElementById("assignedList");
+    box.style.display = "block";
+    container.innerHTML = "";
+
+    if (liste.length === 0) {
+        container.innerHTML = `<div class="match-item"><p>Contribution enregistrée ! Vous serez jumelé automatiquement dès qu'un bénéficiaire sera disponible.</p></div>`;
+        return;
+    }
+
+    liste.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "match-item";
+        div.innerHTML = `
+            <h4>Montant : ${formatF(item.montant)}</h4>
+            <p><strong>Bénéficiaire :</strong> ${item.beneficiaireNom}<br><strong>Téléphone :</strong> ${item.beneficiaireTelephone}</p>
+            <p style="color:#e4b95d; font-size:11.5px; margin-top:6px;"><i class="fa-solid fa-triangle-exclamation"></i> Vous avez 24h pour effectuer ce paiement sous peine de blocage.</p>
+        `;
+        container.appendChild(div);
+    });
+}
+
+updateCalculator();
+</script></body>
+</html>

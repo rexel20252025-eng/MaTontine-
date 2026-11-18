@@ -1,0 +1,1282 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaTontine - Mes Jumelages</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"><style>
+:root{
+    --bg:#0a0a0b;
+    --surface:#131314;
+    --border:#2a2418;
+    --gold:#e4b95d;
+    --gold-light:#f5d98a;
+    --muted:#8f8a7e;
+    --text:#f4f1ea;
+    --green:#32d69a;
+    --blue:#82b7ff;
+    --red:#ff6868;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    padding-bottom:110px;
+    background:
+        radial-gradient(900px 500px at 50% -180px,rgba(228,185,93,.14),transparent 70%),
+        var(--bg);
+    color:var(--text);
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    padding:16px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(10,10,11,.94);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+}
+
+.logo{
+    font-family:'Playfair Display',serif;
+    font-size:22px;
+    font-weight:700;
+    background:linear-gradient(120deg,var(--gold-light),var(--gold));
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.header-icon{
+    width:42px;
+    height:42px;
+    background:#211b10;
+    border:1px solid var(--gold);
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    color:var(--gold);
+}
+
+.container{
+    padding:20px 16px;
+    max-width:600px;
+    margin:auto;
+}
+
+.hero{
+    text-align:center;
+    padding:27px 17px;
+    border:1px solid #5d4926;
+    border-radius:23px;
+    background:linear-gradient(145deg,#211a0e,#14120d);
+    margin-bottom:20px;
+}
+
+.hero-icon{
+    width:65px;
+    height:65px;
+    margin:0 auto 15px;
+    border-radius:21px;
+    display:grid;
+    place-items:center;
+    font-size:27px;
+    color:#17120a;
+    background:linear-gradient(135deg,var(--gold-light),#bd8733);
+    box-shadow:0 10px 35px rgba(228,185,93,.2);
+}
+
+.hero h1{
+    font-family:'Playfair Display',serif;
+    font-size:26px;
+    margin-bottom:8px;
+}
+
+.hero h1 span{
+    color:var(--gold);
+}
+
+.hero p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.7;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:11px;
+    margin-bottom:25px;
+}
+
+.stat-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:17px;
+    padding:16px;
+}
+
+.stat-icon{
+    width:35px;
+    height:35px;
+    display:grid;
+    place-items:center;
+    border-radius:11px;
+    background:#2c2314;
+    color:var(--gold);
+    margin-bottom:12px;
+}
+
+.stat-card small{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+}
+
+.stat-value{
+    display:block;
+    color:var(--gold-light);
+    font-size:23px;
+    font-weight:800;
+    margin-top:7px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin:25px 0 14px;
+}
+
+.section-title h2{
+    font-size:15px;
+    font-weight:800;
+}
+
+.section-title span{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.jumelage-card{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(145deg,#1c180e,#13120b);
+    border:1px solid #70572d;
+    border-radius:21px;
+    padding:18px;
+    margin-bottom:15px;
+    box-shadow:0 8px 25px rgba(0,0,0,.18);
+}
+
+.card-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:17px;
+}
+
+.role-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:10px;
+    font-weight:800;
+    padding:7px 10px;
+    border-radius:20px;
+    background:rgba(228,185,93,.13);
+    color:var(--gold);
+}
+
+.role-badge.payer{
+    background:rgba(75,150,255,.13);
+    color:var(--blue);
+}
+
+.status{
+    font-size:9px;
+    font-weight:800;
+    padding:6px 9px;
+    border-radius:20px;
+    background:rgba(228,185,93,.12);
+    color:var(--gold);
+    text-align:center;
+}
+
+.status.green{
+    background:rgba(50,214,154,.12);
+    color:var(--green);
+}
+
+.status.blue{
+    background:rgba(75,150,255,.13);
+    color:var(--blue);
+}
+
+.amount-box{
+    padding:15px;
+    border-radius:15px;
+    background:rgba(228,185,93,.07);
+    border:1px solid rgba(228,185,93,.16);
+    margin-bottom:15px;
+}
+
+.amount-box small{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.amount-box strong{
+    display:block;
+    font-size:25px;
+    color:var(--gold-light);
+    margin-top:5px;
+    font-weight:800;
+}
+
+.info-box{
+    padding:13px;
+    border-radius:13px;
+    background:rgba(0,0,0,.2);
+    border:1px solid var(--border);
+    font-size:12px;
+    line-height:2;
+    overflow-wrap:anywhere;
+}
+
+.info-box strong{
+    color:var(--gold);
+}
+
+.countdown{
+    margin-top:13px;
+    padding:13px;
+    background:#211b10;
+    border:1px solid #80632e;
+    border-radius:12px;
+}
+
+.countdown small{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    margin-bottom:6px;
+}
+
+.countdown strong{
+    color:var(--gold-light);
+    font-size:15px;
+}
+
+.warning{
+    margin-top:12px;
+    padding:11px;
+    border-radius:11px;
+    background:rgba(255,189,114,.08);
+    border:1px solid rgba(255,189,114,.2);
+    color:#ffbd72;
+    font-size:11px;
+    line-height:1.6;
+}
+
+.payment-declared{
+    margin-top:12px;
+    padding:12px;
+    border-radius:12px;
+    background:rgba(65,145,90,.12);
+    border:1px solid #386c45;
+    color:#9bd6a5;
+    font-size:11px;
+    line-height:1.6;
+}
+
+.btn{
+    width:100%;
+    margin-top:13px;
+    padding:14px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(90deg,#b58a35,#f0d083);
+    color:#17120a;
+    font-size:12px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.btn.payer{
+    background:linear-gradient(90deg,#245b99,#64a9ed);
+    color:white;
+}
+
+.btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.empty{
+    text-align:center;
+    padding:35px 18px;
+    background:var(--surface);
+    border:1px dashed #3a3122;
+    border-radius:18px;
+}
+
+.empty i{
+    color:var(--gold);
+    font-size:30px;
+    margin-bottom:13px;
+}
+
+.empty h3{
+    font-size:14px;
+    margin-bottom:7px;
+}
+
+.empty p{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.7;
+}
+
+.loader{
+    text-align:center;
+    color:var(--muted);
+    padding:35px 15px;
+    font-size:12px;
+}
+
+.loader i{
+    color:var(--gold);
+    margin-right:7px;
+}
+
+.account-alert{
+    display:none;
+    margin-bottom:17px;
+    padding:14px;
+    border-radius:13px;
+    background:#451d1d;
+    border:1px solid #a94444;
+    color:#ffbaba;
+    font-size:12px;
+    line-height:1.7;
+}
+
+footer{
+    text-align:center;
+    color:#626875;
+    font-size:10px;
+    padding:22px 10px;
+}
+
+nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:rgba(17,17,18,.96);
+    backdrop-filter:blur(14px);
+    border-top:1px solid var(--border);
+    display:flex;
+    padding-bottom:env(safe-area-inset-bottom);
+    z-index:100;
+}
+
+nav a{
+    flex:1;
+    text-decoration:none;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:500;
+    text-align:center;
+    padding:10px 2px;
+}
+
+nav a i{
+    display:block;
+    font-size:16px;
+    margin-bottom:5px;
+}
+
+nav a.active{
+    color:var(--gold);
+    background:rgba(228,185,93,.08);
+    box-shadow:inset 0 2px 0 var(--gold);
+}
+
+nav a span{
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+@media(max-width:360px){
+    nav a{font-size:9px;}
+    .amount-box strong{font-size:21px;}
+}
+</style></head><body><header>
+    <div class="logo">MaTontine</div>
+    <div class="header-icon">
+        <i class="fa-solid fa-people-arrows-left-right"></i>
+    </div>
+</header><main class="container"><section class="hero">
+    <div class="hero-icon">
+        <i class="fa-solid fa-handshake"></i>
+    </div>
+
+    <h1>Mes <span>Jumelages</span></h1>
+
+    <p>
+        Retrouvez vos paiements, vos bénéficiaires et vos réceptions.
+        Toutes vos opérations sont synchronisées en direct.
+    </p>
+</section>
+
+<div id="accountAlert" class="account-alert">
+    <strong><i class="fa-solid fa-ban"></i> Compte bloqué</strong>
+    <p id="blockReason">Contactez l'administration.</p>
+</div>
+
+<section class="stats">
+
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-link"></i></div>
+        <small>Total des jumelages</small>
+        <strong class="stat-value" id="totalJumelages">0</strong>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+        <small>En attente d'action</small>
+        <strong class="stat-value" id="jumelagesActifs">0</strong>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-paper-plane"></i></div>
+        <small>Dépôts à effectuer</small>
+        <strong class="stat-value" id="totalPaiements">0</strong>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
+        <small>Paiements à recevoir</small>
+        <strong class="stat-value" id="totalReceptions">0</strong>
+    </div>
+
+</section>
+
+<section>
+    <div class="section-title">
+        <h2><i class="fa-solid fa-list-check" style="color:var(--gold)"></i> Mes opérations</h2>
+        <span id="dateActualisation">Synchronisation...</span>
+    </div>
+
+    <div id="listeJumelages">
+        <div class="loader">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Chargement de vos jumelages...
+        </div>
+    </div>
+</section>
+
+<footer>MaTontine • Ensemble, avançons.</footer>
+
+</main><!-- NAVIGATION AVEC HISTORIQUE --><nav>
+    <a href="accueil.html">
+        <i class="fa-solid fa-house"></i>
+        <span>Accueil</span>
+    </a><a href="contributions.html">
+    <i class="fa-solid fa-wallet"></i>
+    <span>Contribuer</span>
+</a>
+
+<a href="jumelages.htm" class="active">
+    <i class="fa-solid fa-people-arrows"></i>
+    <span>Jumelages</span>
+</a>
+
+<a href="parrainage.html">
+    <i class="fa-solid fa-users"></i>
+    <span>Parrainage</span>
+</a>
+
+<a href="profil.html">
+    <i class="fa-solid fa-user"></i>
+    <span>Profil</span>
+</a>
+
+<a href="historique.html">
+    <i class="fa-solid fa-clock-rotate-left"></i>
+    <span>Historique</span>
+</a>
+
+</nav><script type="module">
+
+import {initializeApp} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+
+import {
+    getDatabase,
+    ref,
+    get,
+    update,
+    runTransaction,
+    onValue
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
+
+
+/* FIREBASE */
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
+    authDomain: "matontine-beefb.firebaseapp.com",
+    databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",
+    projectId: "matontine-beefb",
+    storageBucket: "matontine-beefb.firebasestorage.app",
+    messagingSenderId: "642250537489",
+    appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+
+/* VARIABLES */
+
+let currentUserUid = null;
+let compteBloque = false;
+let matchesUtilisateur = {};
+let timer = null;
+
+
+/* OUTILS */
+
+function nombre(v){
+    const n = Number(v);
+    return Number.isFinite(n) ? n : 0;
+}
+
+function formatF(n){
+    return nombre(n).toLocaleString("fr-FR") + " F CFA";
+}
+
+function echapper(v){
+    return String(v ?? "").replace(/[&<>"']/g,c=>({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+    })[c]);
+}
+
+function dureeCycle(req){
+    const valeur = req.cycle || req.duree || 0;
+    const resultat = String(valeur).match(/\d+/);
+    return Number(resultat ? resultat[0] : 0);
+}
+
+function calculerGain(req){
+
+    const montant = nombre(req.montant);
+    const taux = nombre(req.taux);
+
+    if(req.gainPrevu !== undefined && req.gainPrevu !== null){
+        return nombre(req.gainPrevu);
+    }
+
+    if(montant > 0 && taux >= 0){
+        return Math.round(montant * (1 + taux / 100));
+    }
+
+    return 0;
+}
+
+function formatDelai(dateFin){
+
+    const restant = nombre(dateFin) - Date.now();
+
+    if(restant <= 0) return "Délai dépassé";
+
+    const heures = Math.floor(restant / 3600000);
+    const minutes = Math.floor((restant % 3600000) / 60000);
+
+    return `${heures}h ${minutes}min`;
+}
+
+
+/* STATUT DU COMPTE */
+
+function verifierStatutCompte(profil){
+
+    compteBloque = profil?.statut === "bloque";
+
+    document.getElementById("accountAlert").style.display =
+        compteBloque ? "block" : "none";
+
+    if(compteBloque){
+        document.getElementById("blockReason").textContent =
+            profil.motifBlocage ||
+            "Veuillez contacter l'administration.";
+    }
+}
+
+
+/* DÉCLARER UN DÉPÔT */
+
+window.declarerDepot = async function(matchId){
+
+    if(!currentUserUid) return;
+
+    if(compteBloque){
+        alert("Votre compte est bloqué. Contactez l'administration.");
+        return;
+    }
+
+    if(!confirm("Avez-vous réellement envoyé l'argent au bénéficiaire ?")){
+        return;
+    }
+
+    const matchRef = ref(
+        db,
+        `jumelages/${currentUserUid}/${matchId}`
+    );
+
+    try{
+
+        const maintenant = Date.now();
+
+        const resultat = await runTransaction(
+            matchRef,
+
+            actuel=>{
+
+                if(
+                    !actuel ||
+                    actuel.role !== "payeur" ||
+                    actuel.statut !== "en_cours_paiement"
+                ){
+                    return;
+                }
+
+                return {
+                    ...actuel,
+                    statut:"paiement_declare",
+                    dateDeclarationPaiement:maintenant
+                };
+
+            },
+
+            {applyLocally:false}
+        );
+
+        if(!resultat.committed){
+            alert("Ce dépôt a déjà été déclaré ou le jumelage n'est plus actif.");
+            return;
+        }
+
+        const match = resultat.snapshot.val();
+
+        await update(
+            ref(db,`jumelages/${match.beneficiaireUid}/${matchId}`),
+            {
+                statut:"paiement_declare",
+                dateDeclarationPaiement:maintenant
+            }
+        );
+
+        alert("Votre dépôt a été déclaré. Le bénéficiaire doit maintenant confirmer la réception.");
+
+    }catch(error){
+
+        console.error(error);
+        alert("Impossible de déclarer le dépôt : " + error.message);
+
+    }
+};
+
+
+/* CONFIRMER LA RÉCEPTION */
+
+window.confirmerBienRecu = async function(matchId){
+
+    if(!currentUserUid) return;
+
+    if(compteBloque){
+        alert("Votre compte est bloqué. Contactez l'administration.");
+        return;
+    }
+
+    if(!confirm("Confirmez-vous avoir réellement reçu ce paiement ?")){
+        return;
+    }
+
+    const matchRef = ref(
+        db,
+        `jumelages/${currentUserUid}/${matchId}`
+    );
+
+    try{
+
+        const claim = await runTransaction(
+            matchRef,
+
+            actuel=>{
+
+                if(
+                    !actuel ||
+                    actuel.role !== "receveur" ||
+                    !["en_cours_paiement","paiement_declare"].includes(actuel.statut)
+                ){
+                    return;
+                }
+
+                return {
+                    ...actuel,
+                    statut:"confirmation_en_cours"
+                };
+
+            },
+
+            {applyLocally:false}
+        );
+
+        if(!claim.committed){
+            alert("Ce paiement est déjà confirmé ou en cours de confirmation.");
+            return;
+        }
+
+        const match = claim.snapshot.val();
+
+        const montant = nombre(
+            match.montantPaiement || match.montant
+        );
+
+        if(montant <= 0){
+            throw new Error("Montant invalide.");
+        }
+
+        const benefRef = ref(
+            db,
+            `contributionRequests/${currentUserUid}/${match.demandeBenefId}`
+        );
+
+        const benefTransaction = await runTransaction(
+            benefRef,
+
+            actuel=>{
+
+                if(!actuel) return;
+
+                const gain = calculerGain(actuel);
+                const recu = nombre(actuel.montantRecu);
+                const reserve = nombre(actuel.montantReserve);
+
+                if(
+                    gain <= 0 ||
+                    montant > reserve ||
+                    recu + montant > gain
+                ){
+                    return;
+                }
+
+                const nouveauRecu = recu + montant;
+                const nouvelleReserve = reserve - montant;
+
+                return {
+                    ...actuel,
+                    gainPrevu:gain,
+                    montantRecu:nouveauRecu,
+                    montantReserve:nouvelleReserve,
+                    montantRestantBeneficiaire:Math.max(
+                        0,
+                        gain - nouveauRecu - nouvelleReserve
+                    ),
+                    derniereReception:Date.now()
+                };
+
+            },
+
+            {applyLocally:false}
+        );
+
+        if(!benefTransaction.committed){
+            throw new Error(
+                "Montant non confirmé : vérifiez la réserve et le gain prévu."
+            );
+        }
+
+        const benef = benefTransaction.snapshot.val();
+
+        const gainTotal = calculerGain(benef);
+        const totalRecu = nombre(benef.montantRecu);
+        const restant = Math.max(0,gainTotal-totalRecu);
+
+        const maintenant = Date.now();
+        const updates = {};
+
+        const cycleDejaTermine =
+            benef.statut === "en_attente_reception_benefices";
+
+        if(restant <= 0){
+
+            if(cycleDejaTermine){
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/statut`
+                ] = "termine";
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/montantRestantBeneficiaire`
+                ] = 0;
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/dateReceptionComplete`
+                ] = maintenant;
+
+            }else{
+
+                const jours = dureeCycle(benef);
+
+                if(!jours){
+                    throw new Error("Durée du cycle du bénéficiaire manquante.");
+                }
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/statut`
+                ] = "en_cours";
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/dateDebutCycle`
+                ] = maintenant;
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/dateFinCycle`
+                ] = maintenant + jours*24*60*60*1000;
+
+            }
+
+        }else{
+
+            updates[
+                `contributionRequests/${currentUserUid}/${match.demandeBenefId}/statut`
+            ] = cycleDejaTermine
+                ? "en_attente_reception_benefices"
+                : "en_attente_reception";
+
+        }
+
+        updates[
+            `jumelages/${currentUserUid}/${matchId}/statut`
+        ] = "confirme";
+
+        updates[
+            `jumelages/${match.payeurUid}/${matchId}/statut`
+        ] = "confirme";
+
+        updates[
+            `jumelages/${currentUserUid}/${matchId}/dateConfirmation`
+        ] = maintenant;
+
+        updates[
+            `jumelages/${match.payeurUid}/${matchId}/dateConfirmation`
+        ] = maintenant;
+
+        const payeurReqRef = ref(
+            db,
+            `contributionRequests/${match.payeurUid}/${match.demandePayeurId}`
+        );
+
+        const payeurSnap = await get(payeurReqRef);
+
+        if(!payeurSnap.exists()){
+            throw new Error("Demande du contributeur introuvable.");
+        }
+
+        const payeur = payeurSnap.val();
+
+        const matchesSnap = await get(
+            ref(db,`jumelages/${match.payeurUid}`)
+        );
+
+        const matchesPayeur = Object.values(matchesSnap.val() || {});
+
+        const demandesPayeur = matchesPayeur.filter(m=>
+            m.role === "payeur" &&
+            m.demandePayeurId === match.demandePayeurId
+        );
+
+        const autresNonConfirmes = demandesPayeur.filter(m=>
+            m.id !== matchId &&
+            m.statut !== "confirme"
+        );
+
+        const budgetRestant = nombre(payeur.montantRestant);
+
+        if(
+            budgetRestant <= 0 &&
+            autresNonConfirmes.length === 0
+        ){
+
+            const joursPayeur = dureeCycle(payeur);
+
+            if(!joursPayeur){
+                throw new Error("Durée du cycle du contributeur manquante.");
+            }
+
+            updates[
+                `contributionRequests/${match.payeurUid}/${match.demandePayeurId}/statut`
+            ] = "en_cours";
+
+            updates[
+                `contributionRequests/${match.payeurUid}/${match.demandePayeurId}/dateDebutCycle`
+            ] = maintenant;
+
+            updates[
+                `contributionRequests/${match.payeurUid}/${match.demandePayeurId}/dateFinCycle`
+            ] = maintenant + joursPayeur*24*60*60*1000;
+
+        }
+
+        await update(ref(db),updates);
+
+        if(restant <= 0 && cycleDejaTermine){
+
+            alert("Félicitations ! Vous avez reçu tous vos bénéfices. Votre contribution est terminée.");
+
+        }else if(restant <= 0){
+
+            alert("Votre gain a été entièrement reçu. Votre cycle commence.");
+
+        }else{
+
+            alert(`Paiement confirmé. Il vous reste ${formatF(restant)} à recevoir.`);
+
+        }
+
+    }catch(error){
+
+        console.error("Erreur confirmation :",error);
+
+        alert(
+            "Une erreur est survenue. Vérifiez votre historique avant toute nouvelle action. " +
+            error.message
+        );
+
+    }
+};
+
+
+/* AFFICHAGE DES JUMELAGES */
+
+function afficherJumelages(data){
+
+    const zone = document.getElementById("listeJumelages");
+    zone.innerHTML = "";
+
+    const tous = Object.entries(data || {})
+        .map(([id,m])=>({id,...(m || {})}))
+        .filter(m=>m.role === "payeur" || m.role === "receveur")
+        .sort((a,b)=>
+            nombre(b.dateJumelage)-nombre(a.dateJumelage)
+        );
+
+    const actifs = tous.filter(m=>m.statut !== "confirme");
+
+    const paiements = actifs.filter(m=>m.role === "payeur");
+    const receptions = actifs.filter(m=>m.role === "receveur");
+
+    document.getElementById("totalJumelages").textContent = tous.length;
+    document.getElementById("jumelagesActifs").textContent = actifs.length;
+    document.getElementById("totalPaiements").textContent = paiements.length;
+    document.getElementById("totalReceptions").textContent = receptions.length;
+
+    document.getElementById("dateActualisation").textContent =
+        "Mis à jour à " + new Date().toLocaleTimeString("fr-FR",{
+            hour:"2-digit",
+            minute:"2-digit"
+        });
+
+    if(!actifs.length){
+
+        zone.innerHTML = `
+            <div class="empty">
+                <i class="fa-solid fa-handshake-angle"></i>
+                <h3>Aucune opération en attente</h3>
+                <p>
+                    Vos nouveaux jumelages apparaîtront ici automatiquement.
+                    Les jumelages déjà confirmés ne sont plus affichés dans cette liste.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+    actifs.forEach(match=>{
+
+        const montant = nombre(
+            match.montantPaiement || match.montant
+        );
+
+        const dateLimite = nombre(match.limitePaiement);
+        const delaiDepasse =
+            dateLimite > 0 && Date.now() > dateLimite;
+
+        const depotDeclare =
+            match.statut === "paiement_declare";
+
+        const confirmationEnCours =
+            match.statut === "confirmation_en_cours";
+
+        const carte = document.createElement("article");
+        carte.className = "jumelage-card";
+
+        let contenu = "";
+
+        if(match.role === "payeur"){
+
+            const nom = match.beneficiaireNom || "Membre";
+            const numero = match.beneficiaireNumeroReception || "";
+
+            contenu = `
+
+                <div class="card-top">
+                    <span class="role-badge payer">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Dépôt à effectuer
+                    </span>
+
+                    <span class="status ${depotDeclare ? "green" : "blue"}">
+                        ${depotDeclare ? "Dépôt déclaré" : "En attente"}
+                    </span>
+                </div>
+
+                <div class="amount-box">
+                    <small>Montant à envoyer</small>
+                    <strong>${formatF(montant)}</strong>
+                </div>
+
+                <div class="info-box">
+                    <strong><i class="fa-solid fa-user"></i> Bénéficiaire :</strong>
+                    ${echapper(nom)}
+                    <br>
+                    <strong><i class="fa-solid fa-phone"></i> Numéro de réception :</strong>
+                    ${echapper(numero || "Numéro indisponible")}
+                </div>
+
+                ${
+                    dateLimite
+                    ? `
+                        <div class="countdown">
+                            <small><i class="fa-solid fa-clock"></i> Délai de paiement</small>
+                            <strong>${formatDelai(dateLimite)}</strong>
+                        </div>
+                    `
+                    : ""
+                }
+
+                ${
+                    delaiDepasse && !depotDeclare
+                    ? `
+                        <div class="warning">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            Le délai de paiement est dépassé.
+                        </div>
+                    `
+                    : ""
+                }
+
+                ${
+                    !numero
+                    ? `
+                        <div class="warning">
+                            Le bénéficiaire n'a pas renseigné son numéro de réception.
+                            Contactez-le avant tout transfert.
+                        </div>
+                    `
+                    : ""
+                }
+
+                ${
+                    depotDeclare
+                    ? `
+                        <div class="payment-declared">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Votre dépôt a été déclaré. Le bénéficiaire doit maintenant confirmer la réception.
+                        </div>
+                    `
+                    : `
+                        <button class="btn payer"
+                            data-declare="${echapper(match.id)}"
+                            ${compteBloque ? "disabled" : ""}>
+                            <i class="fa-solid fa-check"></i>
+                            J'ai effectué le dépôt
+                        </button>
+                    `
+                }
+            `;
+
+        }else{
+
+            contenu = `
+
+                <div class="card-top">
+                    <span class="role-badge">
+                        <i class="fa-solid fa-wallet"></i>
+                        Paiement à recevoir
+                    </span>
+
+                    <span class="status ${depotDeclare ? "green" : "blue"}">
+                        ${depotDeclare ? "Dépôt déclaré" : "En attente"}
+                    </span>
+                </div>
+
+                <div class="amount-box">
+                    <small>Montant à recevoir</small>
+                    <strong>${formatF(montant)}</strong>
+                </div>
+
+                <div class="info-box">
+                    <strong><i class="fa-solid fa-user"></i> Votre payeur :</strong>
+                    ${echapper(match.payeurNom || "Membre")}
+                    <br>
+                    <strong><i class="fa-solid fa-phone"></i> Téléphone :</strong>
+                    ${echapper(match.payeurTelephone || "Non renseigné")}
+                </div>
+
+                ${
+                    depotDeclare
+                    ? `
+                        <div class="payment-declared">
+                            <i class="fa-solid fa-bell"></i>
+                            Le payeur déclare avoir effectué le dépôt.
+                            Vérifiez votre compte avant de confirmer.
+                        </div>
+
+                        <button class="btn"
+                            data-confirm="${echapper(match.id)}"
+                            ${compteBloque || confirmationEnCours ? "disabled" : ""}>
+                            <i class="fa-solid fa-circle-check"></i>
+                            ${confirmationEnCours ? "Confirmation en cours..." : "J'ai bien reçu l'argent"}
+                        </button>
+                    `
+                    : `
+                        <div class="warning">
+                            <i class="fa-solid fa-clock"></i>
+                            En attente du dépôt du payeur.
+                        </div>
+                    `
+                }
+            `;
+
+        }
+
+        carte.innerHTML = contenu;
+        zone.appendChild(carte);
+
+    });
+
+}
+
+
+/* GESTION DES BOUTONS */
+
+document.getElementById("listeJumelages").addEventListener("click",async event=>{
+
+    const depot = event.target.closest("[data-declare]");
+    const reception = event.target.closest("[data-confirm]");
+
+    if(depot){
+
+        depot.disabled = true;
+
+        try{
+            await window.declarerDepot(depot.dataset.declare);
+        }finally{
+            depot.disabled = false;
+        }
+
+        return;
+    }
+
+    if(reception){
+
+        reception.disabled = true;
+
+        try{
+            await window.confirmerBienRecu(reception.dataset.confirm);
+        }finally{
+            reception.disabled = false;
+        }
+
+    }
+
+});
+
+
+/* CONNEXION ET SYNCHRONISATION FIREBASE */
+
+onAuthStateChanged(auth,user=>{
+
+    if(!user){
+        window.location.replace("index.html");
+        return;
+    }
+
+    currentUserUid = user.uid;
+
+    onValue(
+        ref(db,`users/${user.uid}`),
+        snapshot=>{
+            verifierStatutCompte(snapshot.val() || {});
+        }
+    );
+
+    onValue(
+        ref(db,`jumelages/${user.uid}`),
+
+        snapshot=>{
+            matchesUtilisateur = snapshot.val() || {};
+            afficherJumelages(matchesUtilisateur);
+        },
+
+        error=>{
+            console.error(error);
+
+            document.getElementById("listeJumelages").innerHTML = `
+                <div class="empty">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <h3>Erreur de chargement</h3>
+                    <p>${echapper(error.message)}</p>
+                </div>
+            `;
+        }
+    );
+
+    if(timer) clearInterval(timer);
+
+    timer = setInterval(()=>{
+        afficherJumelages(matchesUtilisateur);
+    },60000);
+
+});
+
+</script></body>
+</html>

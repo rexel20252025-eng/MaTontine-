@@ -1,0 +1,3086 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaTontine - Accueil</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root {
+    --bg:#0a0a0b;
+    --surface:#131314;
+    --surface2:#1a1a1c;
+    --border:#2a2418;
+    --gold:#e4b95d;
+    --gold-light:#f5d98a;
+    --red:#ff4d4d;
+    --muted:#8f8a7e;
+    --text:#f4f1ea;
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body {
+    background:radial-gradient(900px 500px at 50% -180px,rgba(228,185,93,.14),transparent 70%),var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding-bottom:110px;
+}
+
+header {
+    position:sticky;
+    top:0;
+    z-index:50;
+    padding:16px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(10,10,11,.92);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+}
+
+.logo {
+    font-family:'Playfair Display',serif;
+    font-size:22px;
+    font-weight:700;
+    background:linear-gradient(120deg,var(--gold-light),var(--gold));
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.header-actions {
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.profile,.notification-button {
+    width:42px;
+    height:42px;
+    background:#211b10;
+    border:1px solid var(--gold);
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:var(--gold);
+    text-decoration:none;
+    font-size:17px;
+    position:relative;
+    cursor:pointer;
+}
+
+.notification-dot {
+    position:absolute;
+    top:-5px;
+    right:-5px;
+    min-width:19px;
+    height:19px;
+    padding:0 5px;
+    background:#ff3030;
+    color:white;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:800;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    border:2px solid var(--bg);
+}
+
+.notification-dot.visible {
+    display:flex;
+}
+
+.container {
+    padding:24px 18px;
+    max-width:560px;
+    margin:auto;
+}
+
+.welcome h2 {
+    font-family:'Playfair Display',serif;
+    font-size:26px;
+    margin-bottom:6px;
+}
+
+.welcome p {
+    color:var(--muted);
+    font-size:13px;
+}
+
+.balance-card {
+    background:linear-gradient(135deg,#3a2b12,#1d160a,#120e07);
+    border:1px solid #7a5f2c;
+    border-radius:22px;
+    padding:24px;
+    margin:20px 0;
+}
+
+.balance-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.balance-item p {
+    color:#d3c39b;
+    font-size:12px;
+}
+
+.balance-item h1 {
+    font-size:21px;
+    margin-top:7px;
+    color:var(--gold-light);
+}
+
+.section-title {
+    font-size:15px;
+    font-weight:700;
+    margin:30px 0 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.section-title:after {
+    content:"";
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg,var(--border),transparent);
+}
+
+.stats {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.stat-card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:16px;
+}
+
+.stat-icon {
+    width:36px;
+    height:36px;
+    background:#2c2314;
+    color:var(--gold);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:11px;
+    margin-bottom:12px;
+}
+
+.stat-card p {
+    color:var(--muted);
+    font-size:11px;
+}
+
+.stat-card h3 {
+    font-size:21px;
+    margin-top:6px;
+    color:var(--gold-light);
+}
+
+.jumelage-card {
+    background:linear-gradient(145deg,#1c180e,#13120b);
+    border:1px solid #80632e;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:15px;
+}
+
+.jumelage-badge {
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    padding:6px 13px;
+    border-radius:20px;
+    background:rgba(228,185,93,.15);
+    color:var(--gold);
+    margin-bottom:12px;
+}
+
+.badge-payer {
+    background:rgba(75,150,255,.13);
+    color:#82b7ff;
+}
+
+.jumelage-amount {
+    font-size:25px;
+    font-weight:800;
+    color:var(--gold-light);
+    margin-bottom:15px;
+}
+
+.jumelage-info {
+    font-size:13px;
+    line-height:2;
+    padding:13px;
+    border-radius:12px;
+    background:rgba(26,22,14,.5);
+    border:1px solid var(--border);
+    margin-bottom:15px;
+    overflow-wrap:anywhere;
+}
+
+.jumelage-info strong {
+    color:var(--gold);
+}
+
+.btn-confirm {
+    width:100%;
+    background:linear-gradient(90deg,#b58a35,#f0d083);
+    color:#17120a;
+    border:none;
+    padding:14px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.btn-confirm:disabled {
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.btn-payer {
+    background:linear-gradient(90deg,#245b99,#64a9ed);
+    color:white;
+}
+
+.btn-chat {
+    width:100%;
+    margin-top:10px;
+    padding:13px;
+    border:1px solid var(--gold);
+    background:#211b10;
+    color:var(--gold);
+    border-radius:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.payment-warning {
+    color:#ffbd72;
+    font-size:11px;
+    line-height:1.6;
+    margin:10px 0;
+}
+
+.payment-declared {
+    padding:12px;
+    border-radius:12px;
+    background:rgba(65,145,90,.12);
+    border:1px solid #386c45;
+    color:#9bd6a5;
+    font-size:12px;
+    line-height:1.6;
+    margin-bottom:12px;
+}
+
+.history-card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:10px;
+}
+
+.history-top {
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    align-items:center;
+}
+
+.history-top strong {
+    font-size:13px;
+    color:var(--gold);
+}
+
+.status {
+    font-size:10px;
+    padding:5px 9px;
+    border-radius:20px;
+    background:#2a2213;
+    color:var(--gold);
+    border:1px solid #4a3b23;
+}
+
+.cycle-countdown {
+    margin-top:14px;
+    padding:13px;
+    background:#211b10;
+    border:1px solid #80632e;
+    border-radius:12px;
+}
+
+.cycle-countdown p {
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:7px;
+}
+
+.cycle-countdown strong {
+    font-size:17px;
+    color:var(--gold-light);
+}
+
+.empty {
+    color:var(--muted);
+    text-align:center;
+    padding:30px 15px;
+    font-size:12px;
+    background:var(--surface);
+    border-radius:18px;
+    border:1px dashed #3a3122;
+}
+
+.account-status {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    margin-top:18px;
+    font-size:12px;
+}
+
+.account-status i {
+    color:#8fca91;
+}
+
+.account-status.blocked i {
+    color:var(--red);
+}
+
+.account-alert {
+    display:none;
+    background:#451d1d;
+    border:1px solid #a94444;
+    color:#ffbaba;
+    padding:16px;
+    border-radius:14px;
+    margin:18px 0;
+    font-size:12px;
+    line-height:1.8;
+}
+
+.account-alert strong {
+    display:block;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.notification-box {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:14px;
+}
+
+.notification-item {
+    padding:11px 0;
+    border-bottom:1px solid var(--border);
+    font-size:12px;
+    line-height:1.6;
+}
+
+.notification-item:last-child {
+    border-bottom:0;
+}
+
+.notification-item i {
+    color:var(--gold);
+    margin-right:7px;
+}
+
+.notification-date {
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    margin-top:4px;
+}
+
+.assistance-card {
+    background:linear-gradient(135deg,#2d2414,#17130c);
+    border:1px solid #80632e;
+    border-radius:16px;
+    padding:17px;
+}
+
+.assistance-card p {
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.7;
+    margin:8px 0 13px;
+}
+
+.assistance-card a {
+    display:block;
+    text-align:center;
+    padding:12px;
+    border-radius:10px;
+    background:var(--gold);
+    color:#17120a;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:800;
+}
+
+.chat-modal {
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:300;
+    background:rgba(0,0,0,.88);
+    padding:12px;
+}
+
+.chat-content {
+    background:#151515;
+    border:1px solid var(--gold);
+    border-radius:18px;
+    max-width:500px;
+    height:90vh;
+    margin:3vh auto;
+    padding:15px;
+    display:flex;
+    flex-direction:column;
+}
+
+.chat-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.chat-header h3 {
+    color:var(--gold);
+    font-size:16px;
+}
+
+.chat-close {
+    background:#392d19;
+    color:var(--gold);
+    border:0;
+    padding:9px 12px;
+    border-radius:9px;
+}
+
+.chat-contact {
+    color:var(--muted);
+    font-size:11px;
+    margin-top:7px;
+}
+
+.chat-messages {
+    flex:1;
+    overflow-y:auto;
+    margin:14px 0;
+    padding:5px;
+}
+
+.chat-bubble {
+    background:#292929;
+    padding:11px;
+    border-radius:12px;
+    margin:8px 0;
+    max-width:85%;
+    font-size:12px;
+    overflow-wrap:anywhere;
+}
+
+.chat-bubble.mine {
+    background:#49391b;
+    margin-left:auto;
+}
+
+.chat-bubble small {
+    display:block;
+    color:#aaa;
+    font-size:9px;
+    margin-top:7px;
+}
+
+.chat-form {
+    display:flex;
+    gap:7px;
+    align-items:center;
+}
+
+.chat-form input[type="text"] {
+    flex:1;
+    min-width:0;
+    background:#292929;
+    border:1px solid #555;
+    border-radius:10px;
+    padding:12px;
+    color:white;
+}
+
+.chat-form button {
+    background:var(--gold);
+    color:#17120a;
+    border:0;
+    border-radius:10px;
+    min-width:43px;
+    height:43px;
+    cursor:pointer;
+}
+
+.chat-form button:disabled {
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.chat-warning {
+    font-size:10px;
+    color:#ffbd72;
+    margin-top:8px;
+}
+
+.chat-photo {
+    display:block;
+    max-width:100%;
+    width:240px;
+    max-height:300px;
+    object-fit:contain;
+    border-radius:12px;
+    margin-top:7px;
+    cursor:pointer;
+    border:1px solid #80632e;
+}
+
+.chat-photo-link {
+    display:block;
+}
+
+.photo-selection {
+    color:var(--gold-light);
+    font-size:10px;
+    margin-top:6px;
+    overflow-wrap:anywhere;
+}
+
+nav {
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:rgba(17,17,18,.96);
+    backdrop-filter:blur(14px);
+    border-top:1px solid var(--border);
+    display:flex;
+    padding-bottom:env(safe-area-inset-bottom);
+    z-index:100;
+}
+
+nav a {
+    flex:1;
+    text-decoration:none;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:500;
+    text-align:center;
+    padding:10px 2px;
+}
+
+nav a i {
+    display:block;
+    font-size:16px;
+    margin-bottom:5px;
+}
+
+nav a.active {
+    color:var(--gold);
+    background:rgba(228,185,93,.08);
+    box-shadow:inset 0 2px 0 var(--gold);
+}
+
+nav a span {
+    display:block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+@media(max-width:360px) {
+    .balance-item h1 {font-size:17px;}
+    nav a {font-size:9px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">MaTontine</div>
+
+    <div class="header-actions">
+        <button class="notification-button" onclick="allerNotifications()" aria-label="Notifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notification-dot" id="notificationDot">0</span>
+        </button>
+
+        <a href="profil.html" class="profile" aria-label="Profil">
+            <i class="fa-solid fa-user"></i>
+        </a>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="welcome">
+        <h2>Bienvenue sur MaTontine</h2>
+        <p>Voici le résumé de votre espace membre.</p>
+    </div>
+
+    <div id="accountStatus" class="account-status">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Vérification du statut de votre compte...</span>
+    </div>
+
+    <div id="accountAlert" class="account-alert">
+        <strong>
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Compte bloqué
+        </strong>
+        <p id="blockReason"></p>
+        <p>Contactez l'administration pour demander un déblocage.</p>
+    </div>
+
+    <div class="balance-card">
+        <div class="balance-grid">
+            <div class="balance-item">
+                <p>Total Contribué</p>
+                <h1 id="totalContribue">0 F</h1>
+            </div>
+
+            <div class="balance-item">
+                <p>Gains Attendus</p>
+                <h1 id="gainsAttendus">0 F</h1>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="section-title">Mes paiements et dépôts</h3>
+
+    <div id="jumelagesActifsContainer">
+        <div class="empty">Chargement...</div>
+    </div>
+
+    <h3 class="section-title">Mes notifications</h3>
+
+    <div class="notification-box" id="notifications">
+        <div class="notification-item">
+            <i class="fa-solid fa-bell"></i>
+            Bienvenue sur MaTontine.
+        </div>
+    </div>
+
+    <h3 class="section-title">Vue d'ensemble</h3>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-rotate"></i></div>
+            <p>Contributions en cours</p>
+            <h3 id="contributionsActives">0</h3>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+            <p>En attente de réception</p>
+            <h3 id="attenteReception">0</h3>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-people-arrows"></i></div>
+            <p>Jumelages effectués</p>
+            <h3 id="jumelages">0</h3>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-file-circle-check"></i></div>
+            <p>Demandes enregistrées</p>
+            <h3 id="totalDemandes">0</h3>
+        </div>
+    </div>
+
+    <h3 class="section-title">Mes dernières demandes</h3>
+
+    <div id="historique">
+        <div class="empty">Chargement...</div>
+    </div>
+
+    <h3 class="section-title">Assistance</h3>
+
+    <div class="assistance-card">
+        <h3 style="color:var(--gold)">
+            <i class="fa-solid fa-headset"></i>
+            Besoin d'aide ?
+        </h3>
+
+        <p>
+            Une question sur un paiement, un jumelage ou votre compte ?
+            Contactez notre assistance.
+        </p>
+
+        <a href="assistance.html">
+            <i class="fa-solid fa-comments"></i>
+            Contacter l'assistance
+        </a>
+    </div>
+
+</div>
+
+<!-- FENÊTRE DE MESSAGERIE -->
+
+<div class="chat-modal" id="chatModal">
+    <div class="chat-content">
+
+        <div class="chat-header">
+            <h3><i class="fa-solid fa-comments"></i> Messagerie privée</h3>
+            <button class="chat-close" onclick="fermerChat()">Fermer</button>
+        </div>
+
+        <p id="chatContact" class="chat-contact"></p>
+
+        <div id="chatMessages" class="chat-messages">
+            <div class="empty">Chargement des messages...</div>
+        </div>
+
+        <div class="chat-form">
+
+            <input
+                id="chatInput"
+                type="text"
+                maxlength="1000"
+                placeholder="Écrire un message..."
+            >
+
+            <input
+                type="file"
+                id="chatPhoto"
+                accept="image/jpeg,image/png,image/webp"
+                hidden
+            >
+
+            <button
+                type="button"
+                id="chatPhotoButton"
+                onclick="document.getElementById('chatPhoto').click()"
+                aria-label="Envoyer une photo"
+            >
+                <i class="fa-solid fa-camera"></i>
+            </button>
+
+            <button
+                type="button"
+                onclick="envoyerChat()"
+                id="chatSendButton"
+                aria-label="Envoyer"
+            >
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+
+        </div>
+
+        <p id="photoSelection" class="photo-selection"></p>
+
+        <p class="chat-warning">
+            Ne communiquez jamais votre mot de passe ou vos codes de validation.
+        </p>
+
+    </div>
+</div>
+
+<!-- MENU DE NAVIGATION -->
+
+<nav>
+    <a href="accueil.html" class="active">
+        <i class="fa-solid fa-house"></i><span>Accueil</span>
+    </a>
+
+    <a href="contributions.html">
+        <i class="fa-solid fa-wallet"></i><span>Contribuer</span>
+    </a>
+
+    <a href="jumelages.html">
+        <i class="fa-solid fa-people-arrows"></i><span>Jumelages</span>
+    </a>
+
+    <a href="parrainage.html">
+        <i class="fa-solid fa-users"></i><span>Parrainage</span>
+    </a>
+
+    <a href="profil.html">
+        <i class="fa-solid fa-user"></i><span>Profil</span>
+    </a>
+
+    <a href="historique.html">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>Historique</span>
+    </a>
+</nav>
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+
+import {
+    getDatabase,
+    ref,
+    get,
+    update,
+    push,
+    set,
+    runTransaction,
+    onValue
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
+
+
+/* CONFIGURATION FIREBASE */
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
+    authDomain: "matontine-beefb.firebaseapp.com",
+    databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",
+    projectId: "matontine-beefb",
+    storageBucket: "matontine-beefb.firebasestorage.app",
+    messagingSenderId: "642250537489",
+    appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+
+/* CONFIGURATION CLOUDINARY */
+
+const CLOUD_NAME = "zlpdwpfe";
+const UPLOAD_PRESET = "tontigo_support";
+
+const CLOUDINARY_URL =
+    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+
+/* VARIABLES */
+
+let currentUserUid = null;
+let demandesUtilisateur = {};
+let matchesUtilisateur = {};
+let profilUtilisateur = {};
+
+let moteurEnCours = false;
+let moteurRelanceDemandee = false;
+let moteurDebounce = null;
+let moteurTimer = null;
+
+let cycleTimer = null;
+let verificationCyclesEnCours = false;
+let ecouteursActifs = false;
+
+let compteBloque = false;
+let conversationActive = "";
+let ecouteChat = null;
+let ecouteMessagesNotifications = null;
+
+let nombreMessagesNonLus = 0;
+let compteurMessagesPrecedent = 0;
+
+let notificationsVues = new Set();
+
+const $ = id => document.getElementById(id);
+
+
+/* OUTILS */
+
+function formatF(n) {
+    return Number(n || 0).toLocaleString("fr-FR") + " F";
+}
+
+function formatCFA(n) {
+    return Number(n || 0).toLocaleString("fr-FR") + " F CFA";
+}
+
+function echapper(v) {
+    return String(v ?? "").replace(/[&<>"']/g, c => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+    })[c]);
+}
+
+function dureeCycle(req) {
+    const valeur = req.cycle || req.duree || 0;
+    const resultat = String(valeur).match(/\d+/);
+    return Number(resultat ? resultat[0] : 0);
+}
+
+function estAnnule(req) {
+    return [
+        "annule",
+        "annulee",
+        "annulée",
+        "refuse",
+        "rejete",
+        "rejetee"
+    ].includes(String(req.statut || "").toLowerCase());
+}
+
+function nombre(valeur) {
+    const n = Number(valeur);
+    return Number.isFinite(n) ? n : 0;
+}
+
+
+/* NOTIFICATIONS GÉNÉRALES */
+
+function afficherNotification(message, identifiant = "") {
+
+    if (identifiant && notificationsVues.has(identifiant)) return;
+
+    if (identifiant) notificationsVues.add(identifiant);
+
+    const zone = $("notifications");
+
+    const vide = zone.querySelector(".empty");
+    if (vide) vide.remove();
+
+    const item = document.createElement("div");
+    item.className = "notification-item";
+
+    const icone = document.createElement("i");
+    icone.className = "fa-solid fa-bell";
+
+    const texte = document.createElement("span");
+    texte.textContent = message;
+
+    const date = document.createElement("small");
+    date.className = "notification-date";
+    date.textContent = new Date().toLocaleString("fr-FR");
+
+    item.append(icone, texte, date);
+    zone.prepend(item);
+}
+
+
+/* COMPTEUR DE MESSAGES NON LUS */
+
+function actualiserBadgeMessages() {
+
+    const badge = $("notificationDot");
+
+    if (!badge) return;
+
+    badge.textContent =
+        nombreMessagesNonLus > 99
+            ? "99+"
+            : String(nombreMessagesNonLus);
+
+    badge.classList.toggle(
+        "visible",
+        nombreMessagesNonLus > 0
+    );
+}
+
+
+/* SURVEILLER LES MESSAGES REÇUS */
+
+function surveillerMessages(uid) {
+
+    if (ecouteMessagesNotifications) {
+        ecouteMessagesNotifications();
+        ecouteMessagesNotifications = null;
+    }
+
+    nombreMessagesNonLus = 0;
+    compteurMessagesPrecedent = 0;
+    actualiserBadgeMessages();
+
+    ecouteMessagesNotifications = onValue(
+        ref(db, "messagesPrives"),
+
+        snapshot => {
+
+            const conversations = snapshot.val() || {};
+            let total = 0;
+
+            Object.entries(conversations).forEach(
+                ([conversationId, messages]) => {
+
+                    const participants = conversationId.split("_");
+
+                    if (!participants.includes(uid)) return;
+
+                    Object.entries(messages || {}).forEach(
+                        ([messageId, message]) => {
+
+                            if (!message) return;
+                            if (message.expediteur === uid) return;
+
+                            const dejaLu =
+                                message.luPar?.[uid] === true;
+
+                            if (!dejaLu) total++;
+
+                        }
+                    );
+
+                }
+            );
+
+            const difference = total - compteurMessagesPrecedent;
+
+            nombreMessagesNonLus = total;
+
+            actualiserBadgeMessages();
+
+            if (difference > 0) {
+
+                afficherNotification(
+                    difference === 1
+                        ? "Vous avez reçu un nouveau message."
+                        : `Vous avez reçu ${difference} nouveaux messages.`,
+                    "nouveaux_messages_" + total + "_" + Date.now()
+                );
+
+            }
+
+            compteurMessagesPrecedent = total;
+
+        },
+
+        error => {
+            console.error("Erreur notifications messages :", error);
+        }
+    );
+
+}
+
+
+/* ALLER AUX NOTIFICATIONS */
+
+window.allerNotifications = function() {
+
+    $("notifications").scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+    });
+
+};
+
+
+/* STATUT DU COMPTE */
+
+function verifierStatutCompte(profil) {
+
+    profilUtilisateur = profil || {};
+
+    compteBloque = profilUtilisateur.statut === "bloque";
+
+    const zone = $("accountStatus");
+    const alerte = $("accountAlert");
+
+    if (compteBloque) {
+
+        zone.classList.add("blocked");
+
+        zone.innerHTML = `
+            <i class="fa-solid fa-ban"></i>
+            <span>Votre compte est bloqué.</span>
+        `;
+
+        alerte.style.display = "block";
+
+        $("blockReason").textContent =
+            profilUtilisateur.motifBlocage ||
+            "Veuillez contacter l'administration.";
+
+        afficherNotification(
+            "Votre compte est bloqué. Contactez l'administration.",
+            "compte_bloque"
+        );
+
+    } else {
+
+        zone.classList.remove("blocked");
+
+        zone.innerHTML = `
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Votre compte est actif.</span>
+        `;
+
+        alerte.style.display = "none";
+
+    }
+}
+
+function surveillerCompte(uid) {
+
+    onValue(
+        ref(db, `users/${uid}`),
+
+        snapshot => {
+            const profil = snapshot.val() || {};
+            verifierStatutCompte(profil);
+        },
+
+        error => {
+            console.error("Erreur statut compte :", error);
+        }
+
+    );
+
+}
+
+
+/* RÉCUPÉRATION DU NUMÉRO DE RÉCEPTION */
+
+const cacheNumerosReception = {};
+
+async function recupererNumeroReception(uid) {
+
+    if (!uid) return "";
+
+    if (cacheNumerosReception[uid] !== undefined) {
+        return cacheNumerosReception[uid];
+    }
+
+    try {
+
+        const profil = await get(ref(db, `users/${uid}`));
+
+        const numero = profil.exists()
+            ? profil.val().numeroReception || ""
+            : "";
+
+        cacheNumerosReception[uid] = numero;
+
+        return numero;
+
+    } catch (error) {
+
+        console.error("Erreur numéro de réception :", error);
+        return "";
+
+    }
+}
+
+
+/* COMPTE À REBOURS */
+
+function formaterCompteARebours(dateFin) {
+
+    const restant = nombre(dateFin) - Date.now();
+
+    if (!dateFin || restant <= 0) {
+        return "Cycle terminé";
+    }
+
+    const jours = Math.floor(restant / 86400000);
+    const heures = Math.floor((restant % 86400000) / 3600000);
+    const minutes = Math.floor((restant % 3600000) / 60000);
+    const secondes = Math.floor((restant % 60000) / 1000);
+
+    return `${jours}j ${heures}h ${minutes}min ${secondes}s`;
+}
+
+function formaterDelai(dateFin) {
+
+    const restant = nombre(dateFin) - Date.now();
+
+    if (restant <= 0) return "Délai dépassé";
+
+    const heures = Math.floor(restant / 3600000);
+    const minutes = Math.floor((restant % 3600000) / 60000);
+
+    return `${heures}h ${minutes}min`;
+}
+
+function actualiserComptesCycles() {
+
+    document.querySelectorAll("[data-cycle-end]").forEach(element => {
+
+        const dateFin = Number(element.dataset.cycleEnd);
+
+        element.textContent = formaterCompteARebours(dateFin);
+
+        if (dateFin > 0 && Date.now() >= dateFin) {
+            element.style.color = "#8fca91";
+        }
+
+    });
+
+    document.querySelectorAll("[data-payment-end]").forEach(element => {
+
+        const dateFin = Number(element.dataset.paymentEnd);
+
+        element.textContent = formaterDelai(dateFin);
+
+        if (dateFin <= Date.now()) {
+            element.style.color = "#ff4d4d";
+        }
+
+    });
+
+}
+
+
+/* FIN DES CYCLES */
+
+async function verifierCyclesTermines(demandes) {
+
+    if (!currentUserUid || verificationCyclesEnCours || compteBloque) {
+        return;
+    }
+
+    const maintenant = Date.now();
+    const updates = {};
+
+    Object.entries(demandes || {}).forEach(([id, demande]) => {
+
+        const dateFin = nombre(demande.dateFinCycle);
+
+        if (
+            demande.statut === "en_cours" &&
+            dateFin > 0 &&
+            maintenant >= dateFin
+        ) {
+
+            updates[`contributionRequests/${currentUserUid}/${id}/statut`] =
+                "en_attente_reception_benefices";
+
+            updates[`contributionRequests/${currentUserUid}/${id}/dateCycleTermine`] =
+                maintenant;
+
+        }
+
+    });
+
+    if (!Object.keys(updates).length) return;
+
+    verificationCyclesEnCours = true;
+
+    try {
+        await update(ref(db), updates);
+    } catch (error) {
+        console.error("Erreur de mise à jour du cycle :", error);
+    } finally {
+        verificationCyclesEnCours = false;
+    }
+
+}
+
+function demarrerCompteCycles() {
+
+    if (cycleTimer) clearInterval(cycleTimer);
+
+    actualiserComptesCycles();
+
+    cycleTimer = setInterval(() => {
+        actualiserComptesCycles();
+        verifierCyclesTermines(demandesUtilisateur);
+    }, 1000);
+
+}
+
+
+/* VERROU DU MOTEUR */
+
+async function prendreVerrou() {
+
+    const token = currentUserUid + "_" + Date.now();
+
+    const resultat = await runTransaction(
+        ref(db, "system/jumelageLock"),
+
+        actuel => {
+
+            if (actuel && Number(actuel.expiresAt || 0) > Date.now()) {
+                return;
+            }
+
+            return {
+                token,
+                expiresAt:Date.now() + 30000
+            };
+
+        },
+
+        { applyLocally:false }
+    );
+
+    if (!resultat.committed) return null;
+
+    return resultat.snapshot.val()?.token === token ? token : null;
+
+}
+
+async function libererVerrou(token) {
+
+    if (!token) return;
+
+    await runTransaction(
+        ref(db, "system/jumelageLock"),
+
+        actuel => {
+            if (!actuel || actuel.token !== token) return;
+            return null;
+        },
+
+        { applyLocally:false }
+    );
+
+}
+
+
+/* CALCUL DU GAIN */
+
+function calculerGain(req) {
+
+    const montant = nombre(req.montant);
+    const taux = nombre(req.taux);
+
+    if (req.gainPrevu !== undefined && req.gainPrevu !== null) {
+        return nombre(req.gainPrevu);
+    }
+
+    if (montant > 0 && taux >= 0) {
+        return Math.round(montant * (1 + taux / 100));
+    }
+
+    return 0;
+
+}
+
+
+/* MOTEUR DE JUMELAGE AUTOMATIQUE */
+
+async function verifierEtDeclencherJumelagesGlobal() {
+
+    if (!currentUserUid || compteBloque) return;
+
+    if (moteurEnCours) {
+        moteurRelanceDemandee = true;
+        return;
+    }
+
+    moteurEnCours = true;
+    moteurRelanceDemandee = false;
+
+    let token = null;
+
+    try {
+
+        token = await prendreVerrou();
+
+        if (!token) return;
+
+        const resultats = await Promise.all([
+            get(ref(db, "users")),
+            get(ref(db, "contributionRequests")),
+            get(ref(db, "jumelages"))
+        ]);
+
+        const users = resultats[0].val() || {};
+        const toutesDemandes = resultats[1].val() || {};
+        const tousMatches = resultats[2].val() || {};
+
+        const payeurs = [];
+        const beneficiaires = [];
+        const reservationsActives = {};
+
+
+        /* RÉSERVATIONS EXISTANTES */
+
+        Object.entries(tousMatches).forEach(([uid, liste]) => {
+
+            Object.values(liste || {}).forEach(match => {
+
+                if (!match || match.role !== "receveur") return;
+                if (match.statut === "confirme") return;
+
+                const cle =
+                    `${match.beneficiaireUid}_${match.demandeBenefId}`;
+
+                reservationsActives[cle] =
+                    (reservationsActives[cle] || 0) +
+                    nombre(match.montantPaiement || match.montant);
+
+            });
+
+        });
+
+
+        /* IDENTIFICATION DES MEMBRES */
+
+        Object.entries(toutesDemandes).forEach(([uid, liste]) => {
+
+            const user = users[uid] || {};
+
+            if (user.statut === "bloque") return;
+
+            Object.entries(liste || {}).forEach(([id, req]) => {
+
+                if (!req || estAnnule(req)) return;
+
+                const item = {
+
+                    ...req,
+
+                    uid,
+                    demandeId:id,
+
+                    nom:
+                        user.nom ||
+                        user.fullName ||
+                        user.name ||
+                        "Membre",
+
+                    telephone:
+                        user.telephone ||
+                        user.phone ||
+                        "",
+
+                    numeroReception:
+                        user.numeroReception || ""
+
+                };
+
+
+                if (
+                    ["en_attente_jumelage", "jumelage_partiel"].includes(req.statut)
+                ) {
+
+                    const montantInitial =
+                        nombre(req.montantInitial || req.montant);
+
+                    const budget = req.montantRestant !== undefined
+                        ? nombre(req.montantRestant)
+                        : montantInitial;
+
+                    if (budget > 0) {
+                        item.budget = budget;
+                        payeurs.push(item);
+                    }
+
+                }
+
+
+                const statutsBeneficiaires = [
+                    "en_attente_reception",
+                    "attente_beneficiaire",
+                    "paiement_partiel",
+                    "en_cours_paiement",
+                    "en_attente_reception_benefices"
+                ];
+
+                if (statutsBeneficiaires.includes(req.statut)) {
+
+                    const gain = calculerGain(req);
+                    const recu = nombre(req.montantRecu);
+                    const reserveFirebase = nombre(req.montantReserve);
+
+                    const cle = `${uid}_${id}`;
+                    const reserveMatches = nombre(reservationsActives[cle]);
+
+                    const reserve = Math.max(
+                        reserveFirebase,
+                        reserveMatches
+                    );
+
+                    if (
+                        gain <= 0 ||
+                        recu < 0 ||
+                        reserve < 0 ||
+                        recu + reserve > gain
+                    ) {
+                        console.error("Demande bénéficiaire incohérente :", uid, id);
+                        return;
+                    }
+
+                    const reste = gain - recu - reserve;
+
+                    if (reste > 0) {
+                        item.gainCalcule = gain;
+                        item.montantRecu = recu;
+                        item.montantReserve = reserve;
+                        item.resteDisponible = reste;
+                        beneficiaires.push(item);
+                    }
+
+                }
+
+            });
+
+        });
+
+
+        payeurs.sort((a, b) =>
+            nombre(a.dateCreation) - nombre(b.dateCreation)
+        );
+
+        beneficiaires.sort((a, b) =>
+            nombre(a.dateCycleTermine || a.dateCreation) -
+            nombre(b.dateCycleTermine || b.dateCreation)
+        );
+
+
+        const updates = {};
+        const maintenant = Date.now();
+        const limite = maintenant + 24 * 60 * 60 * 1000;
+
+
+        /* ASSOCIATION AUTOMATIQUE */
+
+        for (const payeur of payeurs) {
+
+            let budget = nombre(payeur.budget);
+
+            if (budget <= 0) continue;
+
+            const montantInitial = nombre(
+                payeur.montantInitial || payeur.montant
+            );
+
+            let montantAffecte = nombre(payeur.montantAffecte);
+            let nombreNouveaux = 0;
+
+            const groupeId =
+                payeur.groupeJumelageId ||
+                push(ref(db, "jumelageGroupes")).key;
+
+
+            for (const benef of beneficiaires) {
+
+                if (budget <= 0) break;
+                if (payeur.uid === benef.uid) continue;
+
+                const disponible = nombre(benef.resteDisponible);
+
+                if (disponible <= 0) continue;
+
+                const montantPaiement = Math.min(budget, disponible);
+
+                if (montantPaiement <= 0) continue;
+
+                const matchId = push(ref(db, "jumelages")).key;
+
+                const match = {
+
+                    id:matchId,
+                    groupeId,
+                    montant:montantPaiement,
+                    montantPaiement,
+                    gainTotalBeneficiaire:benef.gainCalcule,
+
+                    payeurUid:payeur.uid,
+                    payeurNom:payeur.nom,
+                    payeurTelephone:payeur.telephone,
+
+                    beneficiaireUid:benef.uid,
+                    beneficiaireNom:benef.nom,
+                    beneficiaireTelephone:benef.telephone,
+
+                    beneficiaireNumeroReception:
+                        benef.numeroReception || "",
+
+                    demandePayeurId:payeur.demandeId,
+                    demandeBenefId:benef.demandeId,
+
+                    statut:"en_cours_paiement",
+                    dateJumelage:maintenant,
+                    limitePaiement:limite
+
+                };
+
+
+                updates[`jumelages/${payeur.uid}/${matchId}`] = {
+                    ...match,
+                    role:"payeur"
+                };
+
+                updates[`jumelages/${benef.uid}/${matchId}`] = {
+                    ...match,
+                    role:"receveur"
+                };
+
+
+                const nouvelleReserve =
+                    nombre(benef.montantReserve) + montantPaiement;
+
+                const nouveauReste =
+                    benef.gainCalcule -
+                    nombre(benef.montantRecu) -
+                    nouvelleReserve;
+
+
+                if (
+                    nouvelleReserve + nombre(benef.montantRecu) >
+                    benef.gainCalcule
+                ) {
+
+                    delete updates[`jumelages/${payeur.uid}/${matchId}`];
+                    delete updates[`jumelages/${benef.uid}/${matchId}`];
+
+                    continue;
+
+                }
+
+
+                updates[
+                    `contributionRequests/${benef.uid}/${benef.demandeId}/montantReserve`
+                ] = nouvelleReserve;
+
+                updates[
+                    `contributionRequests/${benef.uid}/${benef.demandeId}/montantRestantBeneficiaire`
+                ] = Math.max(0, nouveauReste);
+
+                updates[
+                    `contributionRequests/${benef.uid}/${benef.demandeId}/gainPrevu`
+                ] = benef.gainCalcule;
+
+
+                if (benef.statut !== "en_attente_reception_benefices") {
+
+                    updates[
+                        `contributionRequests/${benef.uid}/${benef.demandeId}/statut`
+                    ] = "en_attente_reception";
+
+                }
+
+
+                budget -= montantPaiement;
+                montantAffecte += montantPaiement;
+                nombreNouveaux++;
+
+                benef.montantReserve = nouvelleReserve;
+                benef.resteDisponible = Math.max(0, nouveauReste);
+
+            }
+
+
+            if (nombreNouveaux > 0) {
+
+                updates[
+                    `contributionRequests/${payeur.uid}/${payeur.demandeId}/montantInitial`
+                ] = montantInitial;
+
+                updates[
+                    `contributionRequests/${payeur.uid}/${payeur.demandeId}/montantRestant`
+                ] = budget;
+
+                updates[
+                    `contributionRequests/${payeur.uid}/${payeur.demandeId}/montantAffecte`
+                ] = montantAffecte;
+
+                updates[
+                    `contributionRequests/${payeur.uid}/${payeur.demandeId}/groupeJumelageId`
+                ] = groupeId;
+
+                updates[
+                    `contributionRequests/${payeur.uid}/${payeur.demandeId}/nombreBeneficiaires`
+                ] = nombre(payeur.nombreBeneficiaires) + nombreNouveaux;
+
+                updates[
+                    `contributionRequests/${payeur.uid}/${payeur.demandeId}/statut`
+                ] = budget <= 0
+                    ? "en_attente_confirmation"
+                    : "jumelage_partiel";
+
+            }
+
+        }
+
+
+        if (Object.keys(updates).length > 0) {
+            await update(ref(db), updates);
+            console.log("Jumelages automatiquement enregistrés.");
+        }
+
+    } catch (error) {
+
+        console.error("Erreur moteur :", error);
+
+    } finally {
+
+        if (token) {
+            try {
+                await libererVerrou(token);
+            } catch (error) {
+                console.error("Erreur de libération du verrou :", error);
+            }
+        }
+
+        moteurEnCours = false;
+
+        if (moteurRelanceDemandee) {
+            moteurRelanceDemandee = false;
+            programmerMoteur();
+        }
+
+    }
+
+}
+
+
+/* PROGRAMMATION DU MOTEUR */
+
+function programmerMoteur() {
+
+    if (!currentUserUid || compteBloque) return;
+
+    if (moteurDebounce) clearTimeout(moteurDebounce);
+
+    moteurDebounce = setTimeout(() => {
+        verifierEtDeclencherJumelagesGlobal();
+    }, 800);
+
+}
+
+
+/* LE PAYEUR DÉCLARE SON DÉPÔT */
+
+window.declarerDepot = async function(matchId) {
+
+    if (!currentUserUid) return;
+
+    if (compteBloque) {
+        alert("Votre compte est bloqué. Contactez l'administration.");
+        return;
+    }
+
+    const confirmation = confirm(
+        "Avez-vous réellement envoyé l'argent au bénéficiaire ?"
+    );
+
+    if (!confirmation) return;
+
+    const matchRef = ref(
+        db,
+        `jumelages/${currentUserUid}/${matchId}`
+    );
+
+    try {
+
+        const maintenant = Date.now();
+
+        const resultat = await runTransaction(
+            matchRef,
+
+            actuel => {
+
+                if (
+                    !actuel ||
+                    actuel.role !== "payeur" ||
+                    actuel.statut !== "en_cours_paiement"
+                ) {
+                    return;
+                }
+
+                return {
+                    ...actuel,
+                    statut:"paiement_declare",
+                    dateDeclarationPaiement:maintenant
+                };
+
+            },
+
+            { applyLocally:false }
+        );
+
+
+        if (!resultat.committed) {
+            alert("Ce dépôt a déjà été déclaré ou le jumelage n'est plus actif.");
+            return;
+        }
+
+
+        const match = resultat.snapshot.val();
+
+        await update(
+            ref(db, `jumelages/${match.beneficiaireUid}/${matchId}`),
+            {
+                statut:"paiement_declare",
+                dateDeclarationPaiement:maintenant
+            }
+        );
+
+        afficherNotification(
+            "Votre déclaration de dépôt a été enregistrée.",
+            "depot_" + matchId
+        );
+
+        alert(
+            "Votre dépôt a été déclaré. Le bénéficiaire doit maintenant confirmer la réception."
+        );
+
+    } catch (error) {
+
+        console.error("Erreur déclaration dépôt :", error);
+        alert("Impossible de déclarer le dépôt : " + error.message);
+
+    }
+
+};
+
+
+/* LE BÉNÉFICIAIRE CONFIRME LA RÉCEPTION */
+
+window.confirmerBienRecu = async function(matchId) {
+
+    if (!currentUserUid) return;
+
+    if (compteBloque) {
+        alert("Votre compte est bloqué. Contactez l'administration.");
+        return;
+    }
+
+    if (!confirm("Confirmez-vous avoir réellement reçu ce paiement ?")) {
+        return;
+    }
+
+    const matchRef = ref(
+        db,
+        `jumelages/${currentUserUid}/${matchId}`
+    );
+
+    try {
+
+        const claim = await runTransaction(
+            matchRef,
+
+            actuel => {
+
+                if (
+                    !actuel ||
+                    actuel.role !== "receveur" ||
+                    !["en_cours_paiement", "paiement_declare"].includes(actuel.statut)
+                ) {
+                    return;
+                }
+
+                return {
+                    ...actuel,
+                    statut:"confirmation_en_cours"
+                };
+
+            },
+
+            { applyLocally:false }
+        );
+
+
+        if (!claim.committed) {
+            alert("Ce paiement est déjà confirmé ou en cours de confirmation.");
+            return;
+        }
+
+
+        const match = claim.snapshot.val();
+
+        const montant = nombre(
+            match.montantPaiement || match.montant
+        );
+
+        if (montant <= 0) {
+            throw new Error("Montant invalide.");
+        }
+
+
+        const benefRef = ref(
+            db,
+            `contributionRequests/${currentUserUid}/${match.demandeBenefId}`
+        );
+
+
+        const benefTransaction = await runTransaction(
+            benefRef,
+
+            actuel => {
+
+                if (!actuel) return;
+
+                const gain = calculerGain(actuel);
+                const recu = nombre(actuel.montantRecu);
+                const reserve = nombre(actuel.montantReserve);
+
+                if (
+                    gain <= 0 ||
+                    montant > reserve ||
+                    recu + montant > gain
+                ) {
+                    return;
+                }
+
+                const nouveauRecu = recu + montant;
+                const nouvelleReserve = reserve - montant;
+
+                return {
+
+                    ...actuel,
+
+                    gainPrevu:gain,
+                    montantRecu:nouveauRecu,
+                    montantReserve:nouvelleReserve,
+
+                    montantRestantBeneficiaire:Math.max(
+                        0,
+                        gain - nouveauRecu - nouvelleReserve
+                    ),
+
+                    derniereReception:Date.now()
+
+                };
+
+            },
+
+            { applyLocally:false }
+        );
+
+
+        if (!benefTransaction.committed) {
+            throw new Error(
+                "Montant non confirmé : vérifiez la réserve et le gain prévu."
+            );
+        }
+
+
+        const benef = benefTransaction.snapshot.val();
+
+        const gainTotal = calculerGain(benef);
+        const totalRecu = nombre(benef.montantRecu);
+        const restant = Math.max(0, gainTotal - totalRecu);
+
+        const maintenant = Date.now();
+        const updates = {};
+
+        const cycleDejaTermine =
+            benef.statut === "en_attente_reception_benefices";
+
+
+        if (restant <= 0) {
+
+            if (cycleDejaTermine) {
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/statut`
+                ] = "termine";
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/montantRestantBeneficiaire`
+                ] = 0;
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/dateReceptionComplete`
+                ] = maintenant;
+
+            } else {
+
+                const jours = dureeCycle(benef);
+
+                if (!jours) {
+                    throw new Error("Durée du cycle du bénéficiaire manquante.");
+                }
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/statut`
+                ] = "en_cours";
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/dateDebutCycle`
+                ] = maintenant;
+
+                updates[
+                    `contributionRequests/${currentUserUid}/${match.demandeBenefId}/dateFinCycle`
+                ] = maintenant + jours * 24 * 60 * 60 * 1000;
+
+            }
+
+        } else {
+
+            updates[
+                `contributionRequests/${currentUserUid}/${match.demandeBenefId}/statut`
+            ] = cycleDejaTermine
+                ? "en_attente_reception_benefices"
+                : "en_attente_reception";
+
+        }
+
+
+        updates[
+            `jumelages/${currentUserUid}/${matchId}/statut`
+        ] = "confirme";
+
+        updates[
+            `jumelages/${match.payeurUid}/${matchId}/statut`
+        ] = "confirme";
+
+        updates[
+            `jumelages/${currentUserUid}/${matchId}/dateConfirmation`
+        ] = maintenant;
+
+        updates[
+            `jumelages/${match.payeurUid}/${matchId}/dateConfirmation`
+        ] = maintenant;
+
+
+        const payeurReqRef = ref(
+            db,
+            `contributionRequests/${match.payeurUid}/${match.demandePayeurId}`
+        );
+
+        const payeurSnap = await get(payeurReqRef);
+
+        if (!payeurSnap.exists()) {
+            throw new Error("Demande du contributeur introuvable.");
+        }
+
+        const payeur = payeurSnap.val();
+
+        const matchesSnap = await get(
+            ref(db, `jumelages/${match.payeurUid}`)
+        );
+
+        const matchesPayeur = Object.values(matchesSnap.val() || {});
+
+        const demandesPayeur = matchesPayeur.filter(m =>
+            m.role === "payeur" &&
+            m.demandePayeurId === match.demandePayeurId
+        );
+
+        const autresNonConfirmes = demandesPayeur.filter(m =>
+            m.id !== matchId &&
+            m.statut !== "confirme"
+        );
+
+        const budgetRestant = nombre(payeur.montantRestant);
+
+
+        if (
+            budgetRestant <= 0 &&
+            autresNonConfirmes.length === 0
+        ) {
+
+            const joursPayeur = dureeCycle(payeur);
+
+            if (!joursPayeur) {
+                throw new Error("Durée du cycle du contributeur manquante.");
+            }
+
+            updates[
+                `contributionRequests/${match.payeurUid}/${match.demandePayeurId}/statut`
+            ] = "en_cours";
+
+            updates[
+                `contributionRequests/${match.payeurUid}/${match.demandePayeurId}/dateDebutCycle`
+            ] = maintenant;
+
+            updates[
+                `contributionRequests/${match.payeurUid}/${match.demandePayeurId}/dateFinCycle`
+            ] = maintenant + joursPayeur * 24 * 60 * 60 * 1000;
+
+        }
+
+
+        await update(ref(db), updates);
+
+        afficherNotification(
+            "Un paiement a été confirmé.",
+            "reception_" + matchId
+        );
+
+
+        if (restant <= 0 && cycleDejaTermine) {
+
+            alert(
+                "Félicitations ! Vous avez reçu tous vos bénéfices. Votre contribution est terminée."
+            );
+
+        } else if (restant <= 0) {
+
+            alert(
+                "Votre gain a été entièrement reçu. Votre cycle commence."
+            );
+
+        } else {
+
+            alert(
+                `Paiement confirmé. Il vous reste ${formatF(restant)} à recevoir.`
+            );
+
+        }
+
+        programmerMoteur();
+
+    } catch (error) {
+
+        console.error("Erreur confirmation :", error);
+
+        alert(
+            "Une erreur est survenue. Vérifiez votre historique avant toute nouvelle action. " +
+            error.message
+        );
+
+    }
+
+};
+
+
+/* MESSAGERIE PRIVÉE AVEC LECTURE AUTOMATIQUE */
+
+window.ouvrirChat = function(uid, nom) {
+
+    if (!currentUserUid || !uid) return;
+
+    if (uid === currentUserUid) {
+        alert("Vous ne pouvez pas discuter avec vous-même.");
+        return;
+    }
+
+    conversationActive = [
+        currentUserUid,
+        uid
+    ].sort().join("_");
+
+    $("chatContact").textContent = "Discussion avec " + nom;
+    $("chatModal").style.display = "block";
+
+    if (ecouteChat) {
+        ecouteChat();
+        ecouteChat = null;
+    }
+
+    ecouteChat = onValue(
+        ref(db, "messagesPrives/" + conversationActive),
+
+        async snapshot => {
+
+            const zone = $("chatMessages");
+            zone.innerHTML = "";
+
+            const messages = snapshot.val() || {};
+            const misesAJour = {};
+
+            Object.entries(messages)
+            .sort((a,b) =>
+                Number(a[1].date || 0) - Number(b[1].date || 0)
+            )
+            .forEach(([id, m]) => {
+
+                if (
+                    m.expediteur !== currentUserUid &&
+                    m.luPar?.[currentUserUid] !== true
+                ) {
+
+                    misesAJour[
+                        `messagesPrives/${conversationActive}/${id}/luPar/${currentUserUid}`
+                    ] = true;
+
+                }
+
+                const bulle = document.createElement("div");
+
+                bulle.className =
+                    "chat-bubble " +
+                    (m.expediteur === currentUserUid ? "mine" : "");
+
+                /* TEXTE DU MESSAGE */
+
+                if (m.texte) {
+                    const texte = document.createElement("p");
+                    texte.textContent = m.texte;
+                    bulle.appendChild(texte);
+                }
+
+                /* PHOTO DU MESSAGE */
+
+                if (m.imageUrl) {
+
+                    const lien = document.createElement("a");
+
+                    lien.href = m.imageUrl;
+                    lien.target = "_blank";
+                    lien.rel = "noopener noreferrer";
+                    lien.className = "chat-photo-link";
+
+                    const photo = document.createElement("img");
+
+                    photo.src = m.imageUrl;
+                    photo.alt = "Preuve de paiement";
+                    photo.className = "chat-photo";
+                    photo.loading = "lazy";
+
+                    lien.appendChild(photo);
+                    bulle.appendChild(lien);
+
+                }
+
+                const date = document.createElement("small");
+
+                date.textContent = new Date(
+                    Number(m.date || Date.now())
+                ).toLocaleString("fr-FR");
+
+                bulle.appendChild(date);
+                zone.appendChild(bulle);
+
+            });
+
+            if (!Object.keys(messages).length) {
+                zone.innerHTML = '<div class="empty">Aucun message pour le moment.</div>';
+            }
+
+            zone.scrollTop = zone.scrollHeight;
+
+            if (Object.keys(misesAJour).length) {
+
+                try {
+                    await update(ref(db), misesAJour);
+                } catch (error) {
+                    console.error("Erreur marquage messages lus :", error);
+                }
+
+            }
+
+        },
+
+        error => {
+            $("chatMessages").textContent =
+                "Impossible de charger les messages : " + error.message;
+        }
+
+    );
+
+};
+
+window.fermerChat = function() {
+
+    if (ecouteChat) {
+        ecouteChat();
+        ecouteChat = null;
+    }
+
+    conversationActive = "";
+    $("chatModal").style.display = "none";
+
+    $("photoSelection").textContent = "";
+    $("chatPhoto").value = "";
+
+};
+
+
+/* APERÇU DU NOM DE LA PHOTO SÉLECTIONNÉE */
+
+$("chatPhoto").addEventListener("change", () => {
+
+    const fichier = $("chatPhoto").files[0];
+
+    if (!fichier) {
+        $("photoSelection").textContent = "";
+        return;
+    }
+
+    $("photoSelection").textContent =
+        "Photo sélectionnée : " + fichier.name;
+
+});
+
+
+/* ENVOYER UN MESSAGE OU UNE PHOTO */
+
+window.envoyerChat = async function() {
+
+    if (compteBloque) {
+        alert("Votre compte est bloqué.");
+        return;
+    }
+
+    if (!conversationActive || !currentUserUid) return;
+
+    const input = $("chatInput");
+    const photoInput = $("chatPhoto");
+    const bouton = $("chatSendButton");
+    const selection = $("photoSelection");
+
+    const texte = input.value.trim();
+    const fichier = photoInput.files[0];
+
+    if (!texte && !fichier) {
+        alert("Écris un message ou sélectionne une photo.");
+        return;
+    }
+
+    if (texte.length > 1000) {
+        alert("Le message est trop long.");
+        return;
+    }
+
+    if (fichier) {
+
+        const formatsAutorises = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (!formatsAutorises.includes(fichier.type)) {
+            alert("Formats autorisés : JPG, PNG et WEBP.");
+            return;
+        }
+
+        if (fichier.size > 5 * 1024 * 1024) {
+            alert("La photo ne doit pas dépasser 5 Mo.");
+            return;
+        }
+
+    }
+
+    bouton.disabled = true;
+
+    try {
+
+        let imageUrl = "";
+        let imagePath = "";
+
+        /* ENVOI SUR CLOUDINARY */
+
+        if (fichier) {
+
+            selection.textContent = "Envoi de la photo en cours...";
+
+            const formData = new FormData();
+
+            formData.append("file", fichier);
+            formData.append("upload_preset", UPLOAD_PRESET);
+
+            const response = await fetch(CLOUDINARY_URL, {
+                method: "POST",
+                body: formData
+            });
+
+            const resultat = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    resultat.error?.message || "Échec de l'envoi de la photo."
+                );
+            }
+
+            imageUrl = resultat.secure_url;
+            imagePath = resultat.public_id;
+
+        }
+
+        /* ENREGISTREMENT DU MESSAGE DANS FIREBASE */
+
+        const messageRef = push(
+            ref(db, "messagesPrives/" + conversationActive)
+        );
+
+        await set(messageRef, {
+
+            texte: texte,
+            expediteur: currentUserUid,
+            date: Date.now(),
+
+            imageUrl: imageUrl,
+            imagePath: imagePath,
+            imageName: fichier ? fichier.name : "",
+            type: fichier ? "image" : "texte",
+
+            luPar: {
+                [currentUserUid]: true
+            }
+
+        });
+
+        input.value = "";
+        photoInput.value = "";
+        selection.textContent = "";
+
+    } catch(error) {
+
+        console.error("Erreur d'envoi :", error);
+
+        alert("Impossible d'envoyer le message : " + error.message);
+
+    } finally {
+
+        bouton.disabled = false;
+
+    }
+
+};
+
+
+$("chatInput").addEventListener("keydown", event => {
+
+    if (event.key === "Enter") {
+        event.preventDefault();
+        envoyerChat();
+    }
+
+});
+
+
+/* AFFICHAGE DES JUMELAGES */
+
+async function afficherJumelages(matches) {
+
+    const container = $("jumelagesActifsContainer");
+
+    container.innerHTML = "";
+
+    const actifs = matches.filter(m =>
+        ["payeur", "receveur"].includes(m.role) &&
+        m.statut !== "confirme"
+    );
+
+
+    if (!actifs.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+                Aucun dépôt à effectuer ni paiement à recevoir pour le moment.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    for (const match of actifs) {
+
+        const card = document.createElement("div");
+
+        card.className = "jumelage-card";
+
+        const montant = nombre(
+            match.montantPaiement || match.montant
+        );
+
+        const dateLimite = nombre(match.limitePaiement);
+        const delaiDepasse = dateLimite > 0 && Date.now() > dateLimite;
+
+
+        if (match.role === "payeur") {
+
+            const nom = match.beneficiaireNom || "Membre";
+
+            const numeroReception =
+                match.beneficiaireNumeroReception ||
+                await recupererNumeroReception(match.beneficiaireUid);
+
+            const depotDeclare = match.statut === "paiement_declare";
+
+            card.innerHTML = `
+
+                <span class="jumelage-badge badge-payer">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Dépôt à effectuer
+                </span>
+
+                <div class="jumelage-amount">
+                    ${formatCFA(montant)}
+                </div>
+
+                <div class="jumelage-info">
+
+                    <strong>Vous devez payer à :</strong>
+                    ${echapper(nom)}
+
+                    <br>
+
+                    <strong>Numéro de réception :</strong>
+                    ${echapper(numeroReception || "Numéro indisponible")}
+
+                </div>
+
+                ${
+                    dateLimite
+                    ? `
+                        <div class="cycle-countdown">
+                            <p>
+                                <i class="fa-solid fa-clock"></i>
+                                Délai de paiement restant
+                            </p>
+                            <strong data-payment-end="${dateLimite}">
+                                ${formaterDelai(dateLimite)}
+                            </strong>
+                        </div>
+                    `
+                    : ""
+                }
+
+                ${
+                    delaiDepasse && !depotDeclare
+                    ? `
+                        <p class="payment-warning">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            Le délai de paiement est dépassé.
+                        </p>
+                    `
+                    : ""
+                }
+
+                ${
+                    !numeroReception
+                    ? `
+                        <p class="payment-warning">
+                            Le bénéficiaire n'a pas encore renseigné son numéro de réception.
+                            Contactez-le avant d'effectuer un transfert.
+                        </p>
+                    `
+                    : ""
+                }
+
+                ${
+                    depotDeclare
+                    ? `
+                        <div class="payment-declared">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Dépôt déclaré. Nous attendons que le bénéficiaire confirme la réception.
+                        </div>
+                    `
+                    : `
+                        <button
+                            class="btn-confirm btn-payer"
+                            data-declare-match="${echapper(match.id)}"
+                            ${compteBloque ? "disabled" : ""}
+                        >
+                            <i class="fa-solid fa-check"></i>
+                            J'ai effectué le dépôt
+                        </button>
+                    `
+                }
+
+                <button class="btn-chat"
+                    data-chat-uid="${echapper(match.beneficiaireUid)}"
+                    data-chat-name="${echapper(nom)}">
+                    <i class="fa-solid fa-comments"></i>
+                    Discuter avec le bénéficiaire
+                </button>
+
+            `;
+
+        } else {
+
+            const telephone = match.payeurTelephone || "Non renseigné";
+
+            const depotDeclare = match.statut === "paiement_declare";
+
+            card.innerHTML = `
+
+                <span class="jumelage-badge">
+                    <i class="fa-solid fa-wallet"></i>
+                    Paiement à recevoir
+                </span>
+
+                <div class="jumelage-amount">
+                    ${formatCFA(montant)}
+                </div>
+
+                <div class="jumelage-info">
+
+                    <strong>Votre payeur :</strong>
+                    ${echapper(match.payeurNom || "Membre")}
+
+                    <br>
+
+                    <strong>Téléphone du payeur :</strong>
+                    ${echapper(telephone)}
+
+                </div>
+
+                ${
+                    depotDeclare
+                    ? `
+                        <div class="payment-declared">
+                            <i class="fa-solid fa-bell"></i>
+                            Le payeur déclare avoir effectué le dépôt.
+                            Vérifiez votre compte avant de confirmer.
+                        </div>
+
+                        <button
+                            class="btn-confirm"
+                            data-confirm-match="${echapper(match.id)}"
+                            ${compteBloque ? "disabled" : ""}
+                        >
+                            J'ai bien reçu l'argent
+                        </button>
+                    `
+                    : `
+                        <p class="payment-warning">
+                            <i class="fa-solid fa-clock"></i>
+                            En attente du dépôt du payeur.
+                        </p>
+                    `
+                }
+
+                <button class="btn-chat"
+                    data-chat-uid="${echapper(match.payeurUid)}"
+                    data-chat-name="${echapper(match.payeurNom || "Payeur")}">
+                    <i class="fa-solid fa-comments"></i>
+                    Discuter avec le payeur
+                </button>
+
+            `;
+
+        }
+
+        container.appendChild(card);
+
+    }
+
+    actualiserComptesCycles();
+
+}
+
+
+/* GESTION DES BOUTONS */
+
+$("jumelagesActifsContainer").addEventListener(
+    "click",
+
+    async event => {
+
+        const boutonChat = event.target.closest("[data-chat-uid]");
+
+        if (boutonChat) {
+
+            ouvrirChat(
+                boutonChat.dataset.chatUid,
+                boutonChat.dataset.chatName
+            );
+
+            return;
+        }
+
+        const boutonDepot = event.target.closest("[data-declare-match]");
+
+        const boutonReception = event.target.closest("[data-confirm-match]");
+
+
+        if (boutonDepot) {
+
+            if (boutonDepot.disabled) return;
+
+            boutonDepot.disabled = true;
+
+            try {
+                await window.declarerDepot(
+                    boutonDepot.dataset.declareMatch
+                );
+            } finally {
+                boutonDepot.disabled = false;
+            }
+
+            return;
+
+        }
+
+
+        if (boutonReception) {
+
+            if (boutonReception.disabled) return;
+
+            boutonReception.disabled = true;
+
+            try {
+                await window.confirmerBienRecu(
+                    boutonReception.dataset.confirmMatch
+                );
+            } finally {
+                boutonReception.disabled = false;
+            }
+
+        }
+
+    }
+
+);
+
+
+/* HISTORIQUE */
+
+function afficherHistorique(demandes) {
+
+    const container = $("historique");
+
+    container.innerHTML = "";
+
+    const liste = Object.entries(demandes || {})
+        .map(([id, d]) => ({ ...d, id }))
+        .sort((a, b) =>
+            nombre(b.dateCreation) - nombre(a.dateCreation)
+        )
+        .slice(0, 5);
+
+
+    if (!liste.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+                Aucune demande enregistrée.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    const statuts = {
+
+        "en_attente_jumelage":"En attente de jumelage",
+        "jumelage_partiel":"Jumelage partiel",
+        "en_attente_confirmation":"En attente de confirmation",
+        "en_attente_reception":"En attente de réception",
+        "en_cours_paiement":"Paiement en cours",
+        "confirmation_en_cours":"Confirmation en cours",
+        "paiement_declare":"Dépôt déclaré",
+        "en_cours":"Contribution en cours",
+        "en_attente_reception_benefices":"En attente de réception des bénéfices",
+        "termine":"Terminé"
+
+    };
+
+
+    liste.forEach(d => {
+
+        const statut = statuts[d.statut] ||
+            String(d.statut || "").replace(/_/g, " ");
+
+        const recu = nombre(d.montantRecu);
+        const gain = calculerGain(d);
+        const reste = Math.max(0, gain - recu);
+
+        const dateFin = nombre(d.dateFinCycle);
+
+        const cycleActif =
+            d.statut === "en_cours" && dateFin > 0;
+
+
+        const card = document.createElement("div");
+
+        card.className = "history-card";
+
+        card.innerHTML = `
+
+            <div class="history-top">
+
+                <strong>
+                    Cycle ${echapper(d.cycle || d.duree || "?")} jours
+                    (${echapper(d.taux || "?")}%)
+                </strong>
+
+                <span class="status">
+                    ${echapper(statut)}
+                </span>
+
+            </div>
+
+            <p style="color:var(--muted);font-size:12px;margin-top:9px">
+                Contribué : ${formatF(d.montant)}
+                → Gain : ${formatF(gain)}
+            </p>
+
+            ${
+                recu > 0
+                ? `
+                    <p style="color:var(--gold);font-size:12px;margin-top:7px">
+                        Déjà reçu : ${formatF(recu)}
+                    </p>
+                `
+                : ""
+            }
+
+            ${
+                reste > 0 && recu > 0
+                ? `
+                    <p style="color:#ffb86b;font-size:12px;margin-top:7px">
+                        Reste à recevoir : ${formatF(reste)}
+                    </p>
+                `
+                : ""
+            }
+
+            ${
+                nombre(d.montantRestant) > 0
+                ? `
+                    <p style="color:var(--gold);font-size:12px;margin-top:7px">
+                        Budget restant à attribuer :
+                        ${formatF(d.montantRestant)}
+                    </p>
+                `
+                : ""
+            }
+
+            ${
+                cycleActif
+                ? `
+                    <div class="cycle-countdown">
+                        <p>
+                            <i class="fa-solid fa-clock"></i>
+                            Temps restant du cycle
+                        </p>
+                        <strong data-cycle-end="${dateFin}">
+                            ${formaterCompteARebours(dateFin)}
+                        </strong>
+                    </div>
+                `
+                : ""
+            }
+
+            ${
+                d.statut === "en_attente_reception_benefices"
+                ? `
+                    <div class="cycle-countdown">
+                        <p>
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            Votre cycle est arrivé à son terme.
+                        </p>
+                        <strong style="font-size:13px">
+                            En attente de réception des bénéfices
+                        </strong>
+                    </div>
+                `
+                : ""
+            }
+
+            ${
+                d.statut === "termine"
+                ? `
+                    <div class="cycle-countdown">
+                        <p>
+                            <i class="fa-solid fa-circle-check"></i>
+                            Tous les bénéfices ont été reçus.
+                        </p>
+                        <strong style="font-size:13px;color:#8fca91">
+                            Contribution terminée
+                        </strong>
+                    </div>
+                `
+                : ""
+            }
+
+        `;
+
+        container.appendChild(card);
+
+    });
+
+    actualiserComptesCycles();
+
+}
+
+
+/* STATISTIQUES */
+
+function actualiserStatistiques(demandes, matches) {
+
+    const liste = Object.values(demandes || {});
+
+    let total = 0;
+    let gains = 0;
+    let actives = 0;
+    let attentes = 0;
+
+    liste.forEach(d => {
+
+        if (!estAnnule(d)) {
+            total += nombre(d.montant);
+            gains += calculerGain(d);
+        }
+
+        if (d.statut === "en_cours") {
+            actives++;
+        }
+
+        if ([
+            "en_attente_reception",
+            "attente_beneficiaire",
+            "paiement_partiel",
+            "en_cours_paiement",
+            "en_attente_reception_benefices"
+        ].includes(d.statut)) {
+            attentes++;
+        }
+
+    });
+
+
+    $("totalContribue").textContent = formatF(total);
+    $("gainsAttendus").textContent = formatF(gains);
+    $("contributionsActives").textContent = actives;
+    $("attenteReception").textContent = attentes;
+
+    $("jumelages").textContent =
+        Object.keys(matches || {}).length;
+
+    $("totalDemandes").textContent = liste.length;
+
+}
+
+
+/* CONNEXION ET SYNCHRONISATION FIREBASE */
+
+onAuthStateChanged(auth, user => {
+
+    if (!user) {
+        window.location.replace("index.html");
+        return;
+    }
+
+    currentUserUid = user.uid;
+
+    if (ecouteursActifs) return;
+
+    ecouteursActifs = true;
+
+
+    surveillerCompte(user.uid);
+
+    surveillerMessages(user.uid);
+
+
+    /* CONTRIBUTIONS PERSONNELLES */
+
+    onValue(
+        ref(db, `contributionRequests/${user.uid}`),
+
+        snapshot => {
+
+            demandesUtilisateur = snapshot.val() || {};
+
+            actualiserStatistiques(
+                demandesUtilisateur,
+                matchesUtilisateur
+            );
+
+            afficherHistorique(demandesUtilisateur);
+
+            verifierCyclesTermines(demandesUtilisateur);
+
+            programmerMoteur();
+
+        },
+
+        error => {
+            console.error("Erreur contributions personnelles :", error);
+        }
+
+    );
+
+
+    /* JUMELAGES PERSONNELS */
+
+    onValue(
+        ref(db, `jumelages/${user.uid}`),
+
+        snapshot => {
+
+            matchesUtilisateur = snapshot.val() || {};
+
+            actualiserStatistiques(
+                demandesUtilisateur,
+                matchesUtilisateur
+            );
+
+            afficherJumelages(
+                Object.values(matchesUtilisateur)
+            );
+
+            programmerMoteur();
+
+        },
+
+        error => {
+            console.error("Erreur jumelages personnels :", error);
+        }
+
+    );
+
+
+    /* ÉCOUTE GLOBALE DES CONTRIBUTIONS */
+
+    onValue(
+        ref(db, "contributionRequests"),
+
+        () => {
+            programmerMoteur();
+        },
+
+        error => {
+            console.error("Erreur écoute globale des contributions :", error);
+        }
+
+    );
+
+
+    /* ÉCOUTE GLOBALE DES JUMELAGES */
+
+    onValue(
+        ref(db, "jumelages"),
+
+        () => {
+            programmerMoteur();
+        },
+
+        error => {
+            console.error("Erreur écoute globale des jumelages :", error);
+        }
+
+    );
+
+
+    programmerMoteur();
+
+
+    if (moteurTimer) clearInterval(moteurTimer);
+
+    moteurTimer = setInterval(() => {
+        programmerMoteur();
+    }, 30000);
+
+
+    demarrerCompteCycles();
+
+});
+
+</script>
+
+</body>
+</html>

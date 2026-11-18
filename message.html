@@ -1,0 +1,474 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaTontine - Administration Assistance</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"><style>
+:root {
+    --bg:#0a0a0b;
+    --surface:#131314;
+    --border:#2a2418;
+    --gold:#e4b95d;
+    --gold-light:#f5d98a;
+    --muted:#8f8a7e;
+    --text:#f4f1ea;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:radial-gradient(900px 500px at 50% -180px,rgba(228,185,93,.14),transparent 70%),var(--bg);color:var(--text);min-height:100vh}
+header{position:sticky;top:0;z-index:50;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,11,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.logo{font-size:21px;font-weight:800;color:var(--gold)}
+.container{padding:20px 16px;max-width:900px;margin:auto}
+.title{font-size:22px;margin-bottom:7px}
+.subtitle{color:var(--muted);font-size:12px;line-height:1.7;margin-bottom:20px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:15px}
+input,textarea{width:100%;background:#292929;border:1px solid #555;border-radius:10px;padding:12px;color:white;margin:7px 0;outline:none}
+button{background:linear-gradient(90deg,#b58a35,#f0d083);color:#17120a;border:0;padding:12px 16px;border-radius:10px;font-weight:800;cursor:pointer}
+button:disabled{opacity:.5}
+.hidden{display:none!important}
+.user-card{padding:14px;border-bottom:1px solid var(--border);cursor:pointer}
+.user-card:hover{background:#211b10}
+.user-card strong{font-size:13px;color:var(--gold-light)}
+.user-card small{display:block;font-size:10px;color:var(--muted);margin-top:6px}
+.unread{color:#f5d98a!important;font-weight:800}
+.chat-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.chat-header h3{font-size:15px;color:var(--gold)}
+.chat-contact{font-size:11px;color:var(--muted);margin-bottom:12px}
+.chat-messages{height:52vh;overflow-y:auto;padding:8px;background:#0f0f10;border-radius:12px;margin-bottom:12px}
+.chat-bubble{background:#292929;padding:11px;border-radius:12px;margin:8px 0;max-width:85%;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.chat-bubble.admin{background:#49391b;margin-left:auto}
+.chat-bubble small{display:block;color:#aaa;font-size:9px;margin-top:7px}
+.chat-photo{display:block;max-width:100%;width:240px;max-height:300px;object-fit:contain;border-radius:12px;margin-top:7px;border:1px solid #80632e}
+.chat-form{display:flex;gap:7px;align-items:center}
+.chat-form input[type="text"]{flex:1;min-width:0}
+.chat-form button{min-width:43px;height:43px;padding:8px}
+.photo-selection{color:var(--gold-light);font-size:10px;margin-top:7px}
+.empty{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
+.error{color:#ff7777;font-size:12px;margin-top:10px}
+.logout{background:#451d1d;color:#ffbaba;margin-bottom:15px}
+.back{color:var(--gold);font-size:12px;cursor:pointer;background:none;border:1px solid var(--gold);padding:9px 12px}
+</style></head><body>
+<header>
+    <div class="logo">MaTontine</div>
+    <span style="color:var(--gold);font-size:12px">
+        <i class="fa-solid fa-headset"></i> Assistance
+    </span>
+</header><div class="container"><div id="loginPanel" class="panel">
+    <h2 class="title">Connexion administrateur</h2>
+    <p class="subtitle">Entrez votre code administrateur pour accéder aux conversations.</p>
+
+    <input type="password" id="adminCode" placeholder="Code administrateur">
+
+    <button id="loginButton" onclick="connexion()">
+        <i class="fa-solid fa-lock"></i> Se connecter
+    </button>
+
+    <p id="loginError" class="error"></p>
+</div>
+
+<div id="adminPanel" class="hidden">
+
+    <button class="logout" onclick="deconnexion()">
+        <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+    </button>
+
+    <div id="inboxPanel" class="panel">
+        <h2 class="title">
+            <i class="fa-solid fa-inbox" style="color:var(--gold)"></i>
+            Messages des membres
+        </h2>
+        <p class="subtitle">Consultez les conversations et répondez aux membres.</p>
+        <div id="listeMembres">
+            <div class="empty">Chargement des conversations...</div>
+        </div>
+    </div>
+
+    <div id="conversationPanel" class="panel hidden">
+        <div class="chat-header">
+            <h3 id="nomMembre">Conversation</h3>
+            <button class="back" onclick="retourListe()">
+                <i class="fa-solid fa-arrow-left"></i> Retour
+            </button>
+        </div>
+
+        <p id="emailMembre" class="chat-contact"></p>
+
+        <div class="chat-messages" id="messages">
+            <div class="empty">Chargement...</div>
+        </div>
+
+        <div class="chat-form">
+            <input type="text" id="reponse" maxlength="1000" placeholder="Écrire une réponse...">
+
+            <input type="file" id="photo" accept="image/jpeg,image/png,image/webp" hidden>
+
+            <button type="button" onclick="document.getElementById('photo').click()" aria-label="Ajouter une photo">
+                <i class="fa-solid fa-camera"></i>
+            </button>
+
+            <button type="button" id="sendButton" onclick="envoyerReponse()" aria-label="Envoyer">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+
+        <p class="photo-selection" id="photoName"></p>
+    </div>
+</div>
+
+</div><script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+
+import {
+    getDatabase, ref, onValue, push, set, update
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
+    authDomain: "matontine-beefb.firebaseapp.com",
+    databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",
+    projectId: "matontine-beefb",
+    storageBucket: "matontine-beefb.firebasestorage.app",
+    messagingSenderId: "642250537489",
+    appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const CODE_ADMIN = "admin123";
+const CLOUD_NAME = "zlpdwpfe";
+const UPLOAD_PRESET = "tontigo_support";
+const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+let adminConnecte = false;
+let uidActif = null;
+let fichier = null;
+let ecouteListe = null;
+let ecouteConversation = null;
+
+const $ = id => document.getElementById(id);
+
+window.connexion = function() {
+    $("loginError").textContent = "";
+
+    const code = $("adminCode").value.trim();
+
+    if (!code) {
+        $("loginError").textContent = "Veuillez entrer votre code administrateur.";
+        return;
+    }
+
+    if (code !== CODE_ADMIN) {
+        $("loginError").textContent = "Code administrateur incorrect.";
+        $("adminCode").value = "";
+        return;
+    }
+
+    adminConnecte = true;
+    $("loginPanel").classList.add("hidden");
+    $("adminPanel").classList.remove("hidden");
+    $("adminCode").value = "";
+
+    chargerMembres();
+};
+
+window.deconnexion = function() {
+    adminConnecte = false;
+
+    if (ecouteListe) {
+        ecouteListe();
+        ecouteListe = null;
+    }
+
+    if (ecouteConversation) {
+        ecouteConversation();
+        ecouteConversation = null;
+    }
+
+    uidActif = null;
+    $("adminPanel").classList.add("hidden");
+    $("conversationPanel").classList.add("hidden");
+    $("inboxPanel").classList.remove("hidden");
+    $("loginPanel").classList.remove("hidden");
+};
+
+function chargerMembres() {
+    if (!adminConnecte) return;
+    if (ecouteListe) ecouteListe();
+
+    ecouteListe = onValue(ref(db, "supportChats"), snapshot => {
+        const zone = $("listeMembres");
+        zone.innerHTML = "";
+
+        if (!snapshot.exists()) {
+            zone.innerHTML = '<div class="empty">Aucun membre n’a encore contacté l’assistance.</div>';
+            return;
+        }
+
+        const conversations = [];
+
+        snapshot.forEach(child => {
+            const data = child.val() || {};
+            const messages = data.messages || {};
+
+            const liste = Object.entries(messages).sort((a,b) =>
+                Number(b[1].date || 0) - Number(a[1].date || 0)
+            );
+
+            const dernier = liste[0]?.[1] || null;
+
+            const nonLus = liste.filter(([id,m]) =>
+                m.expediteur !== "grand_admin" && m.lu !== true
+            ).length;
+
+            conversations.push({
+                uid: child.key,
+                nom: data.nom || "Membre",
+                email: data.email || "",
+                dernier,
+                nonLus,
+                date: dernier?.date || 0
+            });
+        });
+
+        conversations.sort((a,b) => b.date - a.date);
+
+        if (!conversations.length) {
+            zone.innerHTML = '<div class="empty">Aucune conversation.</div>';
+            return;
+        }
+
+        conversations.forEach(membre => {
+            const card = document.createElement("div");
+            card.className = "user-card";
+
+            const nom = document.createElement("strong");
+            nom.textContent = membre.nom;
+
+            const apercu = document.createElement("small");
+            apercu.textContent = membre.dernier
+                ? (membre.dernier.texte || "📷 Photo envoyée")
+                : "Aucun message";
+
+            if (membre.nonLus > 0) {
+                apercu.classList.add("unread");
+                apercu.textContent += " • " + membre.nonLus + " nouveau(x)";
+            }
+
+            const date = document.createElement("small");
+            date.textContent = membre.date
+                ? new Date(membre.date).toLocaleString("fr-FR")
+                : "";
+
+            card.append(nom, apercu, date);
+            card.onclick = () => ouvrirConversation(membre.uid, membre.nom, membre.email);
+            zone.appendChild(card);
+        });
+
+    }, error => {
+        $("listeMembres").textContent = "Erreur : " + error.message;
+    });
+}
+
+window.ouvrirConversation = function(uid, nom, email) {
+    if (!adminConnecte) return;
+
+    uidActif = uid;
+    $("inboxPanel").classList.add("hidden");
+    $("conversationPanel").classList.remove("hidden");
+    $("nomMembre").textContent = nom;
+    $("emailMembre").textContent = email || "Membre MaTontine";
+
+    if (ecouteConversation) ecouteConversation();
+
+    ecouteConversation = onValue(
+        ref(db, `supportChats/${uid}/messages`),
+        snapshot => {
+            const zone = $("messages");
+            zone.innerHTML = "";
+
+            const liste = Object.entries(snapshot.val() || {}).sort((a,b) =>
+                Number(a[1].date || 0) - Number(b[1].date || 0)
+            );
+
+            if (!liste.length) {
+                zone.innerHTML = '<div class="empty">Aucun message.</div>';
+                return;
+            }
+
+            liste.forEach(([id,m]) => {
+                const estAdmin = m.expediteur === "grand_admin";
+                const bulle = document.createElement("div");
+
+                bulle.className = "chat-bubble " + (estAdmin ? "admin" : "member");
+
+                if (m.texte) {
+                    const p = document.createElement("p");
+                    p.textContent = m.texte;
+                    bulle.appendChild(p);
+                }
+
+                if (m.imageUrl && m.imageUrl.startsWith("https://res.cloudinary.com/")) {
+                    const lien = document.createElement("a");
+                    lien.href = m.imageUrl;
+                    lien.target = "_blank";
+                    lien.rel = "noopener noreferrer";
+
+                    const img = document.createElement("img");
+                    img.src = m.imageUrl;
+                    img.className = "chat-photo";
+                    img.alt = "Photo envoyée";
+                    img.loading = "lazy";
+
+                    lien.appendChild(img);
+                    bulle.appendChild(lien);
+                }
+
+                const date = document.createElement("small");
+                date.textContent =
+                    (estAdmin ? "Assistant" : "Membre") + " • " +
+                    new Date(m.date || Date.now()).toLocaleString("fr-FR");
+
+                bulle.appendChild(date);
+                zone.appendChild(bulle);
+
+                if (!estAdmin && m.lu !== true) {
+                    update(ref(db, `supportChats/${uid}/messages/${id}`), {lu:true})
+                        .catch(console.error);
+                }
+            });
+
+            zone.scrollTop = zone.scrollHeight;
+        },
+        error => {
+            $("messages").textContent = "Erreur : " + error.message;
+        }
+    );
+};
+
+window.retourListe = function() {
+    if (ecouteConversation) {
+        ecouteConversation();
+        ecouteConversation = null;
+    }
+
+    uidActif = null;
+    $("conversationPanel").classList.add("hidden");
+    $("inboxPanel").classList.remove("hidden");
+};
+
+$("photo").addEventListener("change", () => {
+    fichier = $("photo").files[0] || null;
+
+    if (!fichier) {
+        $("photoName").textContent = "";
+        return;
+    }
+
+    if (!["image/jpeg","image/png","image/webp"].includes(fichier.type)) {
+        alert("Formats autorisés : JPG, PNG et WEBP.");
+        $("photo").value = "";
+        fichier = null;
+        return;
+    }
+
+    if (fichier.size > 5 * 1024 * 1024) {
+        alert("La photo ne doit pas dépasser 5 Mo.");
+        $("photo").value = "";
+        fichier = null;
+        return;
+    }
+
+    $("photoName").textContent = "Photo : " + fichier.name;
+});
+
+async function envoyerPhoto(file) {
+    const form = new FormData();
+    form.append("file", file);
+    form.append("upload_preset", UPLOAD_PRESET);
+
+    const response = await fetch(CLOUDINARY_URL, {
+        method: "POST",
+        body: form
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        throw new Error(result.error?.message || "Erreur d'envoi de photo.");
+    }
+
+    return {
+        imageUrl: result.secure_url,
+        imagePath: result.public_id,
+        imageName: file.name
+    };
+}
+
+window.envoyerReponse = async function() {
+    if (!adminConnecte || !uidActif) {
+        alert("Aucune conversation sélectionnée.");
+        return;
+    }
+
+    const texte = $("reponse").value.trim();
+
+    if (!texte && !fichier) {
+        alert("Écrivez une réponse ou choisissez une photo.");
+        return;
+    }
+
+    if (texte.length > 1000) {
+        alert("Votre message est trop long.");
+        return;
+    }
+
+    const bouton = $("sendButton");
+    bouton.disabled = true;
+
+    try {
+        let image = {};
+
+        if (fichier) {
+            $("photoName").textContent = "Envoi de la photo...";
+            image = await envoyerPhoto(fichier);
+        }
+
+        const nouveauMessage = {
+            texte,
+            expediteur: "grand_admin",
+            date: Date.now(),
+            lu: false,
+            type: fichier ? (texte ? "texte_image" : "image") : "texte",
+            ...image
+        };
+
+        await set(
+            push(ref(db, `supportChats/${uidActif}/messages`)),
+            nouveauMessage
+        );
+
+        $("reponse").value = "";
+        $("photo").value = "";
+        $("photoName").textContent = "";
+        fichier = null;
+
+    } catch(error) {
+        alert("Erreur : " + error.message);
+    } finally {
+        bouton.disabled = false;
+    }
+};
+
+$("reponse").addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        envoyerReponse();
+    }
+});
+
+$("adminCode").addEventListener("keydown", event => {
+    if (event.key === "Enter") connexion();
+});
+</script></body>
+</html>

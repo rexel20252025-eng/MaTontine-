@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administration MaTontine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Poppins,sans-serif;background:#101010;color:#fff}
+header{padding:20px;background:#191919;border-bottom:1px solid #bd963d}
+header h2{color:#e5b94e}
+header p{font-size:12px;color:#aaa;margin-top:5px}
+.container{padding:15px;max-width:1100px;margin:auto}
+.login{max-width:380px;margin:100px auto;background:#1c1c1c;padding:25px;border-radius:15px;border:1px solid #bd963d}
+input,button,select,textarea{font-family:inherit}
+input,select,textarea{width:100%;padding:13px;background:#292929;color:white;border:1px solid #444;border-radius:9px;margin:8px 0}
+button{border:0;padding:12px;border-radius:9px;background:#d6a83c;color:#111;font-weight:700;cursor:pointer}
+.login button{width:100%;margin-top:10px}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin:15px 0;padding-bottom:8px}
+.tabs button{white-space:nowrap;background:#292929;color:#ddd}
+.tabs button.active{background:#d6a83c;color:#111}
+.card{background:#1c1c1c;padding:17px;border-radius:13px;margin:12px 0;border:1px solid #333}
+.card h3{color:#e5b94e;font-size:15px;margin-bottom:10px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{background:#252525;padding:15px;border-radius:10px}
+.stat strong{display:block;font-size:22px;color:#e5b94e}
+.stat span{font-size:11px;color:#aaa}
+.item{padding:13px 0;border-bottom:1px solid #333}
+.item:last-child{border:0}
+.small{font-size:11px;color:#aaa;word-break:break-word}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;font-size:10px;background:#285b38;color:#b5ffc7}
+.badge.red{background:#672929;color:#ffb5b5}
+.actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.actions button{font-size:11px;padding:9px}
+.danger{background:#a83232;color:white}
+.secondary{background:#444;color:white}
+.section{display:none}
+.section.active{display:block}
+.message{padding:10px;background:#292929;border-radius:9px;margin:8px 0}
+#app{display:none}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2><i class="fas fa-coins"></i> MaTontine Admin</h2>
+<p>Administration et gestion de la plateforme</p>
+</header>
+
+<div class="login" id="login">
+<h3 style="color:#e5b94e;margin-bottom:10px">Connexion administrateur</h3>
+<input type="password" id="password" placeholder="Mot de passe administrateur">
+<button onclick="connexion()">SE CONNECTER</button>
+<p id="loginError" style="color:#ff7777;font-size:12px;margin-top:10px"></p>
+</div>
+
+<div id="app" class="container">
+
+<div class="tabs">
+<button class="active" onclick="showSection('dashboard',this)">Accueil</button>
+<button onclick="showSection('users',this)">Utilisateurs</button>
+<button onclick="showSection('blocked',this)">Comptes bloqués</button>
+<button onclick="showSection('history',this)">Historique</button>
+<button onclick="showSection('cycles',this)">Cycles</button>
+<button onclick="showSection('messages',this)">Messages</button>
+</div>
+
+<section id="dashboard" class="section active">
+<div class="card">
+<h3>Tableau de bord</h3>
+<div class="stats">
+<div class="stat"><strong id="totalUsers">0</strong><span>Utilisateurs</span></div>
+<div class="stat"><strong id="totalBlocked">0</strong><span>Comptes bloqués</span></div>
+<div class="stat"><strong id="totalRequests">0</strong><span>Contributions</span></div>
+<div class="stat"><strong id="totalMatches">0</strong><span>Jumelages</span></div>
+</div>
+</div>
+<div class="card">
+<h3>État du système</h3>
+<p class="small" id="systemStatus">Connexion à Firebase...</p>
+<button onclick="chargerTout()">Actualiser les données</button>
+</div>
+</section>
+
+<section id="users" class="section">
+<div class="card">
+<h3>Liste des utilisateurs</h3>
+<input id="searchUser" placeholder="Rechercher par nom, téléphone ou UID" oninput="afficherUsers()">
+<div id="usersList">Chargement...</div>
+</div>
+</section>
+
+<section id="blocked" class="section">
+<div class="card">
+<h3>Comptes bloqués</h3>
+<div id="blockedList">Chargement...</div>
+</div>
+</section>
+
+<section id="history" class="section">
+<div class="card">
+<h3>Historique des blocages</h3>
+<div id="historyList">Aucun historique chargé.</div>
+</div>
+</section>
+
+<section id="cycles" class="section">
+<div class="card">
+<h3>Gestion des cycles</h3>
+<p class="small">Modification de la date de fin d'un cycle de contribution.</p>
+<input id="cycleUid" placeholder="UID de l'utilisateur">
+<input id="requestId" placeholder="ID de la contribution">
+<input id="newDate" type="datetime-local">
+<button onclick="modifierCycle()">Enregistrer la date de fin</button>
+<p id="cycleResult" class="small"></p>
+</div>
+</section>
+
+<section id="messages" class="section">
+<div class="card">
+<h3>Messagerie privée</h3>
+<input id="messageUid" placeholder="UID du premier utilisateur">
+<input id="destUid" placeholder="UID du deuxième utilisateur">
+<button onclick="chargerMessages()">Ouvrir la conversation</button>
+<div id="conversation"></div>
+<textarea id="messageText" placeholder="Écrire un message..."></textarea>
+<button onclick="envoyerMessage()">Envoyer</button>
+<p class="small">Les règles Firebase doivent autoriser uniquement les membres concernés à lire et écrire dans leurs conversations.</p>
+</div>
+</section>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+import { getDatabase, ref, get, update, push, set, onValue } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
+authDomain: "matontine-beefb.firebaseapp.com",
+databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",
+projectId: "matontine-beefb",
+storageBucket: "matontine-beefb.firebasestorage.app",
+messagingSenderId: "642250537489",
+appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"
+};
+
+const appFirebase = initializeApp(firebaseConfig);
+const db = getDatabase(appFirebase);
+
+const MOT_DE_PASSE_ADMIN = "admin123";
+
+let usersData = {};
+let blockedData = {};
+let conversationActive = "";
+
+window.connexion = function(){
+if(document.getElementById("password").value === MOT_DE_PASSE_ADMIN){
+document.getElementById("login").style.display="none";
+document.getElementById("app").style.display="block";
+chargerTout();
+}else{
+document.getElementById("loginError").textContent="Mot de passe incorrect.";
+}
+};
+
+window.showSection = function(id,btn){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+btn.classList.add("active");
+};
+
+async function chargerTout(){
+try{
+const [u,b,c,j,h] = await Promise.all([
+get(ref(db,"users")),
+get(ref(db,"system/comptesBloques")),
+get(ref(db,"contributionRequests")),
+get(ref(db,"jumelages")),
+get(ref(db,"system/historiqueBlocages"))
+]);
+
+usersData=u.val()||{};
+blockedData=b.val()||{};
+
+document.getElementById("totalUsers").textContent=Object.keys(usersData).length;
+document.getElementById("totalBlocked").textContent=Object.keys(blockedData).length;
+
+let contributions=0;
+Object.values(c.val()||{}).forEach(x=>contributions+=Object.keys(x||{}).length);
+document.getElementById("totalRequests").textContent=contributions;
+
+let matches=0;
+Object.values(j.val()||{}).forEach(x=>matches+=Object.keys(x||{}).length);
+document.getElementById("totalMatches").textContent=matches;
+
+document.getElementById("systemStatus").textContent="Données Firebase chargées.";
+afficherUsers();
+afficherBlocked();
+afficherHistory(h.val()||{});
+
+}catch(e){
+document.getElementById("systemStatus").textContent="Erreur : "+e.message;
+}
+}
+window.chargerTout=chargerTout;
+
+function afficherUsers(){
+const q=(document.getElementById("searchUser").value||"").toLowerCase();
+const zone=document.getElementById("usersList");
+zone.innerHTML="";
+
+Object.entries(usersData).filter(([uid,u])=>{
+return (u.nom||"").toLowerCase().includes(q)||
+(u.telephone||"").toLowerCase().includes(q)||
+uid.toLowerCase().includes(q);
+}).forEach(([uid,u])=>{
+const bloque=u.statut==="bloque"||!!blockedData[uid];
+zone.innerHTML+=`
+<div class="item">
+<strong>${escapeHTML(u.nom||"Utilisateur")}</strong>
+<span class="badge ${bloque?"red":""}">${bloque?"Bloqué":"Actif"}</span>
+<p class="small">${escapeHTML(u.telephone||"Téléphone non renseigné")}</p>
+<p class="small">UID : ${escapeHTML(uid)}</p>
+<div class="actions">
+${bloque?`<button onclick="debloquer('${uid}')">Débloquer</button>`:`<button class="danger" onclick="bloquerManuellement('${uid}')">Bloquer</button>`}
+</div>
+</div>`;
+});
+if(!zone.innerHTML)zone.textContent="Aucun utilisateur trouvé.";
+}
+window.afficherUsers=afficherUsers;
+
+function afficherBlocked(){
+const zone=document.getElementById("blockedList");
+zone.innerHTML="";
+Object.entries(blockedData).forEach(([uid,b])=>{
+zone.innerHTML+=`
+<div class="item">
+<strong>${escapeHTML(usersData[uid]?.nom||uid)}</strong>
+<p class="small">Motif : ${escapeHTML(b.motif||"Non précisé")}</p>
+<p class="small">Date : ${dateFormat(b.dateBlocage)}</p>
+<button onclick="debloquer('${uid}')">Débloquer le compte</button>
+</div>`;
+});
+if(!zone.innerHTML)zone.textContent="Aucun compte bloqué.";
+}
+
+function afficherHistory(data){
+const zone=document.getElementById("historyList");
+zone.innerHTML="";
+Object.entries(data).reverse().forEach(([uid,h])=>{
+Object.values(h||{}).forEach(item=>{
+zone.innerHTML+=`
+<div class="item">
+<strong>${escapeHTML(item.nom||uid)}</strong>
+<p class="small">${escapeHTML(item.motif||"Blocage")}</p>
+<p class="small">${dateFormat(item.dateBlocage)}</p>
+</div>`;
+});
+});
+if(!zone.innerHTML)zone.textContent="Aucun historique.";
+}
+
+window.bloquerManuellement=async function(uid){
+const motif=prompt("Motif du blocage :");
+if(!motif)return;
+if(!confirm("Confirmer le blocage de ce compte ?"))return;
+try{
+const maintenant=Date.now();
+const updates={};
+updates[`users/${uid}/statut`]="bloque";
+updates[`users/${uid}/dateBlocage`]=maintenant;
+updates[`users/${uid}/motifBlocage`]=motif;
+updates[`system/comptesBloques/${uid}`]={dateBlocage:maintenant,motif:motif};
+updates[`system/historiqueBlocages/${uid}/${maintenant}`]={dateBlocage:maintenant,motif:motif,nom:usersData[uid]?.nom||""};
+await update(ref(db),updates);
+alert("Blocage enregistré dans Firebase.");
+chargerTout();
+}catch(e){alert("Erreur : "+e.message);}
+};
+
+window.debloquer=async function(uid){
+if(!confirm("Confirmer le déblocage de ce compte ?"))return;
+try{
+const maintenant=Date.now();
+const updates={};
+updates[`users/${uid}/statut`]="actif";
+updates[`users/${uid}/dateDeblocage`]=maintenant;
+updates[`system/comptesBloques/${uid}`]=null;
+updates[`system/historiqueDeblocages/${uid}/${maintenant}`]={date:maintenant,action:"Compte débloqué"};
+await update(ref(db),updates);
+alert("Statut mis à jour dans Firebase.");
+chargerTout();
+}catch(e){alert("Erreur : "+e.message);}
+};
+
+window.modifierCycle=async function(){
+const uid=document.getElementById("cycleUid").value.trim();
+const id=document.getElementById("requestId").value.trim();
+const date=document.getElementById("newDate").value;
+if(!uid||!id||!date)return alert("Remplis tous les champs.");
+try{
+const timestamp=new Date(date).getTime();
+await update(ref(db,`contributionRequests/${uid}/${id}`),{dateFinCycle:timestamp});
+document.getElementById("cycleResult").textContent="Date de fin mise à jour.";
+}catch(e){document.getElementById("cycleResult").textContent=e.message;}
+};
+
+window.chargerMessages=async function(){
+const a=document.getElementById("messageUid").value.trim();
+const b=document.getElementById("destUid").value.trim();
+if(!a||!b)return alert("Renseigne les deux UID.");
+conversationActive=[a,b].sort().join("_");
+const zone=document.getElementById("conversation");
+zone.innerHTML="Chargement...";
+onValue(ref(db,"messagesPrives/"+conversationActive),snap=>{
+zone.innerHTML="";
+Object.values(snap.val()||{}).forEach(m=>{
+zone.innerHTML+=`<div class="message"><p>${escapeHTML(m.texte||"")}</p><small>${escapeHTML(m.expediteur||"")} · ${dateFormat(m.date)}</small></div>`;
+});
+if(!zone.innerHTML)zone.textContent="Aucun message.";
+});
+};
+
+window.envoyerMessage=async function(){
+if(!conversationActive)return alert("Ouvre d'abord une conversation.");
+const texte=document.getElementById("messageText").value.trim();
+if(!texte)return;
+try{
+const id=push(ref(db,"messagesPrives/"+conversationActive));
+await set(id,{texte,expediteur:document.getElementById("messageUid").value.trim(),date:Date.now()});
+document.getElementById("messageText").value="";
+}catch(e){alert("Erreur : "+e.message);}
+};
+
+function dateFormat(t){
+if(!t)return "Non disponible";
+return new Date(Number(t)).toLocaleString("fr-FR");
+}
+
+function escapeHTML(s){
+return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+</script>
+</body>
+</html>

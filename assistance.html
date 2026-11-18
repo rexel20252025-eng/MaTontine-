@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaTontine - Assistance</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root {
+    --bg:#0a0a0b;
+    --surface:#131314;
+    --surface2:#1a1a1c;
+    --border:#2a2418;
+    --gold:#e4b95d;
+    --gold-light:#f5d98a;
+    --muted:#8f8a7e;
+    --text:#f4f1ea;
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body {
+    background:radial-gradient(900px 500px at 50% -180px,rgba(228,185,93,.14),transparent 70%),var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding-bottom:25px;
+}
+
+header {
+    position:sticky;
+    top:0;
+    z-index:50;
+    padding:16px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(10,10,11,.92);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+}
+
+.logo {
+    font-size:21px;
+    font-weight:800;
+    color:var(--gold);
+}
+
+.back {
+    color:var(--gold);
+    text-decoration:none;
+    font-size:13px;
+}
+
+.container {
+    padding:20px 16px;
+    max-width:560px;
+    margin:auto;
+}
+
+.title {
+    font-size:22px;
+    margin-bottom:7px;
+}
+
+.subtitle {
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.7;
+}
+
+.assistant-card {
+    background:linear-gradient(135deg,#2d2414,#17130c);
+    border:1px solid #80632e;
+    border-radius:16px;
+    padding:15px;
+    margin:20px 0;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.assistant-icon {
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    background:#392d19;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gold);
+    font-size:19px;
+}
+
+.assistant-card strong {
+    color:var(--gold-light);
+    font-size:13px;
+}
+
+.assistant-card small {
+    display:block;
+    color:#9bd6a5;
+    font-size:10px;
+    margin-top:5px;
+}
+
+.chat-box {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:13px;
+    height:65vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.chat-messages {
+    flex:1;
+    overflow-y:auto;
+    padding:5px;
+}
+
+.chat-bubble {
+    background:#292929;
+    padding:11px;
+    border-radius:12px;
+    margin:8px 0;
+    max-width:85%;
+    font-size:12px;
+    overflow-wrap:anywhere;
+    line-height:1.6;
+}
+
+.chat-bubble.mine {
+    background:#49391b;
+    margin-left:auto;
+}
+
+.chat-bubble small {
+    display:block;
+    color:#aaa;
+    font-size:9px;
+    margin-top:7px;
+}
+
+.chat-photo {
+    display:block;
+    max-width:100%;
+    width:240px;
+    max-height:300px;
+    object-fit:contain;
+    border-radius:12px;
+    margin-top:7px;
+    border:1px solid #80632e;
+}
+
+.chat-form {
+    display:flex;
+    gap:7px;
+    align-items:center;
+    border-top:1px solid var(--border);
+    padding-top:12px;
+}
+
+.chat-form input[type="text"] {
+    flex:1;
+    min-width:0;
+    background:#292929;
+    border:1px solid #555;
+    border-radius:10px;
+    padding:12px;
+    color:white;
+    outline:none;
+}
+
+.chat-form button {
+    background:var(--gold);
+    color:#17120a;
+    border:0;
+    border-radius:10px;
+    min-width:43px;
+    height:43px;
+    cursor:pointer;
+}
+
+.chat-form button:disabled {
+    opacity:.5;
+}
+
+.photo-selection {
+    color:var(--gold-light);
+    font-size:10px;
+    margin-top:7px;
+}
+
+.empty {
+    color:var(--muted);
+    text-align:center;
+    padding:25px 10px;
+    font-size:12px;
+}
+
+.warning {
+    font-size:10px;
+    color:#ffbd72;
+    margin-top:10px;
+    line-height:1.6;
+}
+
+button:disabled {
+    opacity:.5;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">MaTontine</div>
+    <a href="accueil.html" class="back">
+        <i class="fa-solid fa-arrow-left"></i> Retour
+    </a>
+</header>
+
+<div class="container">
+
+    <h2 class="title">Assistance MaTontine</h2>
+
+    <p class="subtitle">
+        Échangez directement avec notre équipe d'assistance.
+        Vous pouvez envoyer des messages et des photos.
+    </p>
+
+    <div class="assistant-card">
+        <div class="assistant-icon">
+            <i class="fa-solid fa-headset"></i>
+        </div>
+
+        <div>
+            <strong>Service d'assistance</strong>
+            <small><i class="fa-solid fa-circle"></i> Disponible</small>
+        </div>
+    </div>
+
+    <div class="chat-box">
+
+        <div class="chat-messages" id="messages">
+            <div class="empty">Chargement des messages...</div>
+        </div>
+
+        <div class="chat-form">
+
+            <input
+                type="text"
+                id="message"
+                maxlength="1000"
+                placeholder="Écrire un message..."
+            >
+
+            <input
+                type="file"
+                id="photo"
+                accept="image/jpeg,image/png,image/webp"
+                hidden
+            >
+
+            <button
+                type="button"
+                onclick="document.getElementById('photo').click()"
+                aria-label="Ajouter une photo"
+            >
+                <i class="fa-solid fa-camera"></i>
+            </button>
+
+            <button
+                type="button"
+                id="send"
+                onclick="envoyerMessage()"
+                aria-label="Envoyer"
+            >
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+
+        </div>
+
+        <p class="photo-selection" id="photoName"></p>
+
+    </div>
+
+    <p class="warning">
+        <i class="fa-solid fa-shield-halved"></i>
+        Ne communiquez jamais votre mot de passe ou vos codes de validation.
+    </p>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+
+import {
+    getDatabase,
+    ref,
+    get,
+    set,
+    push,
+    onValue,
+    update
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
+    authDomain: "matontine-beefb.firebaseapp.com",
+    databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",
+    projectId: "matontine-beefb",
+    storageBucket: "matontine-beefb.firebasestorage.app",
+    messagingSenderId: "642250537489",
+    appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+const CLOUD_NAME = "zlpdwpfe";
+const UPLOAD_PRESET = "tontigo_support";
+
+const CLOUDINARY_URL =
+`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+let uid = null;
+let chatRef = null;
+let fichier = null;
+let ecoute = null;
+
+const $ = id => document.getElementById(id);
+
+
+function afficherMessages(data) {
+
+    const zone = $("messages");
+    zone.innerHTML = "";
+
+    const liste = Object.entries(data || {})
+        .sort((a,b) => Number(a[1].date || 0) - Number(b[1].date || 0));
+
+    if (!liste.length) {
+        zone.innerHTML = `
+            <div class="empty">
+                Bienvenue dans votre espace d'assistance.<br><br>
+                Envoyez votre premier message.
+            </div>
+        `;
+        return;
+    }
+
+    liste.forEach(([id,m]) => {
+
+        const bulle = document.createElement("div");
+
+        bulle.className =
+            "chat-bubble " +
+            (m.expediteur === uid ? "mine" : "");
+
+        if (m.texte) {
+            const p = document.createElement("p");
+            p.textContent = m.texte;
+            bulle.appendChild(p);
+        }
+
+        if (m.imageUrl &&
+            m.imageUrl.startsWith("https://res.cloudinary.com/")) {
+
+            const lien = document.createElement("a");
+            lien.href = m.imageUrl;
+            lien.target = "_blank";
+            lien.rel = "noopener noreferrer";
+
+            const img = document.createElement("img");
+            img.src = m.imageUrl;
+            img.className = "chat-photo";
+            img.alt = "Photo envoyée";
+            img.loading = "lazy";
+
+            lien.appendChild(img);
+            bulle.appendChild(lien);
+        }
+
+        const date = document.createElement("small");
+
+        date.textContent =
+            (m.expediteur === uid ? "Vous" : "Assistance") +
+            " • " +
+            new Date(m.date || Date.now()).toLocaleString("fr-FR");
+
+        bulle.appendChild(date);
+        zone.appendChild(bulle);
+
+        if (m.expediteur !== uid && m.lu !== true) {
+            update(ref(db, `supportChats/${uid}/messages/${id}`), {
+                lu:true
+            }).catch(console.error);
+        }
+
+    });
+
+    zone.scrollTop = zone.scrollHeight;
+}
+
+
+onAuthStateChanged(auth, async user => {
+
+    if (!user) {
+        $("messages").textContent =
+            "Connectez-vous à votre compte pour utiliser l'assistance.";
+        $("send").disabled = true;
+        return;
+    }
+
+    uid = user.uid;
+
+    chatRef = ref(db, `supportChats/${uid}`);
+
+    try {
+
+        const profilSnap = await get(ref(db, `users/${uid}`));
+        const profil = profilSnap.val() || {};
+
+        await update(chatRef, {
+            nom: profil.nom ||
+                 profil.fullName ||
+                 profil.name ||
+                 user.displayName ||
+                 user.email ||
+                 "Membre",
+            email: user.email || ""
+        });
+
+        ecoute = onValue(
+            ref(db, `supportChats/${uid}/messages`),
+            snapshot => afficherMessages(snapshot.val() || {}),
+            error => {
+                $("messages").textContent =
+                    "Erreur de chargement : " + error.message;
+            }
+        );
+
+    } catch(error) {
+
+        $("messages").textContent =
+            "Erreur : " + error.message;
+
+    }
+
+});
+
+
+$("photo").addEventListener("change", () => {
+
+    fichier = $("photo").files[0] || null;
+
+    if (!fichier) {
+        $("photoName").textContent = "";
+        return;
+    }
+
+    if (!["image/jpeg","image/png","image/webp"].includes(fichier.type)) {
+        alert("Formats autorisés : JPG, PNG et WEBP.");
+        $("photo").value = "";
+        fichier = null;
+        return;
+    }
+
+    if (fichier.size > 5 * 1024 * 1024) {
+        alert("La photo ne doit pas dépasser 5 Mo.");
+        $("photo").value = "";
+        fichier = null;
+        return;
+    }
+
+    $("photoName").textContent = "Photo : " + fichier.name;
+
+});
+
+
+async function envoyerPhoto(file) {
+
+    const form = new FormData();
+    form.append("file", file);
+    form.append("upload_preset", UPLOAD_PRESET);
+
+    const response = await fetch(CLOUDINARY_URL, {
+        method:"POST",
+        body:form
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        throw new Error(result.error?.message || "Erreur d'envoi de photo.");
+    }
+
+    return {
+        imageUrl:result.secure_url,
+        imagePath:result.public_id,
+        imageName:file.name
+    };
+
+}
+
+
+window.envoyerMessage = async function() {
+
+    if (!uid || !chatRef) {
+        alert("Connectez-vous pour envoyer un message.");
+        return;
+    }
+
+    const texte = $("message").value.trim();
+
+    if (!texte && !fichier) {
+        alert("Écrivez un message ou choisissez une photo.");
+        return;
+    }
+
+    if (texte.length > 1000) {
+        alert("Votre message est trop long.");
+        return;
+    }
+
+    const bouton = $("send");
+    bouton.disabled = true;
+
+    try {
+
+        let image = {};
+
+        if (fichier) {
+            $("photoName").textContent = "Envoi de la photo...";
+            image = await envoyerPhoto(fichier);
+        }
+
+        const nouveauMessage = {
+            texte,
+            expediteur:uid,
+            date:Date.now(),
+            lu:false,
+            type:fichier ? (texte ? "texte_image" : "image") : "texte",
+            ...image
+        };
+
+        await set(
+            push(ref(db, `supportChats/${uid}/messages`)),
+            nouveauMessage
+        );
+
+        $("message").value = "";
+        $("photo").value = "";
+        $("photoName").textContent = "";
+        fichier = null;
+
+    } catch(error) {
+
+        alert("Erreur : " + error.message);
+
+    } finally {
+
+        bouton.disabled = false;
+
+    }
+
+};
+
+
+$("message").addEventListener("keydown", event => {
+
+    if (event.key === "Enter") {
+        event.preventDefault();
+        envoyerMessage();
+    }
+
+});
+
+</script>
+
+</body>
+</html>

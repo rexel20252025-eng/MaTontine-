@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaTontine - Contributions</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #090909;
+    color: white;
+    padding-bottom: 100px;
+}
+
+header {
+    padding: 22px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #292319;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: #d6ad55;
+}
+
+.profile {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #211b10;
+    color: #e7bd62;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    padding: 20px 16px;
+}
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #999;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: linear-gradient(145deg, #1d1a14, #111);
+    border: 1px solid #514125;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.card h3 {
+    color: #e7bd62;
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+.badge {
+    display: inline-block;
+    background: #352a16;
+    color: #e7bd62;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #30291e;
+    font-size: 13px;
+}
+
+.details span:first-child {
+    color: #aaa;
+}
+
+.details span:last-child {
+    font-weight: 700;
+}
+
+button {
+    width: 100%;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 18px;
+    background: linear-gradient(90deg, #b58a35, #f0d083);
+    color: #17120a;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.form-box {
+    background: #151515;
+    border: 1px solid #383027;
+    border-radius: 16px;
+    padding: 18px;
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    color: #bbb;
+    margin: 15px 0 8px;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px;
+    background: #090909;
+    border: 1px solid #40382b;
+    border-radius: 10px;
+    color: white;
+    outline: none;
+}
+
+.notice {
+    background: #201b11;
+    border: 1px solid #5b4726;
+    padding: 13px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #d9bd80;
+    line-height: 1.6;
+    margin-top: 15px;
+}
+
+#message {
+    margin-top: 15px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #111;
+    border-top: 1px solid #393020;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 12px 4px;
+    z-index: 10;
+}
+
+nav a {
+    text-decoration: none;
+    color: #888;
+    font-size: 10px;
+    text-align: center;
+    padding: 8px 2px;
+}
+
+nav a i {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+nav a.active {
+    color: #e7bd62;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">MaTontine</div>
+    <a href="profil.html" class="profile">
+        <i class="fa-solid fa-user"></i>
+    </a>
+</header>
+
+<div class="container">
+
+    <h2>Mes contributions</h2>
+    <p class="subtitle">
+        Choisissez une formule et consultez les conditions avant de soumettre votre demande.
+    </p>
+
+    <div class="card">
+        <span class="badge">FORMULE 1</span>
+        <h3>Contribution 40 %</h3>
+
+        <div class="details">
+            <span>Taux annoncé</span>
+            <span>40 %</span>
+        </div>
+
+        <div class="details">
+            <span>Durée prévue</span>
+            <span>15 jours</span>
+        </div>
+
+        <button onclick="choisirFormule('40',15)">
+            Choisir cette formule
+        </button>
+    </div>
+
+    <div class="card">
+        <span class="badge">FORMULE 2</span>
+        <h3>Contribution 95 %</h3>
+
+        <div class="details">
+            <span>Taux annoncé</span>
+            <span>95 %</span>
+        </div>
+
+        <div class="details">
+            <span>Durée prévue</span>
+            <span>25 jours</span>
+        </div>
+
+        <button onclick="choisirFormule('95',25)">
+            Choisir cette formule
+        </button>
+    </div>
+
+    <div class="form-box" id="formulaire" style="display:none;">
+
+        <h3 style="color:#e7bd62;">Nouvelle demande</h3>
+
+        <label>Formule choisie</label>
+        <input type="text" id="formule" readonly>
+
+        <label>Montant de contribution (FCFA)</label>
+        <input type="number" id="montant" min="1" placeholder="Exemple : 10000">
+
+        <div class="notice">
+            Votre demande sera enregistrée en attente de vérification.
+            Aucun paiement ni jumelage ne sera considéré comme confirmé
+            avant validation effective des fonds.
+            Les taux affichés ne constituent pas une garantie de rendement.
+        </div>
+
+        <button id="envoyer" onclick="envoyerDemande()">
+            Soumettre ma demande
+        </button>
+
+        <div id="message"></div>
+
+    </div>
+
+</div>
+
+<nav>
+    <a href="accueil.html">
+        <i class="fa-solid fa-house"></i>Accueil
+    </a>
+
+    <a href="contribuer.html" class="active">
+        <i class="fa-solid fa-wallet"></i>Contribuer
+    </a>
+
+    <a href="jumelages.html">
+        <i class="fa-solid fa-people-arrows"></i>Jumelages
+    </a>
+
+    <a href="parrainage.html">
+        <i class="fa-solid fa-users"></i>Parrainage
+    </a>
+
+    <a href="profil.html">
+        <i class="fa-solid fa-user"></i>Profil
+    </a>
+
+    <a href="assistance.html">
+        <i class="fa-solid fa-headset"></i>Assistance
+    </a>
+
+    <a href="index.html">
+        <i class="fa-solid fa-right-from-bracket"></i>Déconnexion
+    </a>
+</nav>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+
+import {
+    getDatabase,
+    ref,
+    push,
+    set,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
+    authDomain: "matontine-beefb.firebaseapp.com",
+    databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",
+    projectId: "matontine-beefb",
+    storageBucket: "matontine-beefb.firebasestorage.app",
+    messagingSenderId: "642250537489",
+    appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+let membreConnecte = null;
+let formuleChoisie = null;
+let dureeChoisie = null;
+
+onAuthStateChanged(auth, (user) => {
+
+    if (!user) {
+        window.location.replace("index.html");
+        return;
+    }
+
+    membreConnecte = user;
+
+});
+
+window.choisirFormule = function(taux, duree) {
+
+    formuleChoisie = taux;
+    dureeChoisie = duree;
+
+    document.getElementById("formule").value =
+        taux + " % - " + duree + " jours";
+
+    document.getElementById("formulaire").style.display = "block";
+
+    document.getElementById("formulaire").scrollIntoView({
+        behavior: "smooth"
+    });
+
+};
+
+window.envoyerDemande = async function() {
+
+    const message = document.getElementById("message");
+    const bouton = document.getElementById("envoyer");
+
+    const montant = Number(document.getElementById("montant").value);
+
+    if (!membreConnecte) {
+        message.textContent = "Connexion en cours. Réessayez.";
+        return;
+    }
+
+    if (!formuleChoisie) {
+        message.textContent = "Veuillez choisir une formule.";
+        return;
+    }
+
+    if (!Number.isSafeInteger(montant) || montant <= 0) {
+        message.textContent = "Veuillez saisir un montant valide.";
+        return;
+    }
+
+    bouton.disabled = true;
+    message.style.color = "#e7bd62";
+    message.textContent = "Enregistrement de votre demande...";
+
+    try {
+
+        const nouvelleDemande = push(
+            ref(db, "contributionRequests/" + membreConnecte.uid)
+        );
+
+        await set(nouvelleDemande, {
+
+            uid: membreConnecte.uid,
+
+            formule: formuleChoisie + "%",
+
+            tauxAnnonce: Number(formuleChoisie),
+
+            dureeJours: dureeChoisie,
+
+            montant: montant,
+
+            statut: "en_attente_verification",
+
+            dateCreation: serverTimestamp()
+
+        });
+
+        message.style.color = "#65d98b";
+        message.textContent =
+            "Votre demande a été enregistrée. Elle attend maintenant une vérification.";
+
+        document.getElementById("montant").value = "";
+
+    } catch (erreur) {
+
+        console.error(erreur);
+
+        message.style.color = "#ff7777";
+        message.textContent =
+            "Erreur : impossible d'enregistrer votre demande. Vérifiez les règles Firebase.";
+
+    }
+
+    bouton.disabled = false;
+
+};
+
+</script>
+
+</body>
+</html>

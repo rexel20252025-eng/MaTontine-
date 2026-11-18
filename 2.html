@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaTontine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --gold:#d8b45d;
+    --gold-light:#f5d98b;
+    --bg:#080a0b;
+    --card:#111517;
+    --muted:#8b9295;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:
+        radial-gradient(circle at 50% 0%,rgba(216,180,93,.10),transparent 35%),
+        #080a0b;
+    color:white;
+    min-height:100vh;
+    padding:30px 16px;
+}
+
+.container{
+    max-width:450px;
+    margin:auto;
+}
+
+.logo{
+    text-align:center;
+    margin:12px 0 28px;
+}
+
+.logo-icon{
+    width:55px;
+    height:55px;
+    border-radius:17px;
+    background:linear-gradient(145deg,#f5d98b,#b68b35);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 12px;
+    color:#15120a;
+    font-size:24px;
+    box-shadow:0 8px 25px rgba(216,180,93,.18);
+}
+
+.logo h1{
+    font-family:'Playfair Display',serif;
+    font-size:35px;
+    letter-spacing:.5px;
+    color:var(--gold);
+}
+
+.logo h1 span{
+    color:#fff;
+}
+
+.logo p{
+    font-size:10px;
+    color:#858b8e;
+    letter-spacing:3px;
+    margin-top:7px;
+}
+
+.card{
+    background:linear-gradient(145deg,#151a1c,#101314);
+    border:1px solid rgba(216,180,93,.18);
+    border-radius:22px;
+    padding:25px 21px;
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+
+.tabs{
+    display:flex;
+    background:#090c0d;
+    padding:5px;
+    border-radius:12px;
+    margin-bottom:27px;
+}
+
+.tabs button{
+    flex:1;
+    padding:13px 8px;
+    background:transparent;
+    border:0;
+    border-radius:9px;
+    color:#92999c;
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.tabs button.active{
+    background:linear-gradient(135deg,#c49b43,#f1d582);
+    color:#17130a;
+    box-shadow:0 4px 14px rgba(216,180,93,.15);
+}
+
+.form-section{
+    display:none;
+}
+
+.form-section.active{
+    display:block;
+}
+
+.form-title{
+    font-size:22px;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.form-subtitle{
+    color:#90999c;
+    font-size:12px;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.form-group{
+    margin-bottom:19px;
+}
+
+label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    font-weight:700;
+    color:#e4d4aa;
+    margin-bottom:9px;
+}
+
+label i{
+    color:var(--gold);
+    font-size:13px;
+}
+
+.input-box,
+.phone-box{
+    width:100%;
+    min-height:53px;
+    display:flex;
+    align-items:center;
+    background:#090d0e;
+    border:1px solid #30383a;
+    border-radius:12px;
+    transition:.25s;
+    overflow:hidden;
+}
+
+.input-box:focus-within,
+.phone-box:focus-within{
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(216,180,93,.09);
+}
+
+.input-icon{
+    width:43px;
+    min-width:43px;
+    display:flex;
+    justify-content:center;
+    color:#c6a653;
+    font-size:15px;
+}
+
+.input-box input,
+.phone-box input{
+    width:100%;
+    min-width:0;
+    height:51px;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:white;
+    font-size:13px;
+    font-family:inherit;
+    padding:0 12px 0 0;
+}
+
+input::placeholder{
+    color:#626c70;
+}
+
+.phone-box select{
+    height:51px;
+    border:0;
+    outline:0;
+    background:#171c1d;
+    color:#e9cb7a;
+    padding:0 9px;
+    font-size:11px;
+    font-weight:700;
+    border-right:1px solid #30383a;
+    max-width:125px;
+}
+
+.password-eye{
+    color:#899194;
+    padding:15px;
+    cursor:pointer;
+}
+
+.reception-card{
+    background:linear-gradient(145deg,rgba(216,180,93,.09),rgba(216,180,93,.025));
+    border:1px solid rgba(216,180,93,.25);
+    border-radius:16px;
+    padding:16px 13px;
+    margin:22px 0;
+}
+
+.reception-heading{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    margin-bottom:12px;
+}
+
+.reception-icon{
+    width:38px;
+    height:38px;
+    min-width:38px;
+    border-radius:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(216,180,93,.15);
+    color:var(--gold-light);
+    font-size:16px;
+}
+
+.reception-heading h3{
+    font-size:13px;
+    color:#f2d98e;
+    margin-bottom:4px;
+}
+
+.reception-heading p{
+    font-size:10px;
+    color:#969b9c;
+}
+
+.reception-card label{
+    color:#fff0c4;
+}
+
+.help-text{
+    color:#939b9e;
+    font-size:10px;
+    line-height:1.6;
+    margin-top:9px;
+}
+
+.help-text i{
+    color:var(--gold);
+    margin-right:4px;
+}
+
+.submit-btn{
+    width:100%;
+    min-height:54px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(110deg,#b68b35,#f5d98b,#c49b43);
+    color:#17130a;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.5px;
+    cursor:pointer;
+    margin-top:8px;
+    box-shadow:0 8px 22px rgba(216,180,93,.16);
+    transition:.2s;
+}
+
+.submit-btn:active{
+    transform:scale(.98);
+}
+
+.submit-btn:disabled{
+    opacity:.65;
+    cursor:wait;
+}
+
+.submit-btn i{
+    margin-left:8px;
+}
+
+.message{
+    display:none;
+    margin-top:16px;
+    padding:12px;
+    border-radius:10px;
+    font-size:12px;
+    text-align:center;
+    line-height:1.5;
+}
+
+.message.success{
+    display:block;
+    background:rgba(51,190,112,.09);
+    color:#64d99a;
+    border:1px solid rgba(51,190,112,.2);
+}
+
+.message.error{
+    display:block;
+    background:rgba(255,75,75,.08);
+    color:#ff8585;
+    border:1px solid rgba(255,75,75,.2);
+}
+
+.security{
+    text-align:center;
+    margin-top:18px;
+    font-size:10px;
+    color:#92999c;
+}
+
+.security i{
+    color:#d8b45d;
+    margin-right:5px;
+}
+
+.footer{
+    text-align:center;
+    margin-top:25px;
+    color:#656d70;
+    font-size:10px;
+}
+
+/* PRÉSENTATION MATONTINE */
+
+.presentation{
+    margin-top:25px;
+    background:linear-gradient(145deg,#151a1c,#101314);
+    border:1px solid rgba(216,180,93,.18);
+    border-radius:20px;
+    padding:20px 17px;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.presentation-header{
+    text-align:center;
+    padding:8px 0 18px;
+}
+
+.presentation-header .presentation-icon{
+    width:48px;
+    height:48px;
+    border-radius:15px;
+    background:rgba(216,180,93,.13);
+    color:var(--gold-light);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 12px;
+    font-size:21px;
+}
+
+.presentation-header h2{
+    color:var(--gold-light);
+    font-family:'Playfair Display',serif;
+    font-size:23px;
+    margin-bottom:8px;
+}
+
+.presentation-header p{
+    font-size:11px;
+    line-height:1.7;
+    color:#a0a7a9;
+}
+
+.presentation-toggle{
+    width:100%;
+    background:#090d0e;
+    border:1px solid rgba(216,180,93,.28);
+    color:var(--gold-light);
+    border-radius:11px;
+    padding:13px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:9px;
+}
+
+.presentation-content{
+    display:none;
+    margin-top:20px;
+}
+
+.presentation-content.open{
+    display:block;
+}
+
+.presentation-intro{
+    font-size:12px;
+    line-height:1.8;
+    color:#b0b7b9;
+    margin-bottom:18px;
+    text-align:center;
+}
+
+.presentation-section{
+    margin-bottom:17px;
+    padding:15px 13px;
+    border-radius:14px;
+    background:#0b1011;
+    border:1px solid rgba(216,180,93,.12);
+}
+
+.presentation-section h3{
+    color:var(--gold-light);
+    font-size:13px;
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.presentation-section h3 i{
+    color:var(--gold);
+}
+
+.presentation-section p{
+    color:#aeb5b7;
+    font-size:11px;
+    line-height:1.8;
+}
+
+.presentation-section ul{
+    padding-left:18px;
+    margin-top:8px;
+}
+
+.presentation-section li{
+    color:#aeb5b7;
+    font-size:11px;
+    line-height:1.8;
+    margin-bottom:5px;
+}
+
+.step{
+    display:flex;
+    gap:11px;
+    margin-top:13px;
+    align-items:flex-start;
+}
+
+.step-number{
+    width:25px;
+    height:25px;
+    min-width:25px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(216,180,93,.15);
+    color:var(--gold-light);
+    font-size:11px;
+    font-weight:800;
+}
+
+.step-text{
+    color:#aeb5b7;
+    font-size:11px;
+    line-height:1.7;
+}
+
+.step-text strong{
+    color:#f0d78e;
+}
+
+.notice{
+    padding:13px;
+    background:rgba(216,180,93,.07);
+    border:1px solid rgba(216,180,93,.22);
+    border-radius:12px;
+    margin-top:15px;
+    color:#d2c39b;
+    font-size:10px;
+    line-height:1.8;
+}
+
+.notice i{
+    color:var(--gold);
+    margin-right:5px;
+}
+
+.presentation-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.presentation-actions button{
+    flex:1;
+    padding:13px 7px;
+    border-radius:10px;
+    border:0;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.action-gold{
+    background:linear-gradient(110deg,#b68b35,#f5d98b);
+    color:#17130a;
+}
+
+.action-outline{
+    background:transparent;
+    border:1px solid var(--gold)!important;
+    color:var(--gold-light);
+}
+
+.launch-date{
+    text-align:center;
+    color:#858e91;
+    font-size:10px;
+    margin-top:17px;
+}
+
+@media(max-width:380px){
+    .card{
+        padding:21px 15px;
+    }
+
+    .logo h1{
+        font-size:31px;
+    }
+
+    .phone-box select{
+        padding:0 5px;
+        font-size:10px;
+        max-width:115px;
+    }
+
+    .presentation{
+        padding:17px 13px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <div class="logo-icon">
+            <i class="fa-solid fa-coins"></i>
+        </div>
+
+        <h1>Ma<span>Tontine</span></h1>
+        <p>ENSEMBLE POUR RÉUSSIR</p>
+    </div>
+
+    <div class="card">
+
+        <div class="tabs">
+            <button class="active" id="registerTab" type="button">
+                Inscription
+            </button>
+            <button id="loginTab" type="button">
+                Connexion
+            </button>
+        </div>
+
+        <!-- INSCRIPTION -->
+        <div class="form-section active" id="registerForm">
+
+            <h2 class="form-title">Créer un compte</h2>
+            <p class="form-subtitle">
+                Remplissez les informations ci-dessous pour rejoindre MaTontine.
+            </p>
+
+            <form id="signupForm">
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa-solid fa-user"></i>
+                        Nom et prénom
+                    </label>
+                    <div class="input-box">
+                        <span class="input-icon">
+                            <i class="fa-regular fa-user"></i>
+                        </span>
+                        <input type="text" id="fullName" placeholder="Ex : Kouamé Jean" autocomplete="name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        Numéro de téléphone
+                    </label>
+                    <div class="phone-box">
+                        <select id="countryCode">
+                            <option value="+225">🇨🇮 +225</option>
+                            <option value="+229">🇧🇯 +229</option>
+                            <option value="+228">🇹🇬 +228</option>
+                            <option value="+223">🇲🇱 +223</option>
+                            <option value="+226">🇧🇫 +226</option>
+                            <option value="+221">🇸🇳 +221</option>
+                        </select>
+                        <input type="tel" id="phone" placeholder="Votre numéro" autocomplete="tel-national" required>
+                    </div>
+                </div>
+
+                <!-- RÉCEPTION DES FONDS -->
+                <div class="reception-card">
+                    <div class="reception-heading">
+                        <div class="reception-icon">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <div>
+                            <h3>Réception des fonds</h3>
+                            <p>Coordonnées pour recevoir vos paiements</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:0">
+                        <label>
+                            <i class="fa-solid fa-money-bill-transfer"></i>
+                            Numéro de réception des fonds
+                        </label>
+                        <div class="phone-box">
+                            <select id="receiveCode">
+                                <option value="+225">🇨🇮 +225</option>
+                                <option value="+229">🇧🇯 +229</option>
+                                <option value="+228">🇹🇬 +228</option>
+                                <option value="+223">🇲🇱 +223</option>
+                                <option value="+226">🇧🇫 +226</option>
+                                <option value="+221">🇸🇳 +221</option>
+                            </select>
+                            <input type="tel" id="receivePhone" placeholder="Numéro Mobile Money" required>
+                        </div>
+                        <p class="help-text">
+                            <i class="fa-solid fa-circle-info"></i>
+                            Indiquez le numéro Mobile Money sur lequel vous souhaitez recevoir vos fonds.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa-solid fa-lock"></i>
+                        Mot de passe
+                    </label>
+                    <div class="input-box">
+                        <span class="input-icon">
+                            <i class="fa-solid fa-key"></i>
+                        </span>
+                        <input type="password" id="password" placeholder="Créer un mot de passe" autocomplete="new-password" required>
+                        <i class="fa-solid fa-eye password-eye" data-password="password"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Confirmer le mot de passe
+                    </label>
+                    <div class="input-box">
+                        <span class="input-icon">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input type="password" id="confirmPassword" placeholder="Répétez votre mot de passe" autocomplete="new-password" required>
+                        <i class="fa-solid fa-eye password-eye" data-password="confirmPassword"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    CRÉER MON COMPTE
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+            </form>
+        </div>
+
+        <!-- CONNEXION -->
+        <div class="form-section" id="loginForm">
+
+            <h2 class="form-title">Bon retour !</h2>
+            <p class="form-subtitle">
+                Connectez-vous pour accéder à votre espace personnel.
+            </p>
+
+            <form id="signinForm">
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa-solid fa-mobile-screen"></i>
+                        Numéro de téléphone
+                    </label>
+                    <div class="phone-box">
+                        <select id="loginCode">
+                            <option value="+225">🇨🇮 +225</option>
+                            <option value="+229">🇧🇯 +229</option>
+                            <option value="+228">🇹🇬 +228</option>
+                            <option value="+223">🇲🇱 +223</option>
+                            <option value="+226">🇧🇫 +226</option>
+                            <option value="+221">🇸🇳 +221</option>
+                        </select>
+                        <input type="tel" id="loginPhone" placeholder="Votre numéro" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa-solid fa-lock"></i>
+                        Mot de passe
+                    </label>
+                    <div class="input-box">
+                        <span class="input-icon">
+                            <i class="fa-solid fa-key"></i>
+                        </span>
+                        <input type="password" id="loginPassword" placeholder="Votre mot de passe" autocomplete="current-password" required>
+                        <i class="fa-solid fa-eye password-eye" data-password="loginPassword"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    SE CONNECTER
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+            </form>
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="security">
+            <i class="fa-solid fa-shield-halved"></i>
+            Vos informations doivent rester confidentielles.
+        </div>
+
+    </div>
+
+    <!-- PRÉSENTATION MATONTINE -->
+    <div class="presentation">
+
+        <div class="presentation-header">
+            <div class="presentation-icon">
+                <i class="fa-solid fa-handshake-angle"></i>
+            </div>
+
+            <h2>Bienvenue sur MaTontine</h2>
+
+            <p>
+                Une plateforme communautaire qui facilite les contributions
+                entre membres grâce à un système de jumelage.
+            </p>
+        </div>
+
+        <button type="button" class="presentation-toggle" id="presentationToggle">
+            <i class="fa-solid fa-circle-info"></i>
+            Découvrir le fonctionnement
+            <i class="fa-solid fa-chevron-down" id="presentationArrow"></i>
+        </button>
+
+        <div class="presentation-content" id="presentationContent">
+
+            <p class="presentation-intro">
+                MaTontine met en relation des membres qui souhaitent contribuer
+                les uns pour les autres. Chaque membre peut participer au
+                fonctionnement communautaire selon les conditions de la formule choisie.
+            </p>
+
+            <!-- SECTION 1 -->
+            <div class="presentation-section">
+                <h3>
+                    <i class="fa-solid fa-people-group"></i>
+                    1. Comment fonctionne MaTontine ?
+                </h3>
+
+                <p>
+                    MaTontine repose sur un principe de contribution entre membres,
+                    appelé P2P (Peer-to-Peer). Cela signifie que les transferts
+                    sont effectués directement entre les membres jumelés,
+                    selon les règles de la plateforme.
+                </p>
+
+                <ul>
+                    <li>Chaque membre choisit une formule de contribution.</li>
+                    <li>Le système recherche un autre membre compatible.</li>
+                    <li>Les membres jumelés reçoivent les informations nécessaires.</li>
+                    <li>Les paiements sont effectués entre les membres concernés.</li>
+                </ul>
+            </div>
+
+            <!-- SECTION 2 -->
+            <div class="presentation-section">
+                <h3>
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                    2. Le système de jumelage
+                </h3>
+
+                <p>
+                    Le jumelage permet de mettre en relation deux membres :
+                    celui qui doit effectuer une contribution et celui qui
+                    doit recevoir les fonds.
+                </p>
+
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        <strong>Recherche d'un membre :</strong>
+                        le système recherche un membre disponible correspondant
+                        aux conditions de la contribution.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        <strong>Attribution du jumelage :</strong>
+                        les deux membres retrouvent les informations de leur
+                        jumelage dans leur espace personnel.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        <strong>Échange des informations :</strong>
+                        le contributeur consulte les coordonnées du bénéficiaire
+                        pour effectuer le paiement.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3 -->
+            <div class="presentation-section">
+                <h3>
+                    <i class="fa-solid fa-address-card"></i>
+                    3. Mes jumelages
+                </h3>
+
+                <p>
+                    Dans la rubrique « Mes jumelages », chaque membre peut
+                    consulter l'évolution de ses mises en relation.
+                </p>
+
+                <ul>
+                    <li>Le nom du membre avec lequel il est jumelé.</li>
+                    <li>Son numéro de téléphone.</li>
+                    <li>Les coordonnées de réception des fonds.</li>
+                    <li>Le montant de la contribution concernée.</li>
+                    <li>Le statut et les informations du jumelage.</li>
+                </ul>
+
+                <p style="margin-top:10px">
+                    Avant tout transfert, les membres peuvent se contacter
+                    pour vérifier les informations et confirmer leur identité.
+                </p>
+            </div>
+
+            <!-- SECTION 4 -->
+            <div class="presentation-section">
+                <h3>
+                    <i class="fa-solid fa-clock"></i>
+                    4. Délai de paiement
+                </h3>
+
+                <p>
+                    Après la réception d'un nouveau jumelage, le contributeur
+                    dispose d'un délai maximal de 24 heures pour effectuer
+                    le paiement demandé, conformément aux règles applicables.
+                </p>
+
+                <p style="margin-top:10px">
+                    Un retard ou un non-respect des règles peut entraîner
+                    des restrictions sur le compte, selon les procédures
+                    de contrôle de la plateforme.
+                </p>
+            </div>
+
+            <!-- SECTION 5 -->
+            <div class="presentation-section">
+                <h3>
+                    <i class="fa-solid fa-circle-check"></i>
+                    5. Confirmation de réception
+                </h3>
+
+                <p>
+                    Lorsque le bénéficiaire reçoit effectivement les fonds,
+                    il doit se rendre dans son jumelage et utiliser le bouton
+                    « J'ai reçu l'argent » pour confirmer la réception.
+                </p>
+
+                <p style="margin-top:10px">
+                    Cette confirmation permet de signaler que le transfert
+                    a bien été reçu. Elle doit être effectuée uniquement
+                    après vérification réelle du paiement.
+                </p>
+            </div>
+
+            <!-- SECTION 6 -->
+            <div class="presentation-section">
+                <h3>
+                    <i class="fa-solid fa-file-circle-check"></i>
+                    6. En cas de problème de confirmation
+                </h3>
+
+                <p>
+                    Si un contributeur affirme avoir payé mais que le
+                    bénéficiaire n'a pas encore confirmé la réception,
+                    le contributeur peut transmettre une preuve de paiement
+                    depuis le jumelage concerné, si cette fonctionnalité
+                    est disponible.
+                </p>
+
+                <p style="margin-top:10px">
+                    La preuve doit être lisible et correspondre au transfert
+                    concerné. Elle peut être soumise à une vérification
+                    avant toute décision.
+                </p>
+            </div>
+
+            <!-- SECTION 7 -->
+            <div class="presentation-section">
+                <h3>
+                    <i class="fa-solid fa-calendar-days"></i>
+                    7. Suivi de votre cycle
+                </h3>
+
+                <p>
+                    Après la validation d'une contribution, le membre peut
+                    suivre l'évolution de son cycle depuis son espace personnel.
+                    À la fin de la période prévue, une nouvelle mise en relation
+                    peut être recherchée selon les disponibilités et les règles
+                    de jumelage.
+                </p>
+            </div>
+
+            <!-- SECTION 8 -->
+            <div class="presentation-section">
+                <h3>
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    8. Les formules de contribution
+                </h3>
+
+                <p>
+                    Les formules proposées peuvent comporter des durées et
+                    des pourcentages différents, notamment les formules
+                    présentées sur la plateforme :
+                </p>
+
+                <ul>
+                    <li>Formule de 15 jours : pourcentage annoncé de 65 %.</li>
+                    <li>Formule de 25 jours : pourcentage annoncé de 110 %.</li>
+                </ul>
+
+                <div class="notice">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Les pourcentages affichés ne constituent pas une garantie
+                    de rendement ni de remboursement. Les conditions réelles,
+                    les risques, les délais et la disponibilité des fonds
+                    doivent être vérifiés avant toute contribution.
+                </div>
+            </div>
+
+            <!-- SECTION 9 -->
+            <div class="presentation-section">
+                <h3>
+                    <i class="fa-solid fa-shield-heart"></i>
+                    9. Nos engagements
+                </h3>
+
+                <p>
+                    MaTontine encourage une communauté fondée sur le respect,
+                    la responsabilité et la transparence.
+                </p>
+
+                <ul>
+                    <li>Fournir des informations exactes.</li>
+                    <li>Respecter les membres de la communauté.</li>
+                    <li>Vérifier les coordonnées avant tout transfert.</li>
+                    <li>Conserver les preuves de paiement.</li>
+                    <li>Signaler rapidement toute difficulté.</li>
+                </ul>
+            </div>
+
+            <div class="notice">
+                <i class="fa-solid fa-circle-info"></i>
+                Important : le jumelage ne garantit pas à lui seul qu'un
+                paiement sera effectué. Chaque membre doit vérifier les
+                informations, comprendre les risques et ne jamais envoyer
+                d'argent sans avoir vérifié le bénéficiaire.
+            </div>
+
+            <div class="presentation-actions">
+                <button type="button" class="action-gold" id="goRegister">
+                    S'INSCRIRE
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <button type="button" class="action-outline" id="goLogin">
+                    SE CONNECTER
+                </button>
+            </div>
+
+            <p class="launch-date">
+                MaTontine — Lancement : 18 novembre 2026
+            </p>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2026 MaTontine — Tous droits réservés.
+    </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+    setPersistence,
+    browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+
+import {
+    getDatabase,
+    ref,
+    set,
+    get
+} from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
+
+// CONFIGURATION FIREBASE
+const firebaseConfig = {
+    apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
+    authDomain: "matontine-beefb.firebaseapp.com",
+    databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",
+    projectId: "matontine-beefb",
+    storageBucket: "matontine-beefb.firebasestorage.app",
+    messagingSenderId: "642250537489",
+    appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+// PERSISTANCE DE SESSION
+const persistenceReady = setPersistence(auth, browserLocalPersistence)
+    .catch(error => {
+        console.error("Erreur de persistance :", error);
+    });
+
+// PAYS AUTORISÉS
+const paysAutorises = ["+225", "+229", "+228", "+223", "+226", "+221"];
+
+// OUTILS
+function nettoyerNumero(numero){
+    return numero.replace(/\D/g,"");
+}
+
+function creerIdentifiant(numero){
+    return nettoyerNumero(numero) + "@matontine.app";
+}
+
+function afficherMessage(texte,type){
+    const message = document.getElementById("message");
+    message.textContent = texte;
+    message.className = "message " + type;
+    message.style.display = "block";
+}
+
+function chargerBouton(bouton,actif,texte){
+    bouton.disabled = actif;
+    bouton.innerHTML = actif ? "Veuillez patienter..." : texte;
+}
+
+// CHANGER DE FORMULAIRE
+function showForm(form){
+    document.getElementById("registerForm").classList.remove("active");
+    document.getElementById("loginForm").classList.remove("active");
+    document.getElementById("registerTab").classList.remove("active");
+    document.getElementById("loginTab").classList.remove("active");
+    document.getElementById("message").style.display = "none";
+
+    if(form === "register"){
+        document.getElementById("registerForm").classList.add("active");
+        document.getElementById("registerTab").classList.add("active");
+    }else{
+        document.getElementById("loginForm").classList.add("active");
+        document.getElementById("loginTab").classList.add("active");
+    }
+}
+
+document.getElementById("registerTab").addEventListener("click", () => {
+    showForm("register");
+});
+
+document.getElementById("loginTab").addEventListener("click", () => {
+    showForm("login");
+});
+
+// BOUTONS DE LA PRÉSENTATION
+document.getElementById("goRegister").addEventListener("click", () => {
+    showForm("register");
+    document.querySelector(".card").scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
+});
+
+document.getElementById("goLogin").addEventListener("click", () => {
+    showForm("login");
+    document.querySelector(".card").scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
+});
+
+// OUVRIR / FERMER LA PRÉSENTATION
+const presentationToggle = document.getElementById("presentationToggle");
+const presentationContent = document.getElementById("presentationContent");
+const presentationArrow = document.getElementById("presentationArrow");
+
+presentationToggle.addEventListener("click", () => {
+    const ouvert = presentationContent.classList.toggle("open");
+
+    if(ouvert){
+        presentationToggle.innerHTML =
+            '<i class="fa-solid fa-circle-info"></i> Réduire les informations <i class="fa-solid fa-chevron-up"></i>';
+    }else{
+        presentationToggle.innerHTML =
+            '<i class="fa-solid fa-circle-info"></i> Découvrir le fonctionnement <i class="fa-solid fa-chevron-down"></i>';
+    }
+});
+
+// AFFICHER / MASQUER MOT DE PASSE
+document.querySelectorAll(".password-eye").forEach(icon => {
+    icon.addEventListener("click", function(){
+        const id = this.dataset.password;
+        const input = document.getElementById(id);
+
+        if(input.type === "password"){
+            input.type = "text";
+            this.classList.replace("fa-eye","fa-eye-slash");
+        }else{
+            input.type = "password";
+            this.classList.replace("fa-eye-slash","fa-eye");
+        }
+    });
+});
+
+// INSCRIPTION
+document.getElementById("signupForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const bouton = this.querySelector(".submit-btn");
+    const texteOriginal = bouton.innerHTML;
+
+    const nom = document.getElementById("fullName").value.trim();
+    const indicatif = document.getElementById("countryCode").value;
+    const telephone = nettoyerNumero(document.getElementById("phone").value);
+
+    const codeReception = document.getElementById("receiveCode").value;
+    const telephoneReception = nettoyerNumero(document.getElementById("receivePhone").value);
+
+    const password = document.getElementById("password").value;
+    const confirmation = document.getElementById("confirmPassword").value;
+
+    if(!paysAutorises.includes(indicatif) || !paysAutorises.includes(codeReception)){
+        afficherMessage("Pays non autorisé.", "error");
+        return;
+    }
+
+    if(!nom || telephone.length < 7 || telephoneReception.length < 7){
+        afficherMessage("Veuillez vérifier vos informations.", "error");
+        return;
+    }
+
+    if(password.length < 6){
+        afficherMessage("Le mot de passe doit contenir au moins 6 caractères.", "error");
+        return;
+    }
+
+    if(password !== confirmation){
+        afficherMessage("Les mots de passe ne correspondent pas.", "error");
+        return;
+    }
+
+    const numeroComplet = indicatif + telephone;
+    const numeroReception = codeReception + telephoneReception;
+    const emailTechnique = creerIdentifiant(numeroComplet);
+
+    chargerBouton(bouton, true, texteOriginal);
+
+    try{
+        await persistenceReady;
+
+        const resultat = await createUserWithEmailAndPassword(
+            auth,
+            emailTechnique,
+            password
+        );
+
+        const utilisateur = resultat.user;
+
+        const donneesUtilisateur = {
+            uid: utilisateur.uid,
+            nom: nom,
+            telephone: numeroComplet,
+            numeroReception: numeroReception,
+            pays: indicatif,
+            dateInscription: new Date().toISOString(),
+            statut: "actif",
+            solde: 0
+        };
+
+        await set(
+            ref(db, "users/" + utilisateur.uid),
+            donneesUtilisateur
+        );
+
+        window.currentMember = donneesUtilisateur;
+
+        afficherMessage(
+            "Félicitations " + nom + " ! Redirection en cours...",
+            "success"
+        );
+
+        setTimeout(() => {
+            window.location.href = "accueil.html";
+        }, 1200);
+
+    }catch(error){
+        console.error(error);
+
+        let erreur = "Une erreur est survenue.";
+
+        if(error.code === "auth/email-already-in-use"){
+            erreur = "Ce numéro possède déjà un compte.";
+        }else if(error.code === "auth/weak-password"){
+            erreur = "Mot de passe trop faible.";
+        }else if(error.code === "auth/network-request-failed"){
+            erreur = "Vérifiez votre connexion Internet.";
+        }else if(error.code === "auth/invalid-email"){
+            erreur = "Le numéro de téléphone est incorrect.";
+        }else if(error.code === "PERMISSION_DENIED"){
+            erreur = "Impossible d'enregistrer votre profil. Contactez l'administration.";
+        }
+
+        afficherMessage(erreur, "error");
+
+    }finally{
+        chargerBouton(bouton, false, texteOriginal);
+    }
+});
+
+// CONNEXION
+document.getElementById("signinForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const bouton = this.querySelector(".submit-btn");
+    const texteOriginal = bouton.innerHTML;
+
+    const indicatif = document.getElementById("loginCode").value;
+    const telephone = nettoyerNumero(document.getElementById("loginPhone").value);
+    const password = document.getElementById("loginPassword").value;
+
+    if(!paysAutorises.includes(indicatif)){
+        afficherMessage("Pays non autorisé.", "error");
+        return;
+    }
+
+    if(!telephone || !password){
+        afficherMessage("Veuillez remplir tous les champs.", "error");
+        return;
+    }
+
+    const numeroComplet = indicatif + telephone;
+    const emailTechnique = creerIdentifiant(numeroComplet);
+
+    chargerBouton(bouton, true, texteOriginal);
+
+    try{
+        await persistenceReady;
+
+        const resultat = await signInWithEmailAndPassword(
+            auth,
+            emailTechnique,
+            password
+        );
+
+        const utilisateur = resultat.user;
+
+        const profil = await get(
+            ref(db, "users/" + utilisateur.uid)
+        );
+
+        if(!profil.exists()){
+            await signOut(auth);
+            afficherMessage(
+                "Profil introuvable. Contactez l'administration.",
+                "error"
+            );
+            return;
+        }
+
+        const membre = profil.val();
+
+        if(membre.statut !== "actif"){
+            await signOut(auth);
+            afficherMessage(
+                "Votre compte est suspendu ou inactif.",
+                "error"
+            );
+            return;
+        }
+
+        window.currentMember = {
+            uid: utilisateur.uid,
+            ...membre
+        };
+
+        afficherMessage(
+            "Bienvenue " + membre.nom + " ! Connexion réussie.",
+            "success"
+        );
+
+        setTimeout(() => {
+            window.location.href = "accueil.html";
+        }, 1000);
+
+    }catch(error){
+        console.error(error);
+
+        let erreur = "Numéro ou mot de passe incorrect.";
+
+        if(error.code === "auth/network-request-failed"){
+            erreur = "Problème de connexion Internet.";
+        }else if(error.code === "auth/too-many-requests"){
+            erreur = "Trop de tentatives. Réessayez plus tard.";
+        }
+
+        afficherMessage(erreur, "error");
+
+    }finally{
+        chargerBouton(bouton, false, texteOriginal);
+    }
+});
+
+// ÉCOUTEUR D'ÉTAT D'AUTHENTIFICATION
+onAuthStateChanged(auth, async function(utilisateur){
+
+    if(!utilisateur){
+        window.currentMember = null;
+        return;
+    }
+
+    try{
+        const resultat = await get(
+            ref(db, "users/" + utilisateur.uid)
+        );
+
+        if(!resultat.exists()){
+            window.currentMember = null;
+            return;
+        }
+
+        const membre = resultat.val();
+
+        window.currentMember = {
+            uid: utilisateur.uid,
+            ...membre
+        };
+
+    }catch(error){
+        console.error("Erreur de récupération :", error);
+    }
+});
+
+// RÉCUPÉRER LE MEMBRE CONNECTÉ
+window.recupererMembre = function(){
+    return window.currentMember || null;
+};
+
+// DÉCONNEXION
+window.deconnecterMembre = async function(){
+    try{
+        await signOut(auth);
+        window.currentMember = null;
+        window.location.reload();
+
+    }catch(error){
+        console.error(error);
+        alert("Erreur pendant la déconnexion.");
+    }
+};
+
+console.log("MaTontine Firebase initialisé.");
+</script>
+
+</body>
+</html>

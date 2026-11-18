@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Profil - MaTontine</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+ font-family:Inter,sans-serif;
+ background:#0d0d0e;
+ color:#fff;
+ padding-bottom:110px;
+}
+
+header{
+ padding:22px 18px;
+ background:#151515;
+ border-bottom:1px solid #302719;
+}
+
+header h2{font-size:20px;color:#e4b95d}
+header p{font-size:12px;color:#999;margin-top:6px}
+
+.container{padding:18px}
+
+.profile-card{
+ background:linear-gradient(145deg,#211c12,#151515);
+ border:1px solid #4a3920;
+ border-radius:18px;
+ padding:22px;
+ text-align:center;
+ margin-bottom:20px;
+}
+
+.avatar{
+ width:75px;
+ height:75px;
+ border-radius:50%;
+ background:#302719;
+ color:#e4b95d;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:30px;
+ margin:0 auto 12px;
+}
+
+.profile-card h3{font-size:18px}
+.profile-card p{font-size:12px;color:#aaa;margin-top:6px}
+
+.section-title{
+ font-size:15px;
+ margin:22px 0 13px;
+ color:#e4b95d;
+}
+
+.info-box{
+ background:#181818;
+ border:1px solid #302719;
+ border-radius:13px;
+ padding:15px;
+ margin-bottom:12px;
+}
+
+.info-label{
+ font-size:11px;
+ color:#999;
+ margin-bottom:8px;
+}
+
+.info-value{
+ font-size:14px;
+ font-weight:600;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ overflow-wrap:anywhere;
+}
+
+.info-value i{color:#e4b95d}
+
+button{
+ border:none;
+ cursor:pointer;
+ font-family:inherit;
+}
+
+.main-btn{
+ width:100%;
+ padding:15px;
+ background:linear-gradient(135deg,#f2cf7b,#c18b32);
+ color:#17120a;
+ font-weight:800;
+ border-radius:12px;
+ margin-top:12px;
+ font-size:14px;
+}
+
+.secondary-btn{
+ width:100%;
+ padding:13px;
+ background:#292319;
+ color:#e4b95d;
+ border:1px solid #70552b;
+ border-radius:12px;
+ margin-top:10px;
+ font-weight:700;
+}
+
+.notice{
+ background:#211c12;
+ border:1px solid #574323;
+ padding:13px;
+ border-radius:12px;
+ color:#d8c08e;
+ font-size:12px;
+ line-height:1.6;
+ margin:15px 0;
+}
+
+.modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.85);
+ z-index:200;
+ align-items:center;
+ justify-content:center;
+ padding:15px;
+}
+
+.modal-content{
+ width:100%;
+ max-width:430px;
+ max-height:90vh;
+ overflow-y:auto;
+ background:#171717;
+ border:1px solid #594323;
+ border-radius:17px;
+ padding:20px;
+}
+
+.modal-content h3{
+ color:#e4b95d;
+ margin-bottom:17px;
+}
+
+label{
+ display:block;
+ font-size:12px;
+ color:#aaa;
+ margin:13px 0 7px;
+}
+
+input{
+ width:100%;
+ padding:14px;
+ background:#252525;
+ border:1px solid #45403a;
+ border-radius:9px;
+ color:white;
+ outline:none;
+ font-size:14px;
+}
+
+input:focus{border-color:#e4b95d}
+
+.close-btn{
+ width:100%;
+ padding:13px;
+ margin-top:10px;
+ background:#303030;
+ color:white;
+ border-radius:10px;
+}
+
+.history-item{
+ background:#181818;
+ border:1px solid #302719;
+ padding:14px;
+ border-radius:12px;
+ margin-bottom:10px;
+ font-size:12px;
+ line-height:1.7;
+}
+
+.pending{color:#f4c96c}
+.accepted{color:#70df91}
+.rejected{color:#ff7777}
+
+/* NAVIGATION COMPLETE */
+
+.bottom-nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ width:100%;
+ background:rgba(17,17,18,.96);
+ backdrop-filter:blur(14px);
+ border-top:1px solid #2a2418;
+ display:flex;
+ justify-content:space-around;
+ align-items:center;
+ padding:0 3px calc(10px + env(safe-area-inset-bottom));
+ z-index:100;
+}
+
+.bottom-nav a{
+ flex:1;
+ text-align:center;
+ text-decoration:none;
+ color:#8f8a7e;
+ font-size:10px;
+ font-weight:500;
+ padding:10px 2px;
+}
+
+.bottom-nav a i{
+ display:block;
+ font-size:16px;
+ margin-bottom:5px;
+}
+
+.bottom-nav a span{
+ display:block;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+
+.bottom-nav a.active{
+ color:#e4b95d;
+ background:rgba(228,185,93,.08);
+ box-shadow:inset 0 2px 0 #e4b95d;
+}
+
+@media(max-width:360px){
+ .bottom-nav a{font-size:9px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <h2><i class="fa-solid fa-user-circle"></i> Mon Profil</h2>
+ <p>Consulte et gère tes informations personnelles</p>
+</header>
+
+<div class="container">
+
+ <div class="profile-card">
+  <div class="avatar">
+   <i class="fa-solid fa-user"></i>
+  </div>
+  <h3 id="displayName">Chargement...</h3>
+  <p>Mon compte MaTontine</p>
+ </div>
+
+ <h3 class="section-title">Mes informations personnelles</h3>
+
+ <div class="info-box">
+  <div class="info-label">Nom complet</div>
+  <div class="info-value">
+   <span id="nom">Chargement...</span>
+   <i class="fa-solid fa-user"></i>
+  </div>
+ </div>
+
+ <div class="info-box">
+  <div class="info-label">Numéro de téléphone</div>
+  <div class="info-value">
+   <span id="telephone">Chargement...</span>
+   <i class="fa-solid fa-phone"></i>
+  </div>
+ </div>
+
+ <div class="info-box">
+  <div class="info-label">Numéro de réception</div>
+  <div class="info-value">
+   <span id="reception">Chargement...</span>
+   <i class="fa-solid fa-wallet"></i>
+  </div>
+ </div>
+
+ <div class="info-box">
+  <div class="info-label">Code secret</div>
+  <div class="info-value">
+   <span>••••••••</span>
+   <i class="fa-solid fa-lock"></i>
+  </div>
+ </div>
+
+ <div class="notice">
+  <i class="fa-solid fa-shield-halved"></i>
+  Pour protéger ton compte, toute modification de tes informations doit être vérifiée et approuvée par l'administration.
+ </div>
+
+ <button class="main-btn" onclick="openModal()">
+  <i class="fa-solid fa-pen"></i>
+  Modifier mes informations
+ </button>
+
+ <button class="secondary-btn" onclick="requestSecretChange()">
+  <i class="fa-solid fa-key"></i>
+  Demander le changement du code secret
+ </button>
+
+ <h3 class="section-title">Mes demandes de modification</h3>
+
+ <div id="history">
+  <p style="color:#999;font-size:12px">
+   Chargement des demandes...
+  </p>
+ </div>
+
+</div>
+
+<!-- FENÊTRE DE MODIFICATION -->
+
+<div class="modal" id="editModal">
+ <div class="modal-content">
+
+  <h3>
+   <i class="fa-solid fa-pen"></i>
+   Modifier mes informations
+  </h3>
+
+  <form id="editForm">
+
+   <label>Nom complet</label>
+   <input type="text" id="newNom" required>
+
+   <label>Numéro de téléphone</label>
+   <input type="tel" id="newTelephone" required>
+
+   <label>Numéro de réception</label>
+   <input type="tel" id="newReception" required>
+
+   <button class="main-btn" type="submit" id="submitBtn">
+    Envoyer ma demande
+   </button>
+
+   <button type="button" class="close-btn" onclick="closeModal()">
+    Annuler
+   </button>
+
+  </form>
+ </div>
+</div>
+
+<!-- NAVIGATION COMPLÈTE -->
+
+<nav class="bottom-nav">
+
+ <a href="accueil.html">
+  <i class="fa-solid fa-house"></i>
+  <span>Accueil</span>
+ </a>
+
+ <a href="contributions.html">
+  <i class="fa-solid fa-wallet"></i>
+  <span>Contribuer</span>
+ </a>
+
+ <a href="jumelages.html">
+  <i class="fa-solid fa-people-arrows"></i>
+  <span>Jumelages</span>
+ </a>
+
+ <a href="parrainage.html">
+  <i class="fa-solid fa-users"></i>
+  <span>Parrainage</span>
+ </a>
+
+ <a href="profil.html" class="active">
+  <i class="fa-solid fa-user"></i>
+  <span>Profil</span>
+ </a>
+
+ <a href="historique.html">
+  <i class="fa-solid fa-clock-rotate-left"></i>
+  <span>Historique</span>
+ </a>
+
+</nav>
+
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/13.3.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/13.3.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/13.3.0/firebase-database-compat.js"></script>
+
+<script>
+
+const firebaseConfig = {
+ apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
+ authDomain: "matontine-beefb.firebaseapp.com",
+ databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",
+ projectId: "matontine-beefb",
+ storageBucket: "matontine-beefb.firebasestorage.app",
+ messagingSenderId: "642250537489",
+ appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.database();
+
+let currentUser = null;
+let currentProfile = null;
+
+auth.onAuthStateChanged(user => {
+
+ if(!user){
+  alert("Connecte-toi pour accéder à ton profil.");
+  window.location.href = "connexion.html";
+  return;
+ }
+
+ currentUser = user;
+
+ loadProfile();
+ loadRequests();
+
+});
+
+function loadProfile(){
+
+ db.ref("users/" + currentUser.uid).on("value", snapshot => {
+
+  if(!snapshot.exists()){
+   document.getElementById("displayName").textContent = "Profil introuvable";
+   return;
+  }
+
+  currentProfile = snapshot.val();
+
+  document.getElementById("displayName").textContent =
+   currentProfile.nom || "Utilisateur";
+
+  document.getElementById("nom").textContent =
+   currentProfile.nom || "Non renseigné";
+
+  document.getElementById("telephone").textContent =
+   currentProfile.telephone || "Non renseigné";
+
+  document.getElementById("reception").textContent =
+   currentProfile.numeroReception || "Non renseigné";
+
+ });
+
+}
+
+function openModal(){
+
+ if(!currentProfile) return;
+
+ document.getElementById("newNom").value =
+  currentProfile.nom || "";
+
+ document.getElementById("newTelephone").value =
+  currentProfile.telephone || "";
+
+ document.getElementById("newReception").value =
+  currentProfile.numeroReception || "";
+
+ document.getElementById("editModal").style.display = "flex";
+
+}
+
+function closeModal(){
+ document.getElementById("editModal").style.display = "none";
+}
+
+document.getElementById("editForm").addEventListener("submit", async e => {
+
+ e.preventDefault();
+
+ if(!currentUser || !currentProfile) return;
+
+ const btn = document.getElementById("submitBtn");
+
+ btn.disabled = true;
+ btn.textContent = "Envoi en cours...";
+
+ const changes = {
+  nom: document.getElementById("newNom").value.trim(),
+  telephone: document.getElementById("newTelephone").value.trim(),
+  numeroReception: document.getElementById("newReception").value.trim()
+ };
+
+ if(!changes.nom || !changes.telephone || !changes.numeroReception){
+
+  alert("Tous les champs sont obligatoires.");
+
+  btn.disabled = false;
+  btn.textContent = "Envoyer ma demande";
+
+  return;
+ }
+
+ const modifications = {};
+
+ ["nom","telephone","numeroReception"].forEach(field => {
+
+  if(changes[field] !== (currentProfile[field] || "")){
+
+   modifications[field] = {
+    ancien: currentProfile[field] || "",
+    nouveau: changes[field]
+   };
+
+  }
+
+ });
+
+ if(Object.keys(modifications).length === 0){
+
+  alert("Aucune modification détectée.");
+
+  btn.disabled = false;
+  btn.textContent = "Envoyer ma demande";
+
+  return;
+ }
+
+ try{
+
+  const requestRef =
+   db.ref("demandesModification/" + currentUser.uid).push();
+
+  await requestRef.set({
+
+   uid: currentUser.uid,
+
+   nomActuel: currentProfile.nom || "",
+
+   telephoneActuel: currentProfile.telephone || "",
+
+   modifications: modifications,
+
+   statut: "en_attente",
+
+   dateDemande: firebase.database.ServerValue.TIMESTAMP
+
+  });
+
+  alert("Ta demande a été envoyée à l'administration. Elle sera vérifiée avant toute modification.");
+
+  closeModal();
+  loadRequests();
+
+ }catch(error){
+
+  console.error(error);
+  alert("Erreur lors de l'envoi : " + error.message);
+
+ }
+
+ btn.disabled = false;
+ btn.textContent = "Envoyer ma demande";
+
+});
+
+async function requestSecretChange(){
+
+ if(!currentUser) return;
+
+ const confirmation = confirm(
+  "Souhaites-tu envoyer une demande de changement de code secret à l'administration ?"
+ );
+
+ if(!confirmation) return;
+
+ try{
+
+  const requestRef =
+   db.ref("demandesModification/" + currentUser.uid).push();
+
+  await requestRef.set({
+
+   uid: currentUser.uid,
+
+   type: "changement_code_secret",
+
+   statut: "en_attente",
+
+   dateDemande: firebase.database.ServerValue.TIMESTAMP
+
+  });
+
+  alert("Ta demande de changement de code secret a été envoyée à l'administration.");
+
+  loadRequests();
+
+ }catch(error){
+
+  console.error(error);
+  alert("Impossible d'envoyer la demande : " + error.message);
+
+ }
+
+}
+
+function loadRequests(){
+
+ db.ref("demandesModification/" + currentUser.uid)
+ .on("value", snapshot => {
+
+  const history = document.getElementById("history");
+
+  history.innerHTML = "";
+
+  if(!snapshot.exists()){
+
+   history.innerHTML =
+    '<p style="color:#999;font-size:12px">Aucune demande pour le moment.</p>';
+
+   return;
+  }
+
+  const requests = [];
+
+  snapshot.forEach(child => {
+   requests.push(child.val());
+  });
+
+  requests.reverse().forEach(request => {
+
+   let status = request.statut || "en_attente";
+
+   let label = "En attente de vérification";
+   let className = "pending";
+
+   if(status === "acceptee" || status === "approuvee"){
+    label = "Demande acceptée";
+    className = "accepted";
+   }
+
+   if(status === "refusee" || status === "rejetee"){
+    label = "Demande refusée";
+    className = "rejected";
+   }
+
+   let type = request.type === "changement_code_secret"
+    ? "Changement du code secret"
+    : "Modification des informations";
+
+   const div = document.createElement("div");
+   div.className = "history-item";
+
+   const title = document.createElement("strong");
+   title.textContent = type;
+
+   const statusLine = document.createElement("div");
+   statusLine.className = className;
+   statusLine.textContent = label;
+
+   const dateLine = document.createElement("div");
+   dateLine.style.color = "#999";
+
+   dateLine.textContent = request.dateDemande
+    ? new Date(request.dateDemande).toLocaleString("fr-FR")
+    : "Date non disponible";
+
+   div.append(title, statusLine, dateLine);
+
+   if(request.motifRefus){
+
+    const reason = document.createElement("div");
+
+    reason.style.color = "#ff7777";
+    reason.textContent = "Motif : " + request.motifRefus;
+
+    div.appendChild(reason);
+
+   }
+
+   history.appendChild(div);
+
+  });
+
+ });
+
+}
+
+</script>
+
+</body>
+</html>

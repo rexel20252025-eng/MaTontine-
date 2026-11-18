@@ -1,0 +1,350 @@
+<!DOCTYPE html>  <html lang="fr">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>MaTontine - Gestion du Temps des Cycles</title>  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  <style>  
+:root {  
+    --bg: #0a0a0b;  
+    --surface: #131314;  
+    --surface-2: #1a1a1c;  
+    --border: #2a2418;  
+    --border-soft: #1f1b13;  
+    --gold: #e4b95d;  
+    --gold-light: #f5d98a;  
+    --gold-deep: #9c7428;  
+    --red: #ff4d4d;  
+    --green: #70e085;  
+    --text: #f4f1ea;  
+    --muted: #8f8a7e;  
+    --radius: 18px;  
+}  
+  
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }  
+  
+body {  
+    background: radial-gradient(900px 500px at 50% -180px, rgba(228, 185, 93, 0.14), transparent 70%), var(--bg);  
+    color: var(--text); min-height: 100vh; padding-bottom: 80px;  
+}  
+  
+header {  
+    position: sticky; top: 0; z-index: 50; padding: 16px 20px;  
+    display: flex; justify-content: space-between; align-items: center;  
+    background: rgba(10, 10, 11, 0.75); backdrop-filter: blur(14px);  
+    border-bottom: 1px solid var(--border);  
+}  
+  
+.logo {  
+    font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700;  
+    background: linear-gradient(120deg, var(--gold-light), var(--gold) 50%, var(--gold-deep));  
+    -webkit-background-clip: text; background-clip: text; color: transparent;  
+}  
+  
+.admin-badge {  
+    background: rgba(228, 185, 93, 0.15); border: 1px solid var(--gold-deep);  
+    color: var(--gold); padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;  
+}  
+  
+.container { padding: 24px 18px; max-width: 650px; margin: 0 auto; }  
+  
+.page-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 6px; }  
+.page-sub { color: var(--muted); font-size: 13px; margin-bottom: 24px; }  
+  
+/* Connexion Admin */  
+#authAdminSection {  
+    display: flex; justify-content: center; align-items: center; min-height: 60vh;  
+}  
+  
+.login-card {  
+    background: var(--surface); border: 1px solid var(--gold-deep); border-radius: 20px;  
+    padding: 30px; width: 100%; max-width: 400px; text-align: center;  
+    box-shadow: 0 15px 35px -10px rgba(228, 185, 93, 0.2);  
+}  
+  
+.login-card h3 { color: var(--gold-light); font-size: 20px; margin-bottom: 15px; font-family: 'Playfair Display', serif; }  
+  
+.login-input {  
+    width: 100%; padding: 14px; background: var(--bg); border: 1px solid var(--border);  
+    border-radius: 12px; color: var(--text); font-size: 14px; margin-bottom: 16px; text-align: center;  
+}  
+  
+.login-input:focus { border-color: var(--gold); outline: none; }  
+  
+.btn-login {  
+    width: 100%; padding: 14px; background: linear-gradient(90deg, #b58a35, #f0d083);  
+    color: #17120a; border: none; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer;  
+}  
+  
+/* Panneau Admin */  
+#adminPanel { display: none; }  
+  
+.section-title {  
+    font-size: 15px; font-weight: 700; margin: 25px 0 14px; display: flex; align-items: center; gap: 10px; color: var(--text);  
+}  
+.section-title::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }  
+  
+.admin-card {  
+    background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 20px; margin-bottom: 16px;  
+}  
+  
+.admin-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }  
+.admin-card-header strong { font-size: 18px; color: var(--gold-light); }  
+  
+.status-badge {  
+    font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 15px;  
+    background: #2a2213; color: var(--gold); border: 1px solid var(--gold-deep);  
+}  
+  
+.details-grid {  
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;  
+    background: rgba(26, 22, 14, 0.4); padding: 12px; border-radius: 12px;  
+    border: 1px solid var(--border-soft); margin-bottom: 14px; font-size: 13px;  
+}  
+  
+.details-grid p { color: var(--muted); line-height: 1.5; }  
+.details-grid strong { color: var(--text); }  
+  
+.time-control-box {  
+    background: rgba(228, 185, 93, 0.05);  
+    border: 1px solid var(--border);  
+    border-radius: 12px;  
+    padding: 12px;  
+    margin-bottom: 14px;  
+    font-size: 13px;  
+}  
+  
+.time-control-box p { color: var(--gold); font-weight: 600; margin-bottom: 8px; }  
+  
+.time-buttons {  
+    display: grid;  
+    grid-template-columns: repeat(4, 1fr);  
+    gap: 8px;  
+}  
+  
+.btn-time {  
+    background: var(--surface-2);  
+    color: var(--text);  
+    border: 1px solid var(--gold-deep);  
+    padding: 8px 4px;  
+    border-radius: 8px;  
+    font-size: 11px;  
+    font-weight: 700;  
+    cursor: pointer;  
+    text-align: center;  
+}  
+  
+.btn-time:hover { background: var(--gold); color: #131314; }  
+  
+.btn-finish-now {  
+    width: 100%;  
+    background: rgba(112, 224, 133, 0.15);  
+    color: var(--green);  
+    border: 1px solid var(--green);  
+    padding: 10px;  
+    border-radius: 10px;  
+    font-weight: 700;  
+    font-size: 12px;  
+    cursor: pointer;  
+    margin-top: 8px;  
+}  
+.btn-finish-now:hover { background: var(--green); color: #0a0a0b; }  
+  
+.empty {  
+    color: var(--muted); text-align: center; padding: 40px 16px; font-size: 13px;  
+    background: var(--surface); border-radius: var(--radius); border: 1px dashed var(--border);  
+}  
+</style>  </head>  <body>  <header>  
+    <div class="logo">MaTontine - Admin Cycles</div>  
+    <span class="admin-badge"><i class="fa-solid fa-rotate"></i> Gestion Temps Cycles</span>  
+</header>  <div class="container">  <!-- Connexion -->  
+<div id="authAdminSection">  
+    <div class="login-card">  
+        <i class="fa-solid fa-lock" style="font-size: 36px; color: var(--gold); margin-bottom: 12px;"></i>  
+        <h3>Accès Administrateur</h3>  
+        <p style="color:var(--muted); font-size:12.5px; margin-bottom:20px;">Entrez le mot de passe pour gérer les cycles.</p>  
+        <input type="password" id="adminPasswordInput" class="login-input" placeholder="Mot de passe secret">  
+        <button class="btn-login" id="btnLoginAdmin">Se connecter</button>  
+    </div>  
+</div>  
+
+<!-- Panneau Admin Cycles -->  
+<div id="adminPanel">  
+    <h2 class="page-title">Gestion du Temps des Cycles</h2>  
+    <p class="page-sub">Modifiez en direct la durée restante des contributions en cours (raccourcir ou prolonger).</p>  
+
+    <h3 class="section-title">Cycles actifs des membres</h3>  
+    <div id="adminCyclesContainer">  
+        <div class="empty"><i class="fa-solid fa-spinner fa-spin"></i><br><br>Chargement...</div>  
+    </div>  
+</div>
+
+</div>  <script type="module">  
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";  
+import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";  
+  
+const firebaseConfig = {  
+    apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",  
+    authDomain: "matontine-beefb.firebaseapp.com",  
+    databaseURL: "https://matontine-beefb-default-rtdb.firebaseio.com",  
+    projectId: "matontine-beefb",  
+    storageBucket: "matontine-beefb.firebasestorage.app",  
+    messagingSenderId: "642250537489",  
+    appId: "1:642250537489:web:562ebb2e83d1f51c7c4fb0"  
+};  
+  
+const app = initializeApp(firebaseConfig);  
+const db = getDatabase(app);  
+  
+const MOT_DE_PASSE_ADMIN = "admin123";  
+  
+const authAdminSection = document.getElementById("authAdminSection");  
+const adminPanel = document.getElementById("adminPanel");  
+const adminPasswordInput = document.getElementById("adminPasswordInput");  
+const btnLoginAdmin = document.getElementById("btnLoginAdmin");  
+const container = document.getElementById("adminCyclesContainer");  
+  
+if (sessionStorage.getItem("adminConnecte") === "true") {  
+    afficherPanneauAdmin();  
+}  
+  
+btnLoginAdmin.onclick = () => {  
+    const saisi = adminPasswordInput.value.trim();  
+    if (saisi === MOT_DE_PASSE_ADMIN) {  
+        sessionStorage.setItem("adminConnecte", "true");  
+        afficherPanneauAdmin();  
+    } else {  
+        alert("Mot de passe incorrect !");  
+        adminPasswordInput.value = "";  
+    }  
+};  
+  
+function afficherPanneauAdmin() {  
+    authAdminSection.style.display = "none";  
+    adminPanel.style.display = "block";  
+    chargerCyclesActifs();  
+}  
+  
+function formatF(num) { return Number(num).toLocaleString("fr-FR") + " F CFA"; }  
+  
+async function chargerCyclesActifs() {  
+    const usersSnap = await get(ref(db, "users"));  
+    const utilisateurs = usersSnap.val() || {};  
+  
+    onValue(ref(db, "contributionRequests"), (snapshot) => {  
+        const toutesLesDemandes = snapshot.val() || {};  
+        container.innerHTML = "";  
+        let listeActifs = [];  
+  
+        Object.keys(toutesLesDemandes).forEach(userId => {  
+            const userDemandes = toutesLesDemandes[userId];  
+            const infosUser = utilisateurs[userId] || {};  
+            const nomUser = infosUser.nom || infosUser.fullName || "Membre";  
+  
+            Object.keys(userDemandes).forEach(demandeId => {  
+                const req = userDemandes[demandeId];  
+                // On s'intéresse aux cycles "en_cours"  
+                if (req.statut === "en_cours") {  
+                    listeActifs.push({  
+                        userId: userId,  
+                        demandeId: demandeId,  
+                        nom: nomUser,  
+                        ...req  
+                    });  
+                }  
+            });  
+        });  
+  
+        if (listeActifs.length === 0) {  
+            container.innerHTML = `<div class="empty"><i class="fa-solid fa-circle-check" style="font-size:24px; color:#28a745; margin-bottom:10px;"></i><br>Aucun cycle en cours actuellement.</div>`;  
+            return;  
+        }  
+  
+        const maintenant = Date.now();  
+  
+        listeActifs.forEach(req => {  
+            const card = document.createElement("div");  
+            card.className = "admin-card";  
+  
+            const fin = Number(req.dateFinCycle || maintenant);  
+            const resteMs = fin - maintenant;  
+              
+            let tempsTxt = "Cycle terminé";  
+            if (resteMs > 0) {  
+                const j = Math.floor(resteMs / (1000 * 60 * 60 * 24));  
+                const h = Math.floor((resteMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  
+                const m = Math.floor((resteMs % (1000 * 60 * 60)) / (1000 * 60));  
+                tempsTxt = `${j}j ${h}h ${m}m restants`;  
+            }  
+  
+            card.innerHTML = `  
+                <div class="admin-card-header">  
+                    <strong>${formatF(req.montant)} → Gain : ${formatF(req.gainPrevu)}</strong>  
+                    <span class="status-badge">Cycle ${req.cycle}j</span>  
+                </div>  
+                <div class="details-grid">  
+                    <div>  
+                        <p><strong>Membre :</strong><br>${req.nom}</p>  
+                        <p style="margin-top:6px;"><strong>Type :</strong><br>${req.taux}% de bonus</p>  
+                    </div>  
+                    <div>  
+                        <p><strong>Temps actuel :</strong><br><span style="color:var(--gold); font-weight:700;">${tempsTxt}</span></p>  
+                    </div>  
+                </div>  
+                <div class="time-control-box">  
+                    <p><i class="fa-solid fa-clock-rotate-left"></i> Ajuster le temps du cycle :</p>  
+                    <div class="time-buttons">  
+                        <button class="btn-time" onclick="modifierTempsCycle('${req.userId}', '${req.demandeId}', 1, 'heures')">+1h</button>  
+                        <button class="btn-time" onclick="modifierTempsCycle('${req.userId}', '${req.demandeId}', 1, 'jours')">+1 jour</button>  
+                        <button class="btn-time" onclick="modifierTempsCycle('${req.userId}', '${req.demandeId}', 7, 'jours')">+7 jours</button>  
+                        <button class="btn-time" onclick="modifierTempsCycle('${req.userId}', '${req.demandeId}', -1, 'jours')">-1 jour</button>  
+                    </div>  
+                    <button class="btn-finish-now" onclick="modifierTempsCycle('${req.userId}', '${req.demandeId}', 0, 'fin_immediate')">  
+                        <i class="fa-solid fa-bolt">⚡ Terminer le cycle instantanément (Prêt)</i>  
+                    </button>  
+                </div>  
+            `;  
+            container.appendChild(card);  
+        });  
+    });  
+}  
+  
+// Fonction pour modifier la date de fin du cycle en direct  
+window.modifierTempsCycle = async function(userId, demandeId, valeur, type) {  
+    let messageConf = "";  
+    if (type === 'heures') messageConf = `Ajouter 1 heure au cycle ?`;  
+    else if (type === 'jours' && valeur > 0) messageConf = `Ajouter ${valeur} jour(s) au cycle ?`;  
+    else if (type === 'jours' && valeur < 0) messageConf = `Retirer 1 jour au cycle ?`;  
+    else if (type === 'fin_immediate') messageConf = `Terminer ce cycle immédiatement pour le membre ?`;  
+  
+    if (!confirm(messageConf)) return;  
+  
+    try {  
+        const maintenant = Date.now();  
+        // On récupère d'abord l'ancienne date de fin pour l'ajuster  
+        const snap = await get(ref(db, `contributionRequests/${userId}/${demandeId}`));  
+        const reqData = snap.val() || {};  
+        let ancienneFin = Number(reqData.dateFinCycle || maintenant);  
+        if (ancienneFin < maintenant) ancienneFin = maintenant;  
+  
+        let nouvelleFin = ancienneFin;  
+  
+        if (type === 'heures') {  
+            nouvelleFin += 1 * 60 * 60 * 1000;  
+        } else if (type === 'jours') {  
+            nouvelleFin += valeur * 24 * 60 * 60 * 1000;  
+        } else if (type === 'fin_immediate') {  
+            nouvelleFin = maintenant; // <div></div>Fait expirer le chrono tout de suite  
+        }  
+  
+        const updates = {};  
+        updates[`contributionRequests/${userId}/${demandeId}/dateFinCycle`] = nouvelleFin;  
+  
+        await update(ref(db), updates);  
+        alert("Temps du cycle mis à jour avec succès ! Le compteur s'actualise en direct chez le membre.");  
+    } catch (e) {  
+        console.error(e);  
+        alert("Erreur lors de la mise à jour du temps.");  
+    }  
+};  
+</script>  </body>  
+</html>  
