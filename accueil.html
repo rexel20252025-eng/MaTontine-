@@ -1446,7 +1446,10 @@ async function verifierEtDeclencherJumelagesGlobal() {
 
         Object.entries(toutesDemandes).forEach(([uid, liste]) => {
 
-            const user = users[uid] || {};
+            // Pas de profil membre = demande orpheline : ignorée
+            if (!users[uid]) return;
+
+            const user = users[uid];
 
             if (user.statut === "bloque") return;
 
@@ -1506,6 +1509,9 @@ async function verifierEtDeclencherJumelagesGlobal() {
                 ];
 
                 if (statutsBeneficiaires.includes(req.statut)) {
+
+                    // Un bénéficiaire sans numéro de réception ne peut pas être jumelé
+                    if (!user.numeroReception) return;
 
                     const gain = calculerGain(req);
                     const recu = nombre(req.montantRecu);
