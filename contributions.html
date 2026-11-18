@@ -315,6 +315,10 @@ async function finaliserEtJumelerContribution() {
         for (let autreUid of Object.keys(allRequests)) {
             if (autreUid === currentUser.uid) continue;
 
+            // Un compte sans profil, bloqué ou sans numéro de réception ne peut pas recevoir
+            const profilBenef = allUsers[autreUid];
+            if (!profilBenef || profilBenef.statut === "bloque" || !profilBenef.numeroReception) continue;
+
             const userReqs = allRequests[autreUid];
             for (let reqId of Object.keys(userReqs)) {
                 const req = userReqs[reqId];
@@ -322,7 +326,9 @@ async function finaliserEtJumelerContribution() {
                     beneficiaireTrouve = {
                         uid: autreUid,
                         demandeId: reqId,
-                        ...allUsers[autreUid]
+                        nom: profilBenef.nom || profilBenef.fullName || "",
+                        telephone: profilBenef.telephone || profilBenef.phone || "",
+                        numeroReception: profilBenef.numeroReception
                     };
                     break;
                 }
@@ -345,7 +351,8 @@ async function finaliserEtJumelerContribution() {
                 payeurTelephone: currentUserProfile.telephone,
                 beneficiaireUid: beneficiaireTrouve.uid,
                 beneficiaireNom: beneficiaireTrouve.nom || beneficiaireTrouve.fullName || "Membre",
-                beneficiaireTelephone: beneficiaireTrouve.telephone || beneficiaireTrouve.phone || "N/A",
+                beneficiaireTelephone: beneficiaireTrouve.telephone || "N/A",
+                beneficiaireNumeroReception: beneficiaireTrouve.numeroReception,
                 demandePayeurId: currentDemandeId,
                 demandeBenefId: beneficiaireTrouve.demandeId,
                 statut: "en_cours_paiement",
