@@ -360,11 +360,13 @@ header {
 }
 
 .history-card {
-    background:var(--surface);
-    border:1px solid var(--border);
+    background:linear-gradient(145deg,#171a1c,#101314);
+    border:1px solid rgba(228,185,93,.22);
+    border-left:4px solid var(--gold);
     border-radius:16px;
     padding:16px;
-    margin-bottom:10px;
+    margin-bottom:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
 }
 
 .history-top {
@@ -381,19 +383,53 @@ header {
 
 .status {
     font-size:10px;
-    padding:5px 9px;
+    font-weight:700;
+    padding:5px 10px;
     border-radius:20px;
-    background:#2a2213;
-    color:var(--gold);
-    border:1px solid #4a3b23;
+    background:linear-gradient(90deg,rgba(228,185,93,.22),rgba(240,208,131,.12));
+    color:var(--gold-light);
+    border:1px solid rgba(228,185,93,.45);
+    white-space:nowrap;
 }
 
 .cycle-countdown {
     margin-top:14px;
-    padding:13px;
-    background:#211b10;
-    border:1px solid #80632e;
-    border-radius:12px;
+    padding:14px;
+    background:linear-gradient(135deg,#2b2110,#17130b);
+    border:1px solid rgba(228,185,93,.35);
+    border-radius:14px;
+}
+
+.cycle-countdown p i {
+    color:var(--gold);
+    margin-right:5px;
+}
+
+.cycle-end {
+    background:linear-gradient(135deg,#0f2a1f,#101314);
+    border-color:rgba(102,228,180,.4);
+}
+
+.cycle-end p i {
+    color:#66e4b4;
+}
+
+.cycle-end .progress-fill {
+    background:linear-gradient(90deg,#1f9e6e,#66e4b4);
+}
+
+.waiting-pill {
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:4px;
+    padding:7px 12px;
+    border-radius:20px;
+    background:rgba(102,228,180,.12);
+    border:1px solid rgba(102,228,180,.35);
+    color:#66e4b4;
+    font-size:12px;
+    font-weight:700;
 }
 
 .cycle-countdown p {
@@ -3078,14 +3114,24 @@ function afficherHistorique(demandes) {
             ${
                 d.statut === "en_attente_reception_benefices"
                 ? `
-                    <div class="cycle-countdown">
+                    <div class="cycle-countdown cycle-end">
+                        <div class="progress-box">
+                            <div class="progress-head">
+                                <span class="progress-label">Cycle terminé</span>
+                                <strong class="progress-value">100 %</strong>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width:100%"></div>
+                            </div>
+                        </div>
                         <p>
                             <i class="fa-solid fa-hourglass-half"></i>
                             Votre cycle est arrivé à son terme.
                         </p>
-                        <strong style="font-size:13px">
+                        <span class="waiting-pill">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i>
                             En attente de réception des bénéfices
-                        </strong>
+                        </span>
                     </div>
                 `
                 : ""
