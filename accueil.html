@@ -1672,7 +1672,7 @@ async function verifierEtDeclencherJumelagesGlobal() {
             Object.values(liste || {}).forEach(match => {
 
                 if (!match || match.role !== "receveur") return;
-                if (match.statut === "confirme") return;
+                if (["confirme", "expire"].includes(match.statut)) return;
 
                 const cle =
                     `${match.beneficiaireUid}_${match.demandeBenefId}`;
@@ -1680,6 +1680,97 @@ async function verifierEtDeclencherJumelagesGlobal() {
                 reservationsActives[cle] =
                     (reservationsActives[cle] || 0) +
                     nombre(match.montantPaiement || match.montant);
+
+            });
+
+        });
+
+
+        /* DÉLAI DE 24 H DÉPASSÉ : jumelage annulé, montant remis en file, compte du payeur bloqué */
+
+        const updatesExpiration = {};
+        const maintenantExpiration = Date.now();
+
+        Object.entries(tousMatches).forEach(([payeurUid, liste]) => {
+
+            Object.entries(liste || {}).forEach(([matchId, m]) => {
+
+                if (!m || m.role !== "payeur") return;
+                if (m.statut !== "en_cours_paiement") return;
+
+                const limite = nombre(m.limitePaiement);
+                if (limite <= 0 || limite > maintenantExpiration) return;
+
+                const montant = nombre(m.montantPaiement || m.montant);
+                const benefUid = m.beneficiaireUid;
+                const estRetrait = m.typeDemande === "retrait_parrainage";
+
+                // Le bénéficiaire récupère sa réserve
+                const cheminBenef = estRetrait
+                    ? `demandesRetraitParrainage/${benefUid}/${m.demandeBenefId}`
+                    : `contributionRequests/${benefUid}/${m.demandeBenefId}`;
+
+                const donneesBenef = estRetrait
+                    ? retraitsParrainage[benefUid]?.[m.demandeBenefId]
+                    : toutesDemandes[benefUid]?.[m.demandeBenefId];
+
+                if (donneesBenef) {
+                    donneesBenef.montantReserve = Math.max(0, nombre(donneesBenef.montantReserve) - montant);
+                    updatesExpiration[`${cheminBenef}/montantReserve`] = donneesBenef.montantReserve;
+                }
+
+                // Le payeur récupère son budget
+                const cheminPayeur = `contributionRequests/${payeurUid}/${m.demandePayeurId}`;
+                const donneesPayeur = toutesDemandes[payeurUid]?.[m.demandePayeurId];
+
+                if (donneesPayeur) {
+                    const affecte = Math.max(0, nombre(donneesPayeur.montantAffecte) - montant);
+                    const restant = nombre(donneesPayeur.montantRestant) + montant;
+
+                    donneesPayeur.montantAffecte = affecte;
+                    donneesPayeur.montantRestant = restant;
+                    donneesPayeur.statut = affecte > 0 ? "jumelage_partiel" : "en_attente_jumelage";
+
+                    updatesExpiration[`${cheminPayeur}/montantAffecte`] = affecte;
+                    updatesExpiration[`${cheminPayeur}/montantRestant`] = restant;
+                    updatesExpiration[`${cheminPayeur}/statut`] = donneesPayeur.statut;
+                }
+
+                m.statut = "expire";
+                updatesExpiration[`jumelages/${payeurUid}/${matchId}/statut`] = "expire";
+                updatesExpiration[`jumelages/${benefUid}/${matchId}/statut`] = "expire";
+                updatesExpiration[`jumelages/${payeurUid}/${matchId}/dateExpiration`] = maintenantExpiration;
+
+                console.warn("Délai dépassé, jumelage expiré :", matchId);
+
+            });
+
+        });
+
+
+        /* PÉNALITÉ : à l'expiration (24 h), le compte du payeur défaillant est bloqué.
+           Le blocage empêche la connexion (le statut doit être « actif » pour se connecter). */
+
+        Object.entries(tousMatches).forEach(([payeurUid, liste]) => {
+
+            Object.entries(liste || {}).forEach(([matchId, m]) => {
+
+                if (!m || m.role !== "payeur") return;
+                if (m.statut !== "expire") return;
+                if (m.penaliteAppliquee === true) return;
+
+                const limite = nombre(m.limitePaiement);
+                if (limite <= 0 || limite > maintenantExpiration) return;
+
+                if (!users[payeurUid] || users[payeurUid].statut === "bloque") return;
+
+                users[payeurUid].statut = "bloque";
+                updatesExpiration[`users/${payeurUid}/statut`] = "bloque";
+                updatesExpiration[`users/${payeurUid}/motifBlocage`] =
+                    "Paiement non effectué dans le délai. Contactez l'administration.";
+                updatesExpiration[`jumelages/${payeurUid}/${matchId}/penaliteAppliquee`] = true;
+
+                console.warn("Compte bloqué pour retard de paiement :", payeurUid);
 
             });
 
@@ -1848,7 +1939,7 @@ async function verifierEtDeclencherJumelagesGlobal() {
         );
 
 
-        const updates = {};
+        const updates = { ...updatesExpiration };
         const maintenant = Date.now();
         const limite = maintenant + 24 * 60 * 60 * 1000;
 
@@ -2889,7 +2980,7 @@ async function afficherJumelages(matches) {
 
     const actifs = matches.filter(m =>
         ["payeur", "receveur"].includes(m.role) &&
-        m.statut !== "confirme"
+        !["confirme", "expire"].includes(m.statut)
     );
 
 
