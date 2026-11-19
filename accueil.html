@@ -241,6 +241,72 @@ header {
     color:var(--gold);
 }
 
+.info-row {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.info-row:last-child {
+    border-bottom:0;
+}
+
+.info-label {
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:11px;
+    color:var(--muted);
+}
+
+.info-label i {
+    color:var(--gold);
+}
+
+.info-value {
+    font-size:13px;
+    font-weight:700;
+    text-align:right;
+    overflow-wrap:anywhere;
+}
+
+.progress-box {
+    margin:4px 0 16px;
+}
+
+.progress-head {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:8px;
+}
+
+.progress-head strong {
+    font-size:13px;
+    color:var(--gold-light);
+}
+
+.progress-track {
+    width:100%;
+    height:8px;
+    border-radius:20px;
+    background:#1f1a10;
+    border:1px solid #3a3122;
+    overflow:hidden;
+}
+
+.progress-fill {
+    height:100%;
+    border-radius:20px;
+    background:linear-gradient(90deg,#b58a35,#f0d083);
+    transition:width .6s ease;
+}
+
 .btn-confirm {
     width:100%;
     background:linear-gradient(90deg,#b58a35,#f0d083);
@@ -294,11 +360,13 @@ header {
 }
 
 .history-card {
-    background:var(--surface);
-    border:1px solid var(--border);
+    background:linear-gradient(145deg,#171a1c,#101314);
+    border:1px solid rgba(228,185,93,.22);
+    border-left:4px solid var(--gold);
     border-radius:16px;
     padding:16px;
-    margin-bottom:10px;
+    margin-bottom:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
 }
 
 .history-top {
@@ -315,19 +383,53 @@ header {
 
 .status {
     font-size:10px;
-    padding:5px 9px;
+    font-weight:700;
+    padding:5px 10px;
     border-radius:20px;
-    background:#2a2213;
-    color:var(--gold);
-    border:1px solid #4a3b23;
+    background:linear-gradient(90deg,rgba(228,185,93,.22),rgba(240,208,131,.12));
+    color:var(--gold-light);
+    border:1px solid rgba(228,185,93,.45);
+    white-space:nowrap;
 }
 
 .cycle-countdown {
     margin-top:14px;
-    padding:13px;
-    background:#211b10;
-    border:1px solid #80632e;
-    border-radius:12px;
+    padding:14px;
+    background:linear-gradient(135deg,#2b2110,#17130b);
+    border:1px solid rgba(228,185,93,.35);
+    border-radius:14px;
+}
+
+.cycle-countdown p i {
+    color:var(--gold);
+    margin-right:5px;
+}
+
+.cycle-end {
+    background:linear-gradient(135deg,#0f2a1f,#101314);
+    border-color:rgba(102,228,180,.4);
+}
+
+.cycle-end p i {
+    color:#66e4b4;
+}
+
+.cycle-end .progress-fill {
+    background:linear-gradient(90deg,#1f9e6e,#66e4b4);
+}
+
+.waiting-pill {
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:4px;
+    padding:7px 12px;
+    border-radius:20px;
+    background:rgba(102,228,180,.12);
+    border:1px solid rgba(102,228,180,.35);
+    color:#66e4b4;
+    font-size:12px;
+    font-weight:700;
 }
 
 .cycle-countdown p {
@@ -351,9 +453,30 @@ header {
     border:1px dashed #3a3122;
 }
 
-.profile.telegram {
+.action {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+}
+
+.action-label {
+    font-size:10px;
+    color:var(--muted);
+    white-space:nowrap;
+}
+
+.telegram {
+    width:42px;
+    height:42px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:none;
+    border:none;
     color:#2aabee;
-    border-color:#2aabee;
+    font-size:30px;
+    text-decoration:none;
 }
 
 .logout-btn {
@@ -654,18 +777,27 @@ nav a span {
     <div class="logo">MaTontine</div>
 
     <div class="header-actions">
-        <button class="notification-button" onclick="allerNotifications()" aria-label="Notifications">
-            <i class="fa-solid fa-bell"></i>
-            <span class="notification-dot" id="notificationDot">0</span>
-        </button>
+        <div class="action">
+            <button class="notification-button" onclick="allerNotifications()" aria-label="Notifications">
+                <i class="fa-solid fa-bell"></i>
+                <span class="notification-dot" id="notificationDot">0</span>
+            </button>
+            <span class="action-label">Notifications</span>
+        </div>
 
-        <a href="https://t.me/REMPLACER_PAR_LIEN_GROUPE" target="_blank" rel="noopener" class="profile telegram" aria-label="Groupe Telegram">
-            <i class="fa-brands fa-telegram"></i>
-        </a>
+        <div class="action">
+            <a href="https://t.me/MaTontine" target="_blank" rel="noopener" class="telegram" aria-label="Groupe Telegram">
+                <i class="fa-brands fa-telegram"></i>
+            </a>
+            <span class="action-label">Telegram</span>
+        </div>
 
-        <a href="profil.html" class="profile" aria-label="Profil">
-            <i class="fa-solid fa-user"></i>
-        </a>
+        <div class="action">
+            <a href="profil.html" class="profile" aria-label="Profil">
+                <i class="fa-solid fa-user"></i>
+            </a>
+            <span class="action-label">Profil</span>
+        </div>
     </div>
 </header>
 
@@ -1290,6 +1422,19 @@ function actualiserComptesCycles() {
 
     });
 
+    document.querySelectorAll("[data-progress-start]").forEach(box => {
+
+        const pct = calculerPourcentageCycle(
+            Number(box.dataset.progressStart),
+            Number(box.dataset.progressEnd)
+        );
+
+        box.querySelector(".progress-fill").style.width = pct + "%";
+        box.querySelector(".progress-value").textContent = pct + " %";
+        box.querySelector(".progress-label").textContent = libelleCycle(pct);
+
+    });
+
     document.querySelectorAll("[data-payment-end]").forEach(element => {
 
         const dateFin = Number(element.dataset.paymentEnd);
@@ -1434,6 +1579,41 @@ function calculerGain(req) {
 
 
 /* MOTEUR DE JUMELAGE AUTOMATIQUE */
+
+/* COMMISSION DE PARRAINAGE : 10 % sur le 1er cycle, 7 % sur le 5e cycle du filleul */
+async function creerCommissionParrainage({ filleulUid, filleulNom, parrainUid, demandeId, montant, numeroCycle }) {
+
+    if (!parrainUid || parrainUid === filleulUid) return;
+
+    const taux = numeroCycle === 1 ? 10 : numeroCycle === 5 ? 7 : 0;
+    if (!taux) return;
+
+    const commissionRef = ref(db, `commissionsParrainage/${parrainUid}/${filleulUid}_${demandeId}`);
+
+    // Une même contribution ne doit être créditée qu'une fois
+    const existante = await get(commissionRef);
+    if (existante.exists()) return;
+
+    const montantCommission = Math.round(montant * taux / 100);
+
+    await set(commissionRef, {
+        id: filleulUid + "_" + demandeId,
+        filleulUid,
+        filleulNom: filleulNom || "Membre",
+        demandeId,
+        cycleNumero: numeroCycle,
+        taux,
+        montant,
+        montantCommission,
+        statut: "creditee",
+        dateCreation: Date.now()
+    });
+
+    await runTransaction(
+        ref(db, `users/${parrainUid}/soldeParrainageDisponible`),
+        actuel => Number(actuel || 0) + montantCommission
+    );
+}
 
 async function verifierEtDeclencherJumelagesGlobal() {
 
@@ -1616,6 +1796,8 @@ async function verifierEtDeclencherJumelagesGlobal() {
         const limite = maintenant + 24 * 60 * 60 * 1000;
 
 
+        const commissionsAFaire = [];
+
         /* ASSOCIATION AUTOMATIQUE */
 
         for (const payeur of payeurs) {
@@ -1747,6 +1929,12 @@ async function verifierEtDeclencherJumelagesGlobal() {
 
             if (nombreNouveaux > 0) {
 
+                commissionsAFaire.push({
+                    payeur,
+                    montantInitial,
+                    nombreCycles: Object.keys(toutesDemandes[payeur.uid] || {}).length
+                });
+
                 updates[
                     `contributionRequests/${payeur.uid}/${payeur.demandeId}/montantInitial`
                 ] = montantInitial;
@@ -1778,9 +1966,69 @@ async function verifierEtDeclencherJumelagesGlobal() {
         }
 
 
+        /* AMORÇAGE : tant qu'aucun bénéficiaire n'existe, le plus ancien contributeur
+           en attente (avec numéro de réception et sans paiement affecté) devient bénéficiaire.
+           Sans cela, personne ne peut jamais recevoir et aucun jumelage ne se crée. */
+        const statutsReceveurs = [
+            "en_attente_reception",
+            "attente_beneficiaire",
+            "paiement_partiel",
+            "en_cours_paiement",
+            "en_attente_reception_benefices"
+        ];
+
+        const existeDejaBeneficiaire = Object.values(toutesDemandes).some(liste =>
+            Object.values(liste || {}).some(r => r && statutsReceveurs.includes(r.statut))
+        );
+
+        if (Object.keys(updates).length === 0 && !existeDejaBeneficiaire) {
+
+            const premier = payeurs.find(p =>
+                users[p.uid]?.numeroReception &&
+                nombre(p.montantAffecte) === 0
+            );
+
+            if (premier) {
+
+                const gainAmorcage = calculerGain(premier);
+
+                if (gainAmorcage > 0) {
+
+                    const chemin = `contributionRequests/${premier.uid}/${premier.demandeId}`;
+
+                    updates[`${chemin}/statut`] = "en_attente_reception";
+                    updates[`${chemin}/gainPrevu`] = gainAmorcage;
+                    updates[`${chemin}/montantRecu`] = nombre(premier.montantRecu);
+                    updates[`${chemin}/montantReserve`] = 0;
+                    updates[`${chemin}/montantRestantBeneficiaire`] = gainAmorcage;
+
+                    console.log("Amorçage : bénéficiaire initial", premier.uid);
+
+                }
+
+            }
+
+        }
+
+
         if (Object.keys(updates).length > 0) {
             await update(ref(db), updates);
             console.log("Jumelages automatiquement enregistrés.");
+
+            for (const c of commissionsAFaire) {
+                try {
+                    await creerCommissionParrainage({
+                        filleulUid: c.payeur.uid,
+                        filleulNom: c.payeur.nom,
+                        parrainUid: users[c.payeur.uid]?.parrainUid,
+                        demandeId: c.payeur.demandeId,
+                        montant: c.montantInitial,
+                        numeroCycle: c.nombreCycles
+                    });
+                } catch (e) {
+                    console.error("Commission de parrainage non créditée :", e);
+                }
+            }
         }
 
     } catch (error) {
@@ -2511,6 +2759,42 @@ $("chatInput").addEventListener("keydown", event => {
 
 /* AFFICHAGE DES JUMELAGES */
 
+/* BARRE DE PROGRESSION D'UN JUMELAGE : avancement du cycle de la contribution */
+function calculerPourcentageCycle(debut, fin) {
+    if (!debut || !fin || fin <= debut) return 0;
+    const pct = ((Date.now() - debut) / (fin - debut)) * 100;
+    return Math.min(100, Math.max(0, Math.round(pct)));
+}
+
+function libelleCycle(pct) {
+    if (pct >= 100) return "Cycle terminé";
+    if (pct > 0) return "Cycle en cours";
+    return "Cycle pas encore démarré";
+}
+
+function barreProgression(match, role) {
+
+    const demande = role === "payeur"
+        ? demandesUtilisateur[match.demandePayeurId]
+        : demandesUtilisateur[match.demandeBenefId];
+
+    const debut = nombre(demande?.dateCreation);
+    const fin = nombre(demande?.dateFinCycle) || (debut + dureeCycle(demande || {}) * 86400000);
+    const pct = calculerPourcentageCycle(debut, fin);
+
+    return `
+        <div class="progress-box" data-progress-start="${debut}" data-progress-end="${fin}">
+            <div class="progress-head">
+                <span class="progress-label">${libelleCycle(pct)}</span>
+                <strong class="progress-value">${pct} %</strong>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" style="width:${pct}%"></div>
+            </div>
+        </div>
+    `;
+}
+
 async function afficherJumelages(matches) {
 
     const container = $("jumelagesActifsContainer");
@@ -2571,16 +2855,17 @@ async function afficherJumelages(matches) {
                     ${formatCFA(montant)}
                 </div>
 
+                ${barreProgression(match, "payeur")}
+
                 <div class="jumelage-info">
-
-                    <strong>Vous devez payer à :</strong>
-                    ${echapper(nom)}
-
-                    <br>
-
-                    <strong>Numéro de réception :</strong>
-                    ${echapper(numeroReception || "Numéro indisponible")}
-
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-solid fa-user"></i> Payer à</span>
+                        <span class="info-value">${echapper(nom)}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-solid fa-mobile-screen"></i> Numéro de réception</span>
+                        <span class="info-value">${echapper(numeroReception || "Numéro indisponible")}</span>
+                    </div>
                 </div>
 
                 ${
@@ -2667,16 +2952,17 @@ async function afficherJumelages(matches) {
                     ${formatCFA(montant)}
                 </div>
 
+                ${barreProgression(match, "receveur")}
+
                 <div class="jumelage-info">
-
-                    <strong>Votre payeur :</strong>
-                    ${echapper(match.payeurNom || "Membre")}
-
-                    <br>
-
-                    <strong>Téléphone du payeur :</strong>
-                    ${echapper(telephone)}
-
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-solid fa-user"></i> Votre payeur</span>
+                        <span class="info-value">${echapper(match.payeurNom || "Membre")}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-solid fa-phone"></i> Téléphone</span>
+                        <span class="info-value">${echapper(telephone)}</span>
+                    </div>
                 </div>
 
                 ${
@@ -2790,7 +3076,44 @@ $("jumelagesActifsContainer").addEventListener(
 
 /* HISTORIQUE */
 
+/* PROGRESSION DU FILLEUL : copiée dans parrainages/{parrain}/{filleul} pour que le parrain la voie */
+async function synchroniserProgressionParrain(demandes) {
+
+    const parrainUid = profilUtilisateur.parrainUid;
+    if (!parrainUid || !currentUserUid) return;
+
+    const liste = Object.entries(demandes || {})
+        .map(([id, d]) => ({ ...d, id }))
+        .sort((a, b) => nombre(b.dateCreation) - nombre(a.dateCreation));
+
+    const active = liste.find(d => d.statut === "en_cours") || liste[0];
+    if (!active) return;
+
+    const debut = nombre(active.dateCreation);
+    const fin = nombre(active.dateFinCycle) ||
+        (debut + (dureeCycle(active) || 15) * 86400000);
+
+    try {
+        await update(ref(db, `parrainages/${parrainUid}/${currentUserUid}`), {
+            progression: {
+                statut: active.statut || "",
+                cycle: dureeCycle(active) || 0,
+                montant: nombre(active.montant),
+                pourcentageCycle: calculerPourcentageCycle(debut, fin),
+                nombreContributions: liste.length,
+                totalContribue: liste
+                    .filter(d => !estAnnule(d))
+                    .reduce((somme, d) => somme + nombre(d.montant), 0),
+                dateMiseAJour: Date.now()
+            }
+        });
+    } catch (e) {
+        console.error("Progression non transmise au parrain :", e);
+    }
+}
+
 function afficherHistorique(demandes) {
+    synchroniserProgressionParrain(demandes);
 
     const container = $("historique");
 
@@ -2907,6 +3230,15 @@ function afficherHistorique(demandes) {
                 cycleActif
                 ? `
                     <div class="cycle-countdown">
+                        <div class="progress-box" data-progress-start="${dateFin - (dureeCycle(d) || 15) * 86400000}" data-progress-end="${dateFin}">
+                            <div class="progress-head">
+                                <span class="progress-label">Cycle en cours</span>
+                                <strong class="progress-value">0 %</strong>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width:0%"></div>
+                            </div>
+                        </div>
                         <p>
                             <i class="fa-solid fa-clock"></i>
                             Temps restant du cycle
@@ -2922,14 +3254,24 @@ function afficherHistorique(demandes) {
             ${
                 d.statut === "en_attente_reception_benefices"
                 ? `
-                    <div class="cycle-countdown">
+                    <div class="cycle-countdown cycle-end">
+                        <div class="progress-box">
+                            <div class="progress-head">
+                                <span class="progress-label">Cycle terminé</span>
+                                <strong class="progress-value">100 %</strong>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width:100%"></div>
+                            </div>
+                        </div>
                         <p>
                             <i class="fa-solid fa-hourglass-half"></i>
                             Votre cycle est arrivé à son terme.
                         </p>
-                        <strong style="font-size:13px">
+                        <span class="waiting-pill">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i>
                             En attente de réception des bénéfices
-                        </strong>
+                        </span>
                     </div>
                 `
                 : ""
