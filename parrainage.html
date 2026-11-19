@@ -494,7 +494,7 @@ nav a span{
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
-import { getDatabase, ref, get, set, push, update, runTransaction } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
+import { getDatabase, ref, get, set, push, update, runTransaction, onValue } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-database.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyC6dju32G1ILcNaeB4kZc2VltTpJmVIS20",
@@ -768,7 +768,10 @@ async function demanderRetrait(){
   });
 
   if(!resultat.committed){
-   throw new Error("Solde insuffisant ou compte indisponible.");
+   const actuel=Number((await lire("users/"+utilisateur.uid))?.soldeParrainageDisponible||0);
+   throw new Error(actuel<montant
+    ? "Solde insuffisant : disponible "+formatNombre(actuel)+" F."
+    : "Demande non enregistrée, réessayez.");
   }
 
   const demande={
@@ -834,6 +837,10 @@ onAuthStateChanged(auth,async user=>{
  }
 
  utilisateur=user;
+
+ // Garde le profil en cache local : sans cela, runTransaction démarre avec une valeur vide
+ // et abandonne tout de suite, ce qui affichait « Solde insuffisant » à tort
+ onValue(ref(db,"users/"+user.uid),()=>{},()=>{});
 
  try{
   await chargerProfil(user.uid);
