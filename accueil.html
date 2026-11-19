@@ -241,6 +241,72 @@ header {
     color:var(--gold);
 }
 
+.info-row {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.info-row:last-child {
+    border-bottom:0;
+}
+
+.info-label {
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:11px;
+    color:var(--muted);
+}
+
+.info-label i {
+    color:var(--gold);
+}
+
+.info-value {
+    font-size:13px;
+    font-weight:700;
+    text-align:right;
+    overflow-wrap:anywhere;
+}
+
+.progress-box {
+    margin:4px 0 16px;
+}
+
+.progress-head {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:8px;
+}
+
+.progress-head strong {
+    font-size:13px;
+    color:var(--gold-light);
+}
+
+.progress-track {
+    width:100%;
+    height:8px;
+    border-radius:20px;
+    background:#1f1a10;
+    border:1px solid #3a3122;
+    overflow:hidden;
+}
+
+.progress-fill {
+    height:100%;
+    border-radius:20px;
+    background:linear-gradient(90deg,#b58a35,#f0d083);
+    transition:width .6s ease;
+}
+
 .btn-confirm {
     width:100%;
     background:linear-gradient(90deg,#b58a35,#f0d083);
@@ -349,6 +415,45 @@ header {
     background:var(--surface);
     border-radius:18px;
     border:1px dashed #3a3122;
+}
+
+.action {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+}
+
+.action-label {
+    font-size:10px;
+    color:var(--muted);
+    white-space:nowrap;
+}
+
+.telegram {
+    width:42px;
+    height:42px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:none;
+    border:none;
+    color:#2aabee;
+    font-size:30px;
+    text-decoration:none;
+}
+
+.logout-btn {
+    width:100%;
+    margin-top:22px;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #a94444;
+    background:#2a1414;
+    color:#ffbaba;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
 }
 
 .account-status {
@@ -636,14 +741,27 @@ nav a span {
     <div class="logo">MaTontine</div>
 
     <div class="header-actions">
-        <button class="notification-button" onclick="allerNotifications()" aria-label="Notifications">
-            <i class="fa-solid fa-bell"></i>
-            <span class="notification-dot" id="notificationDot">0</span>
-        </button>
+        <div class="action">
+            <button class="notification-button" onclick="allerNotifications()" aria-label="Notifications">
+                <i class="fa-solid fa-bell"></i>
+                <span class="notification-dot" id="notificationDot">0</span>
+            </button>
+            <span class="action-label">Notifications</span>
+        </div>
 
-        <a href="profil.html" class="profile" aria-label="Profil">
-            <i class="fa-solid fa-user"></i>
-        </a>
+        <div class="action">
+            <a href="https://t.me/MaTontine" target="_blank" rel="noopener" class="telegram" aria-label="Groupe Telegram">
+                <i class="fa-brands fa-telegram"></i>
+            </a>
+            <span class="action-label">Telegram</span>
+        </div>
+
+        <div class="action">
+            <a href="profil.html" class="profile" aria-label="Profil">
+                <i class="fa-solid fa-user"></i>
+            </a>
+            <span class="action-label">Profil</span>
+        </div>
     </div>
 </header>
 
@@ -750,6 +868,11 @@ nav a span {
         </a>
     </div>
 
+    <button class="logout-btn" id="btnDeconnexion">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Se déconnecter
+    </button>
+
 </div>
 
 <!-- FENÊTRE DE MESSAGERIE -->
@@ -850,7 +973,8 @@ import {
 
 import {
     getAuth,
-    onAuthStateChanged
+    onAuthStateChanged,
+    signOut
 } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
 
 import {
@@ -1090,6 +1214,27 @@ function surveillerMessages(uid) {
 
 /* ALLER AUX NOTIFICATIONS */
 
+/* DÉCONNEXION */
+
+$("btnDeconnexion").addEventListener("click", async () => {
+
+    if (!confirm("Voulez-vous vraiment vous déconnecter ?")) return;
+
+    try {
+        if (ecouteMessagesNotifications) {
+            ecouteMessagesNotifications();
+            ecouteMessagesNotifications = null;
+        }
+        await signOut(auth);
+        window.location.replace("index.html");
+    } catch (error) {
+        console.error("Erreur de déconnexion :", error);
+        alert("Erreur pendant la déconnexion.");
+    }
+
+});
+
+
 window.allerNotifications = function() {
 
     $("notifications").scrollIntoView({
@@ -1238,6 +1383,19 @@ function actualiserComptesCycles() {
         if (dateFin > 0 && Date.now() >= dateFin) {
             element.style.color = "#8fca91";
         }
+
+    });
+
+    document.querySelectorAll("[data-progress-start]").forEach(box => {
+
+        const pct = calculerPourcentageCycle(
+            Number(box.dataset.progressStart),
+            Number(box.dataset.progressEnd)
+        );
+
+        box.querySelector(".progress-fill").style.width = pct + "%";
+        box.querySelector(".progress-value").textContent = pct + " %";
+        box.querySelector(".progress-label").textContent = libelleCycle(pct);
 
     });
 
@@ -2462,6 +2620,42 @@ $("chatInput").addEventListener("keydown", event => {
 
 /* AFFICHAGE DES JUMELAGES */
 
+/* BARRE DE PROGRESSION D'UN JUMELAGE : avancement du cycle de la contribution */
+function calculerPourcentageCycle(debut, fin) {
+    if (!debut || !fin || fin <= debut) return 0;
+    const pct = ((Date.now() - debut) / (fin - debut)) * 100;
+    return Math.min(100, Math.max(0, Math.round(pct)));
+}
+
+function libelleCycle(pct) {
+    if (pct >= 100) return "Cycle terminé";
+    if (pct > 0) return "Cycle en cours";
+    return "Cycle pas encore démarré";
+}
+
+function barreProgression(match, role) {
+
+    const demande = role === "payeur"
+        ? demandesUtilisateur[match.demandePayeurId]
+        : demandesUtilisateur[match.demandeBenefId];
+
+    const debut = nombre(demande?.dateCreation);
+    const fin = nombre(demande?.dateFinCycle) || (debut + dureeCycle(demande || {}) * 86400000);
+    const pct = calculerPourcentageCycle(debut, fin);
+
+    return `
+        <div class="progress-box" data-progress-start="${debut}" data-progress-end="${fin}">
+            <div class="progress-head">
+                <span class="progress-label">${libelleCycle(pct)}</span>
+                <strong class="progress-value">${pct} %</strong>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" style="width:${pct}%"></div>
+            </div>
+        </div>
+    `;
+}
+
 async function afficherJumelages(matches) {
 
     const container = $("jumelagesActifsContainer");
@@ -2522,16 +2716,17 @@ async function afficherJumelages(matches) {
                     ${formatCFA(montant)}
                 </div>
 
+                ${barreProgression(match, "payeur")}
+
                 <div class="jumelage-info">
-
-                    <strong>Vous devez payer à :</strong>
-                    ${echapper(nom)}
-
-                    <br>
-
-                    <strong>Numéro de réception :</strong>
-                    ${echapper(numeroReception || "Numéro indisponible")}
-
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-solid fa-user"></i> Payer à</span>
+                        <span class="info-value">${echapper(nom)}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-solid fa-mobile-screen"></i> Numéro de réception</span>
+                        <span class="info-value">${echapper(numeroReception || "Numéro indisponible")}</span>
+                    </div>
                 </div>
 
                 ${
@@ -2618,16 +2813,17 @@ async function afficherJumelages(matches) {
                     ${formatCFA(montant)}
                 </div>
 
+                ${barreProgression(match, "receveur")}
+
                 <div class="jumelage-info">
-
-                    <strong>Votre payeur :</strong>
-                    ${echapper(match.payeurNom || "Membre")}
-
-                    <br>
-
-                    <strong>Téléphone du payeur :</strong>
-                    ${echapper(telephone)}
-
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-solid fa-user"></i> Votre payeur</span>
+                        <span class="info-value">${echapper(match.payeurNom || "Membre")}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-solid fa-phone"></i> Téléphone</span>
+                        <span class="info-value">${echapper(telephone)}</span>
+                    </div>
                 </div>
 
                 ${
