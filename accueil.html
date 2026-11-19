@@ -418,6 +418,51 @@ header {
     background:linear-gradient(90deg,#1f9e6e,#66e4b4);
 }
 
+.payment-notice {
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    margin:4px 0 14px;
+    padding:15px;
+    border-radius:16px;
+    background:linear-gradient(135deg,rgba(255,77,77,.16),rgba(228,185,93,.08));
+    border:1px solid rgba(255,120,80,.45);
+    box-shadow:0 10px 28px rgba(0,0,0,.3);
+}
+
+#avisPaiement {
+    display:none;
+}
+
+.payment-notice-icon {
+    width:38px;
+    height:38px;
+    flex-shrink:0;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:rgba(255,77,77,.18);
+    color:#ff8a7a;
+    font-size:16px;
+}
+
+.payment-notice strong {
+    display:block;
+    font-size:13px;
+    color:#ffd9c9;
+    margin-bottom:5px;
+}
+
+.payment-notice p {
+    font-size:12px;
+    line-height:1.6;
+    color:#e8c9b8;
+}
+
+.payment-notice-compact {
+    margin:14px 0 0;
+}
+
 .waiting-pill {
     display:inline-flex;
     align-items:center;
@@ -838,14 +883,22 @@ nav a span {
 
     <h3 class="section-title">Mes paiements et dépôts</h3>
 
+    <div id="avisPaiement" class="payment-notice">
+        <div class="payment-notice-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+            <strong>Paiement obligatoire sous 24 h</strong>
+            <p>Vous devez payer dans les 24 heures qui suivent votre jumelage. Sans paiement dans ce délai, votre jumelage sera annulé et votre compte sera bloqué.</p>
+        </div>
+    </div>
+
     <div id="jumelagesActifsContainer">
         <div class="empty">Chargement...</div>
+    </div>
 
     <h3 class="section-title">Retraits de parrainage</h3>
 
     <div id="retraitsParrainageContainer">
         <div class="empty">Aucun retrait de parrainage.</div>
-    </div>
     </div>
 
     <h3 class="section-title">Mes notifications</h3>
@@ -1766,8 +1819,17 @@ async function verifierEtDeclencherJumelagesGlobal() {
 
                 users[payeurUid].statut = "bloque";
                 updatesExpiration[`users/${payeurUid}/statut`] = "bloque";
-                updatesExpiration[`users/${payeurUid}/motifBlocage`] =
-                    "Paiement non effectué dans le délai. Contactez l'administration.";
+                const motifSysteme = "Paiement non effectué dans le délai de 24 h.";
+                updatesExpiration[`users/${payeurUid}/motifBlocage`] = motifSysteme;
+                updatesExpiration[`system/comptesBloques/${payeurUid}`] = {
+                    dateBlocage: maintenantExpiration,
+                    motif: motifSysteme
+                };
+                updatesExpiration[`system/historiqueBlocages/${payeurUid}/${maintenantExpiration}`] = {
+                    dateBlocage: maintenantExpiration,
+                    motif: motifSysteme,
+                    nom: users[payeurUid].nom || ""
+                };
                 updatesExpiration[`jumelages/${payeurUid}/${matchId}/penaliteAppliquee`] = true;
 
                 console.warn("Compte bloqué pour retard de paiement :", payeurUid);
@@ -3057,6 +3119,13 @@ async function afficherJumelages(matches) {
                                 ${formaterDelai(dateLimite)}
                             </strong>
                         </div>
+                        <div class="payment-notice payment-notice-compact">
+                            <div class="payment-notice-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div>
+            <strong>Paiement obligatoire sous 24 h</strong>
+            <p>Vous devez payer dans les 24 heures qui suivent votre jumelage. Sans paiement dans ce délai, votre jumelage sera annulé et votre compte sera bloqué.</p>
+        </div>
+                        </div>
                     `
                     : ""
                 }
@@ -3571,6 +3640,26 @@ function afficherRetraitsParrainage(data) {
 }
 
 
+/* AVIS : PAIEMENT OBLIGATOIRE SOUS 24 H (quand une contribution est lancée ou un paiement est dû) */
+
+function actualiserAvisPaiement() {
+
+    const zone = $("avisPaiement");
+    if (!zone) return;
+
+    const contributionLancee = Object.values(demandesUtilisateur || {}).some(d =>
+        d && ["en_attente_validation", "en_attente_jumelage", "jumelage_partiel"].includes(d.statut)
+    );
+
+    const paiementAFaire = Object.values(matchesUtilisateur || {}).some(m =>
+        m && m.role === "payeur" && m.statut === "en_cours_paiement"
+    );
+
+    zone.style.display = (contributionLancee || paiementAFaire) ? "flex" : "none";
+
+}
+
+
 /* CONNEXION ET SYNCHRONISATION FIREBASE */
 
 onAuthStateChanged(auth, user => {
@@ -3601,6 +3690,8 @@ onAuthStateChanged(auth, user => {
 
             demandesUtilisateur = snapshot.val() || {};
 
+            actualiserAvisPaiement();
+
             actualiserStatistiques(
                 demandesUtilisateur,
                 matchesUtilisateur
@@ -3629,6 +3720,8 @@ onAuthStateChanged(auth, user => {
         snapshot => {
 
             matchesUtilisateur = snapshot.val() || {};
+
+            actualiserAvisPaiement();
 
             actualiserStatistiques(
                 demandesUtilisateur,
