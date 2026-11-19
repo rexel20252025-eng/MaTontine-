@@ -820,6 +820,12 @@ async function actualiserPage(){
  ]);
 }
 
+/* Les scripts type=module ne rendent pas les fonctions globales :
+   on les expose sur window pour que les onclick du HTML fonctionnent */
+window.copierLien=copierLien;
+window.partagerLien=partagerLien;
+window.demanderRetrait=demanderRetrait;
+
 onAuthStateChanged(auth,async user=>{
  if(!user){
   toast("Veuillez vous connecter.");
