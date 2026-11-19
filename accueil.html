@@ -1966,6 +1966,51 @@ async function verifierEtDeclencherJumelagesGlobal() {
         }
 
 
+        /* AMORÇAGE : tant qu'aucun bénéficiaire n'existe, le plus ancien contributeur
+           en attente (avec numéro de réception et sans paiement affecté) devient bénéficiaire.
+           Sans cela, personne ne peut jamais recevoir et aucun jumelage ne se crée. */
+        const statutsReceveurs = [
+            "en_attente_reception",
+            "attente_beneficiaire",
+            "paiement_partiel",
+            "en_cours_paiement",
+            "en_attente_reception_benefices"
+        ];
+
+        const existeDejaBeneficiaire = Object.values(toutesDemandes).some(liste =>
+            Object.values(liste || {}).some(r => r && statutsReceveurs.includes(r.statut))
+        );
+
+        if (Object.keys(updates).length === 0 && !existeDejaBeneficiaire) {
+
+            const premier = payeurs.find(p =>
+                users[p.uid]?.numeroReception &&
+                nombre(p.montantAffecte) === 0
+            );
+
+            if (premier) {
+
+                const gainAmorcage = calculerGain(premier);
+
+                if (gainAmorcage > 0) {
+
+                    const chemin = `contributionRequests/${premier.uid}/${premier.demandeId}`;
+
+                    updates[`${chemin}/statut`] = "en_attente_reception";
+                    updates[`${chemin}/gainPrevu`] = gainAmorcage;
+                    updates[`${chemin}/montantRecu`] = nombre(premier.montantRecu);
+                    updates[`${chemin}/montantReserve`] = 0;
+                    updates[`${chemin}/montantRestantBeneficiaire`] = gainAmorcage;
+
+                    console.log("Amorçage : bénéficiaire initial", premier.uid);
+
+                }
+
+            }
+
+        }
+
+
         if (Object.keys(updates).length > 0) {
             await update(ref(db), updates);
             console.log("Jumelages automatiquement enregistrés.");
@@ -3056,6 +3101,9 @@ async function synchroniserProgressionParrain(demandes) {
                 montant: nombre(active.montant),
                 pourcentageCycle: calculerPourcentageCycle(debut, fin),
                 nombreContributions: liste.length,
+                totalContribue: liste
+                    .filter(d => !estAnnule(d))
+                    .reduce((somme, d) => somme + nombre(d.montant), 0),
                 dateMiseAJour: Date.now()
             }
         });
