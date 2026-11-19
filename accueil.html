@@ -3054,6 +3054,15 @@ function afficherHistorique(demandes) {
                 cycleActif
                 ? `
                     <div class="cycle-countdown">
+                        <div class="progress-box" data-progress-start="${dateFin - (dureeCycle(d) || 15) * 86400000}" data-progress-end="${dateFin}">
+                            <div class="progress-head">
+                                <span class="progress-label">Cycle en cours</span>
+                                <strong class="progress-value">0 %</strong>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width:0%"></div>
+                            </div>
+                        </div>
                         <p>
                             <i class="fa-solid fa-clock"></i>
                             Temps restant du cycle
