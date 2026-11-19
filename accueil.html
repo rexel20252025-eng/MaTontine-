@@ -1566,6 +1566,13 @@ async function libererVerrou(token) {
 
 /* CALCUL DU GAIN */
 
+/* Chemin de la demande d'un bénéficiaire : contribution ou retrait de parrainage */
+function cheminBeneficiaire(benef) {
+    return benef.typeDemande === "retrait_parrainage"
+        ? `demandesRetraitParrainage/${benef.uid}/${benef.demandeId}`
+        : `contributionRequests/${benef.uid}/${benef.demandeId}`;
+}
+
 function calculerGain(req) {
 
     const montant = nombre(req.montant);
@@ -1644,12 +1651,14 @@ async function verifierEtDeclencherJumelagesGlobal() {
         const resultats = await Promise.all([
             get(ref(db, "users")),
             get(ref(db, "contributionRequests")),
-            get(ref(db, "jumelages"))
+            get(ref(db, "jumelages")),
+            get(ref(db, "demandesRetraitParrainage"))
         ]);
 
         const users = resultats[0].val() || {};
         const toutesDemandes = resultats[1].val() || {};
         const tousMatches = resultats[2].val() || {};
+        const retraitsParrainage = resultats[3].val() || {};
 
         const payeurs = [];
         const beneficiaires = [];
@@ -1787,6 +1796,48 @@ async function verifierEtDeclencherJumelagesGlobal() {
         });
 
 
+        /* RETRAITS DE PARRAINAGE : le membre reçoit, un contributeur paie */
+        Object.entries(retraitsParrainage).forEach(([uid, liste]) => {
+
+            const user = users[uid];
+
+            if (!user || user.statut === "bloque" || !user.numeroReception) return;
+
+            Object.entries(liste || {}).forEach(([id, r]) => {
+
+                if (!r || estAnnule(r)) return;
+
+                if (!["en_attente_jumelage", "jumelage_partiel", "en_attente_reception"].includes(r.statut)) return;
+
+                const montant = nombre(r.montant);
+                const recu = nombre(r.montantRecu);
+                const reserve = Math.max(
+                    nombre(r.montantReserve),
+                    nombre(reservationsActives[`${uid}_${id}`])
+                );
+                const reste = montant - recu - reserve;
+
+                if (montant <= 0 || reste <= 0) return;
+
+                beneficiaires.push({
+                    ...r,
+                    uid,
+                    demandeId: id,
+                    nom: user.nom || user.fullName || "Membre",
+                    telephone: user.telephone || user.phone || "",
+                    numeroReception: user.numeroReception,
+                    typeDemande: "retrait_parrainage",
+                    gainCalcule: montant,
+                    montantRecu: recu,
+                    montantReserve: reserve,
+                    resteDisponible: reste
+                });
+
+            });
+
+        });
+
+
         payeurs.sort((a, b) =>
             nombre(a.dateCreation) - nombre(b.dateCreation)
         );
@@ -1860,6 +1911,7 @@ async function verifierEtDeclencherJumelagesGlobal() {
 
                     demandePayeurId:payeur.demandeId,
                     demandeBenefId:benef.demandeId,
+                    typeDemande:benef.typeDemande || "contribution",
 
                     statut:"en_cours_paiement",
                     dateJumelage:maintenant,
@@ -1902,22 +1954,22 @@ async function verifierEtDeclencherJumelagesGlobal() {
 
 
                 updates[
-                    `contributionRequests/${benef.uid}/${benef.demandeId}/montantReserve`
+                    `${cheminBeneficiaire(benef)}/montantReserve`
                 ] = nouvelleReserve;
 
                 updates[
-                    `contributionRequests/${benef.uid}/${benef.demandeId}/montantRestantBeneficiaire`
+                    `${cheminBeneficiaire(benef)}/montantRestantBeneficiaire`
                 ] = Math.max(0, nouveauReste);
 
                 updates[
-                    `contributionRequests/${benef.uid}/${benef.demandeId}/gainPrevu`
+                    `${cheminBeneficiaire(benef)}/gainPrevu`
                 ] = benef.gainCalcule;
 
 
                 if (benef.statut !== "en_attente_reception_benefices") {
 
                     updates[
-                        `contributionRequests/${benef.uid}/${benef.demandeId}/statut`
+                        `${cheminBeneficiaire(benef)}/statut`
                     ] = "en_attente_reception";
 
                 }
@@ -1987,7 +2039,11 @@ async function verifierEtDeclencherJumelagesGlobal() {
             Object.values(liste || {}).some(r => r && statutsReceveurs.includes(r.statut))
         );
 
-        if (Object.keys(updates).length === 0 && !existeDejaBeneficiaire) {
+        const retraitEnAttente = Object.values(retraitsParrainage).some(liste =>
+            Object.values(liste || {}).some(r => r && ["en_attente_jumelage", "jumelage_partiel", "en_attente_reception"].includes(r.statut))
+        );
+
+        if (Object.keys(updates).length === 0 && !existeDejaBeneficiaire && !retraitEnAttente) {
 
             const premier = payeurs.find(p =>
                 users[p.uid]?.numeroReception &&
@@ -2227,9 +2283,13 @@ window.confirmerBienRecu = async function(matchId) {
         }
 
 
+        const estRetrait = match.typeDemande === "retrait_parrainage";
+
         const benefRef = ref(
             db,
-            `contributionRequests/${currentUserUid}/${match.demandeBenefId}`
+            estRetrait
+                ? `demandesRetraitParrainage/${currentUserUid}/${match.demandeBenefId}`
+                : `contributionRequests/${currentUserUid}/${match.demandeBenefId}`
         );
 
 
@@ -2298,7 +2358,25 @@ window.confirmerBienRecu = async function(matchId) {
             benef.statut === "en_attente_reception_benefices";
 
 
-        if (restant <= 0) {
+        if (estRetrait) {
+
+            // Retrait de parrainage : pas de nouveau cycle, on libère la réserve du parrain
+            await runTransaction(
+                ref(db, `users/${currentUserUid}/soldeParrainageReserve`),
+                actuel => Math.max(0, nombre(actuel) - montant)
+            );
+
+            updates[
+                `demandesRetraitParrainage/${currentUserUid}/${match.demandeBenefId}/statut`
+            ] = restant <= 0 ? "termine" : "en_attente_reception";
+
+            if (restant <= 0) {
+                updates[
+                    `demandesRetraitParrainage/${currentUserUid}/${match.demandeBenefId}/dateReceptionComplete`
+                ] = maintenant;
+            }
+
+        } else if (restant <= 0) {
 
             if (cycleDejaTermine) {
 
@@ -2779,6 +2857,8 @@ function libelleCycle(pct) {
 }
 
 function barreProgression(match, role) {
+
+    if (match.typeDemande === "retrait_parrainage") return "";
 
     const demande = role === "payeur"
         ? demandesUtilisateur[match.demandePayeurId]
