@@ -840,6 +840,12 @@ nav a span {
 
     <div id="jumelagesActifsContainer">
         <div class="empty">Chargement...</div>
+
+    <h3 class="section-title">Retraits de parrainage</h3>
+
+    <div id="retraitsParrainageContainer">
+        <div class="empty">Aucun retrait de parrainage.</div>
+    </div>
     </div>
 
     <h3 class="section-title">Mes notifications</h3>
@@ -3352,6 +3358,48 @@ function actualiserStatistiques(demandes, matches) {
 }
 
 
+/* RETRAITS DE PARRAINAGE (saisis sur la page Parrainage) */
+
+function afficherRetraitsParrainage(data) {
+
+    const conteneur = $("retraitsParrainageContainer");
+
+    const liste = Object.values(data || {})
+        .filter(Boolean)
+        .sort((a, b) => nombre(b.dateCreation) - nombre(a.dateCreation));
+
+    if (!liste.length) {
+        conteneur.innerHTML = '<div class="empty">Aucun retrait de parrainage.</div>';
+        return;
+    }
+
+    const libelles = {
+        en_attente_jumelage: "En attente de jumelage",
+        jumelage_partiel: "Jumelage partiel",
+        paiement_declare: "Paiement déclaré",
+        en_attente_reception: "En attente de confirmation",
+        termine: "Retrait terminé",
+        confirme: "Retrait terminé",
+        annule: "Annulé",
+        rejete: "Rejeté"
+    };
+
+    conteneur.innerHTML = liste.map(r => `
+        <div class="history-card">
+            <div class="history-top">
+                <strong>Retrait parrainage · ${formatF(r.montant)}</strong>
+                <span class="status">${echapper(libelles[r.statut] || "En attente")}</span>
+            </div>
+            <p class="info-label" style="margin-top:8px">
+                ${echapper(new Date(nombre(r.dateCreation)).toLocaleString("fr-FR"))}
+            </p>
+            ${r.message ? `<p class="info-label">${echapper(r.message)}</p>` : ""}
+        </div>
+    `).join("");
+
+}
+
+
 /* CONNEXION ET SYNCHRONISATION FIREBASE */
 
 onAuthStateChanged(auth, user => {
@@ -3426,6 +3474,22 @@ onAuthStateChanged(auth, user => {
 
         error => {
             console.error("Erreur jumelages personnels :", error);
+        }
+
+    );
+
+
+    /* RETRAITS DE PARRAINAGE */
+
+    onValue(
+        ref(db, `demandesRetraitParrainage/${user.uid}`),
+
+        snapshot => {
+            afficherRetraitsParrainage(snapshot.val());
+        },
+
+        error => {
+            console.error("Erreur retraits parrainage :", error);
         }
 
     );
