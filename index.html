@@ -341,6 +341,102 @@ input::placeholder{
     font-size:10px;
 }
 
+.about-card{
+    margin-top:22px;
+    background:linear-gradient(145deg,#151a1c,#101314);
+    border:1px solid rgba(216,180,93,.18);
+    border-radius:22px;
+    padding:24px 21px;
+    color:#d9d4c7;
+}
+
+.about-title{
+    font-family:'Playfair Display',serif;
+    font-size:20px;
+    color:var(--gold-light);
+    margin-bottom:12px;
+}
+
+.about-sub{
+    font-size:13px;
+    color:var(--gold);
+    margin:18px 0 8px;
+}
+
+.about-text{
+    font-size:12px;
+    line-height:1.7;
+}
+
+.about-steps,
+.about-list{
+    font-size:12px;
+    line-height:1.8;
+    padding-left:20px;
+}
+
+.about-sub i{
+    color:var(--gold);
+    margin-right:6px;
+}
+
+.about-toggle{
+    width:100%;
+    margin-top:18px;
+    padding:14px 16px;
+    border-radius:14px;
+    border:1px solid rgba(216,180,93,.4);
+    background:linear-gradient(110deg,rgba(216,180,93,.14),rgba(216,180,93,.04));
+    color:var(--gold-light);
+    font-size:13px;
+    font-weight:700;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    font-family:inherit;
+    transition:.25s;
+}
+
+.about-toggle:hover{
+    border-color:var(--gold);
+}
+
+.about-toggle i{
+    transition:transform .35s ease;
+}
+
+.about-toggle.ouvert i{
+    transform:rotate(180deg);
+}
+
+.about-full{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .45s ease;
+}
+
+.about-full.ouvert{
+    grid-template-rows:1fr;
+}
+
+.about-full-inner{
+    overflow:hidden;
+    min-height:0;
+}
+
+.about-full-inner > .about-sub:first-child{
+    margin-top:22px;
+}
+
+.about-tagline{
+    margin-top:18px;
+    font-size:12px;
+    font-style:italic;
+    color:var(--gold-light);
+    text-align:center;
+}
+
 @media(max-width:380px){
     .card{
         padding:21px 15px;
@@ -376,10 +472,10 @@ input::placeholder{
 
         <div class="tabs">
             <button class="active" id="registerTab" type="button">
-                Inscription
+                S'inscrire
             </button>
             <button id="loginTab" type="button">
-                Connexion
+                Se connecter
             </button>
         </div>
 
@@ -604,6 +700,111 @@ input::placeholder{
 
     </div>
 
+    <section class="about-card">
+
+        <h2 class="about-title">MaTontine, l'entraide financière autrement</h2>
+
+        <p class="about-text">
+            MaTontine est une plateforme de contribution communautaire fondée sur un principe simple :
+            les membres s'entraident directement, de l'un à l'autre. Plutôt que de passer par un
+            intermédiaire qui garde l'argent, la plateforme se contente de mettre en relation les
+            contributeurs et les bénéficiaires. Chaque mouvement d'argent se fait ensuite entre
+            deux membres, par Mobile Money.
+        </p>
+
+        <button type="button" class="about-toggle" id="aboutToggle" aria-expanded="false">
+            <span>Lire toute la présentation</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </button>
+
+        <div class="about-full" id="aboutFull">
+            <div class="about-full-inner">
+
+        <p class="about-text">
+            Ce fonctionnement permet de faire circuler les fonds plus vite dans la communauté,
+            sans attendre qu'une caisse centrale les redistribue. Il repose aussi sur la confiance
+            et la transparence : chacun voit où en est sa contribution et à quel moment il doit
+            recevoir ou payer.
+        </p>
+
+        <h3 class="about-sub"><i class="fa-solid fa-route"></i> Comment ça marche</h3>
+
+        <ol class="about-steps">
+            <li>
+                <b>Création du compte.</b> Vous renseignez votre nom, votre numéro de téléphone et
+                le numéro Mobile Money sur lequel vous souhaitez recevoir vos fonds.
+            </li>
+            <li>
+                <b>Choix de la contribution.</b> Vous sélectionnez le montant que vous souhaitez
+                apporter, puis le plan de participation qui vous convient.
+            </li>
+            <li>
+                <b>Jumelage automatique.</b> Le système recherche un membre en attente de réception
+                et vous associe à lui. Vous voyez alors le numéro à créditer et le montant à envoyer.
+            </li>
+            <li>
+                <b>Paiement direct.</b> Vous envoyez l'argent au membre jumelé par Mobile Money, puis
+                vous déclarez le paiement dans la plateforme. Le paiement doit être fait dans un délai
+                de 24 heures, sinon le jumelage est annulé.
+            </li>
+            <li>
+                <b>Compteur du contributeur.</b> Une fois votre paiement confirmé, votre compteur
+                démarre et court jusqu'à la fin du délai choisi. Vous suivez l'avancement en temps réel
+                depuis votre tableau de bord.
+            </li>
+            <li>
+                <b>Réception.</b> Au terme de ce délai, votre contribution passe en position de
+                réception, et les membres qui vous sont jumelés vous paient à leur tour.
+            </li>
+        </ol>
+
+        <h3 class="about-sub"><i class="fa-solid fa-chart-line"></i> Les plans</h3>
+
+        <p class="about-text">
+            Deux plans sont proposés. Le plan 1 prévoit un gain de 50 % du montant contribué à
+            l'échéance. Le plan 2 prévoit un gain de 100 %. Le montant d'une contribution peut aller
+            de 10 000 à 500 000 F CFA. Le plan choisi détermine la somme qui vous sera due une fois
+            le délai écoulé.
+        </p>
+
+        <h3 class="about-sub"><i class="fa-solid fa-shield-halved"></i> Sécurité et transparence</h3>
+
+        <p class="about-text">
+            MaTontine ne conserve aucun fonds. Aucun argent ne transite par le compte de la
+            plateforme : les paiements se font directement entre membres. Cela limite les risques
+            et évite de confier son argent à un intermédiaire.
+        </p>
+
+        <p class="about-text">
+            En cas de difficulté, la messagerie d'assistance intégrée permet de joindre l'équipe
+            rapidement. Pour vérifier un paiement, vous pouvez aussi envoyer une preuve de transfert
+            directement dans le jumelage concerné.
+        </p>
+
+        <h3 class="about-sub"><i class="fa-solid fa-bullseye"></i> Le but de MaTontine</h3>
+
+        <p class="about-text">
+            La plateforme a été conçue pour créer une communauté d'entraide financière moderne, où
+            chacun peut organiser son épargne et faire circuler son argent de façon claire, rapide et
+            accessible depuis un téléphone. Elle favorise la solidarité entre membres, la rapidité des
+            échanges, l'automatisation des jumelages et l'accès au service grâce au digital.
+        </p>
+
+        <h3 class="about-sub"><i class="fa-solid fa-earth-africa"></i> Où nous sommes</h3>
+
+        <p class="about-text">
+            MaTontine s'est développée progressivement et est désormais ouverte à plusieurs pays de
+            l'UEMOA : Côte d'Ivoire, Bénin, Togo, Mali, Burkina Faso et Sénégal. Chaque nouveau membre
+            renforce la communauté et multiplie les possibilités de jumelage.
+        </p>
+
+            </div>
+        </div>
+
+        <p class="about-tagline">Entraide, rapidité et transparence au service de la communauté.</p>
+
+    </section>
+
     <div class="footer">
         © 2026 MaTontine — Tous droits réservés.
     </div>
@@ -821,6 +1022,16 @@ document.querySelectorAll(".password-eye").forEach(icon=>{
             this.classList.replace("fa-eye-slash","fa-eye");
         }
     });
+});
+
+// PRÉSENTATION : déplier / replier
+document.getElementById("aboutToggle").addEventListener("click",function(){
+    const ouvert=this.classList.toggle("ouvert");
+    this.setAttribute("aria-expanded",String(ouvert));
+    this.querySelector("span").textContent=ouvert
+        ? "Masquer la présentation"
+        : "Lire toute la présentation";
+    document.getElementById("aboutFull").classList.toggle("ouvert",ouvert);
 });
 
 // INSCRIPTION
